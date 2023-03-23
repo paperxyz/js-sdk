@@ -17,6 +17,14 @@
       "cache": false,
       "persistent": true
     },
+    "dev-ews": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev-checkout": {
+      "cache": false,
+      "persistent": true
+    },
     "clean": {
       "cache": false
     }

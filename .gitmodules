@@ -1,0 +1,3 @@
+[submodule "apps/paper-web"]
+	path = apps/paper-web
+	url = https://github.com/caves-co/paper-web.git
