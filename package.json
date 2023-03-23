@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -17,7 +18,7 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.25.2",
+    "@changesets/cli": "^2.26.1",
     "eslint-config-paperxyz": "*",
     "tsup": "^6.7.0",
     "turbo": "latest"
