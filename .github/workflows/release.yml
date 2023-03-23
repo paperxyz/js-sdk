@@ -18,20 +18,19 @@ jobs:
       - name: Set Node.js Version
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: ".nvmrc"
+          cache: "yarn"
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
+        run: yarn install --frozen-lockfile
 
       - name: Create Release Pull Request or Publish to Github Registry
         uses: changesets/action@v1
         with:
           publish: yarn run release
           version: yarn run version-packages
-          commit: 'chore: release package(s)'
-          title: 'chore: release package(s)'
+          commit: "chore: release package(s)"
+          title: "chore: release package(s)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          

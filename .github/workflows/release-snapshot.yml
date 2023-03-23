@@ -18,7 +18,7 @@ jobs:
           cache: "yarn"
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
+        run: yarn install --frozen-lockfile
 
       - name: Create Snapshot Release Pull Request or Publish to Github Registry
         uses: changesets/action@v1
