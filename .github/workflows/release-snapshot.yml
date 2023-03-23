@@ -13,8 +13,7 @@ jobs:
 
       - name: Creating .npmrc file
         run: |
-          cp .npmrc.example .npmrc
-          sed -i "s/INSERT_YOUR_GITHUB_ACCESS_TOKEN_HERE/$NPM_TOKEN/g" .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
