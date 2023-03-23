@@ -156,7 +156,7 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
     });
     this.iframe.contentWindow?.postMessage(
       { eventType: procedureName, data: params },
-      "*",
+      `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
       [channel.port2],
     );
     return promise;
