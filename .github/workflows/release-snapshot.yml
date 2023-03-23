@@ -20,11 +20,13 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile --prefer-offline
 
-      - name: Create Snapshot Release
-        run: |
-          yarn run version-packages --snapshot "${{ github.ref_name }}"
-          echo '---'
-          echo 'Detected Changes:'
-          git diff
-          echo '---'
-          yarn run release --tag "${{ github.ref_name }}" --no-git-tag
+      - name: Create Snapshot Release Pull Request or Publish to Github Registry
+        uses: changesets/action@v1
+        with:
+          publish: yarn run release --tag "${{ github.ref_name }}" --no-git-tag
+          version: yarn run version-packages --snapshot "${{ github.ref_name }}"
+          commit: "chore: snapshot release package(s)"
+          title: "chore: snapshot release package(s)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
