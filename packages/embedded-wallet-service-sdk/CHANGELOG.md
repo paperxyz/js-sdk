@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.0-WY/ews-iframe-messaging-20230323015049
+
+### Patch Changes
+
+- 54519c0: security: post messages are directed only to Paper's iframe
+
 ## 0.0.20
 
 ### Patch Changes
