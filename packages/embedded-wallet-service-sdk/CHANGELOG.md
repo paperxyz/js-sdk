@@ -1,5 +1,20 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.23
+
+### Patch Changes
+
+- f114be1: **@paperxyz/dummy-repo:**
+
+  chore: remove eslint as dependcy
+
+  **@paperxyz/sdk-common-utils**:
+
+  chore: test multiple release in one PR
+
+- Updated dependencies [f114be1]
+  - @paperxyz/sdk-common-utils@0.0.1
+
 ## 0.0.22
 
 ### Patch Changes
