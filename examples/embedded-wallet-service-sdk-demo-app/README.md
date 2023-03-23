@@ -12,6 +12,7 @@ Run the following command:
 npx degit paperxyz/js-sdk/examples/embedded-wallet-service-sdk-demo-app paper-embedded-wallet-service-demo-app
 cd paper-embedded-wallet-service-demo-app
 yarn install
+ts-node ./scripts/prepareEnvironment.mjs
 git init . && git add . && git commit -m "Init"
 yarn dev
 ```
