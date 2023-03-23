@@ -1,11 +1,11 @@
 {
-  "name": "wallet-managed-auth-react-demo",
+  "name": "embedded-wallet-service-sdk-demo-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "2.4.4",
-    "@emotion/react": "11.10.5",
-    "@emotion/styled": "11.10.5",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@paperxyz/embedded-wallet-service-sdk": "*",
     "ethers": "^5.7.2",
     "framer-motion": "8.0.1",
@@ -17,7 +17,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "react-scripts start",
+    "dev": "yarn start",
+    "dev-ews": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",
     "build": "react-scripts build",
