@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/dummy-repo",
   "description": "Paper.xyz sdk for embedded wallets",
-  "version": "0.0.0-WY/ews-iframe-messaging-20230323015049",
+  "version": "0.0.21",
   "files": [
     "dist/**/*"
   ],
