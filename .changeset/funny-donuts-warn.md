@@ -1,5 +1,5 @@
 ---
-"@paperxyz/embedded-wallet-service-sdk": patch
+"@paperxyz/dummy-repo": patch
 "@paperxyz/sdk-common-utils": patch
 ---
 
