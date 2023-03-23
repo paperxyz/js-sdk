@@ -1,0 +1,49 @@
+{
+  "name": "@paperxyz/embedded-wallet-service-sdk",
+  "description": "Paper.xyz sdk for embedded wallets",
+  "version": "0.0.21",
+  "files": [
+    "dist/**/*"
+  ],
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsup src/index.ts --watch",
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "prepublish": "yarn build",
+    "release": "yarn build && changeset publish"
+  },
+  "keywords": [],
+  "author": "Paper.xyz <team@paper.xyz>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/paperxyz/embedded-wallet-service-sdk/issues"
+  },
+  "homepage": "https://github.com/paperxyz/embedded-wallet-service-sdk",
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@types/node": "^18.7.11",
+    "concurrently": "^7.3.0",
+    "eslint": "^8.36.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@ethersproject/abstract-signer": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/properties": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@paperxyz/sdk-common-utils": "*",
+    "eslint-config-paperxyz": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperxyz/embedded-wallet-service-sdk.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

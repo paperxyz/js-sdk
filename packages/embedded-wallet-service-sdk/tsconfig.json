@@ -1,0 +1,5 @@
+{
+  "extends": "@paperxyz/tsconfig/js-library.json",
+  "include": ["src", ".eslintrc.js"],
+  "exclude": ["node_modules", "dist"]
+}
