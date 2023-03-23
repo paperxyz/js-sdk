@@ -1,10 +1,6 @@
 name: Test
 
 on:
-  pull_request:
-  push:
-    branches:
-      - main
 
 env:
   CYPRESS_CACHE_FOLDER: ${{ github.workspace }}/.cypress
@@ -22,8 +18,8 @@ jobs:
       - name: Set Node.js Version
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: ".nvmrc"
+          cache: "yarn"
 
       - name: Restore Cypress Binary
         uses: actions/cache@v3
@@ -33,7 +29,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          yarn install --frozen-lockfile --prefer-offline
+          yarn install --frozen-lockfile 
           yarn --silent cypress info
           yarn --silent cypress cache list
           node -p 'os.cpus()'
