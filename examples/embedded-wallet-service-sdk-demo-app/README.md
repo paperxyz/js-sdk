@@ -9,10 +9,11 @@ Find the docs with more information [here](https://ews.withpaper.com/docs)
 Run the following command:
 
 ```bash
-npx degit vercel/turbo/examples/with-docker with-docker
-cd with-docker
+npx degit paperxyz/js-sdk/examples/embedded-wallet-service-sdk-demo-app paper-embedded-wallet-service-demo-app
+cd paper-embedded-wallet-service-demo-app
 yarn install
 git init . && git add . && git commit -m "Init"
+yarn dev
 ```
 
 <img width="770" alt="image" src="https://user-images.githubusercontent.com/44563205/213288511-8b325764-4f78-4cda-b40a-ddbf1395aeb3.png">
