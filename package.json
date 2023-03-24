@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --no-cache --continue",
-    "dev-ews": "turbo run dev-ews --no-cache --continue",
-    "dev-checkout": "turbo run dev --no-cache --continue",
+    "dev": "turbo run dev --no-cache --continue --parallel",
+    "dev-ews": "turbo run dev-ews --no-cache --continue --parallel",
+    "dev-checkout": "turbo run dev --no-cache --continue --parallel",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "clean": "turbo run clean && rm -rf node_modules",

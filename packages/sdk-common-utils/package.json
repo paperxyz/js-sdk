@@ -21,10 +21,6 @@
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
     "eslint-config-paperxyz": "*",
-    "tsup": "^6.7.0",
     "typescript": "^4.7.4"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
