@@ -1,6 +1,7 @@
 module.exports = {
   extends: [
     "turbo",
+    "prettier",
     "eslint:recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
@@ -23,5 +24,4 @@ module.exports = {
     "no-fallthrough": "off",
   },
   parser: "@typescript-eslint/parser",
-  root: true,
 };

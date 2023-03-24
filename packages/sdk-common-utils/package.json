@@ -2,19 +2,11 @@
   "name": "@paperxyz/sdk-common-utils",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "sideEffects": false,
   "private": true,
-  "files": [
-    "dist/**"
-  ],
   "scripts": {
-    "build": "tsup src/index.ts",
-    "dev": "tsup src/index.ts --watch",
-    "dev-ews": "yarn dev",
-    "dev-checkout": "yarn dev",
     "lint": "eslint \"src/**/*.ts*\"",
     "lint:fix": "yarn lint --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
@@ -25,4 +17,3 @@
     "typescript": "^4.7.4"
   }
 }
- 
