@@ -19,7 +19,7 @@
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
     "test": "turbo run test",
-    "prepare": "manypkg check && yarn turbo prune --scope=paper-web --docker && cp ./out/yarn.lock ./apps/paper-web/"
+    "prepare": "manypkg check && yarn turbo prune --scope=paper-web --docker 2>/dev/null && cp ./out/yarn.lock ./apps/paper-web/ 2>/dev/null"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
