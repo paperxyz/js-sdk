@@ -1,2 +1,6 @@
 **/node_modueles
 **/dist
+**/graphql/**/*
+**/public/**
+**/schema/**
+**/hasura/**

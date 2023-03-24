@@ -1,4 +1,5 @@
 {
+  "name": "js-sdk-monorepo",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -17,10 +18,12 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "postinstall": "manypkg check && yarn turbo prune --scope=paper-web --docker && cp ./out/yarn.lock ./apps/paper-web/"
   },
-  "devDependencies": {
+  "dependencies": {
     "@changesets/cli": "^2.26.1",
+    "@manypkg/cli": "^0.20.0",
     "eslint-config-paperxyz": "*",
     "tsup": "^6.7.0",
     "turbo": "latest"
