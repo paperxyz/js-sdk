@@ -89,6 +89,12 @@ export { ChainToPublicRpc, type Chain } from "./constants/blockchain";
 
 ## Releasing
 
+If you're simply making changes to the example repository, you should see something like the following
+
+![regular release preview](https://user-images.githubusercontent.com/44563205/227390338-4ad76489-0d95-4c62-b4c0-d895836fbe0a.png)
+
+If you are making changes to the packages itself and things need to be updated, you'll need to create a `changeset`.
+
 We use [Changesets](https://github.com/changesets/changesets) to manage versions, create changelogs, and publish to npm.
 
 ### Generating the Changelog
@@ -105,41 +111,14 @@ To generate your changelog, run `yarn changeset` anywhere in the repository:
 1. A new Markdown file will be created in the `changeset` folder with the summary and a list of the packages included.
    - You can now go in and make more edits if needed
 
+Once you commit your changeset, you will see that the changeset has been detected and recognized.
+
+At this point, if you need to release a demo version to install it and/or test it elsewhere, head over to Github actions and run the `Release Snapshot` workflow on your branch.
+
+Otherwise, once things are done, you can merge your branch in. An new PR will automatically be created looking like the following:
+
 ![release version](https://user-images.githubusercontent.com/44563205/227377619-8080c41a-89a6-4e27-be5b-d82920dcc13a.png)
 
-### Compilation
+At this point, you can continue to make changes and add `changesets`. This PR will automatically be updated.
 
-To make the core library code work across all browsers, we need to compile the raw TypeScript and React code to plain JavaScript. We can accomplish this with `tsup`, which uses `esbuild` to greatly improve performance.
-
-Running `pnpm build` from the root will run the `build` command defined in each package's `package.json` file.
-
-The `build` command runs in parallel and caches & hashes the output to speed up future builds.
-
-For `acme-core`, the `build` command is the following:
-
-```bash
-tsup src/index.tsx --format esm,cjs --dts --external react
-```
-
-`tsup` compiles `src/index.tsx`, which exports all of the components in the design system, into both ES Modules and CommonJS formats as well as their TypeScript types. The `package.json` for `acme-core` then instructs the consumer to select the correct format:
-
-```json:acme-core/package.json
-{
-  "name": "@acme/core",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-}
-```
-
-Run `pnpm build` to confirm compilation is working correctly. You should see a folder `acme-core/dist` which contains the compiled output.
-
-```bash
-acme-core
-└── dist
-    ├── index.d.ts  <-- Types
-    ├── index.js    <-- CommonJS version
-    └── index.mjs   <-- ES Modules version
-```
+When you're ready to publish, simply merge the PR in and the packages will be automatically released to `npm`.
