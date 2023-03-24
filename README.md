@@ -113,6 +113,8 @@ To generate your changelog, run `yarn changeset` anywhere in the repository:
 
 Once you commit your changeset, you will see that the changeset has been detected and recognized.
 
+![changeset detected](https://user-images.githubusercontent.com/44563205/227391045-aab3cfe0-458e-4a38-afa8-462b78d3c04e.png)
+
 At this point, if you need to release a demo version to install it and/or test it elsewhere, head over to Github actions and run the `Release Snapshot` workflow on your branch.
 
 Otherwise, once things are done, you can merge your branch in. An new PR will automatically be created looking like the following:
