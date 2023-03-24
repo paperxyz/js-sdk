@@ -117,6 +117,8 @@ Once you commit your changeset, you will see that the changeset has been detecte
 
 At this point, if you need to release a demo version to install it and/or test it elsewhere, head over to Github actions and run the `Release Snapshot` workflow on your branch.
 
+![image](https://user-images.githubusercontent.com/44563205/227391365-b8a84295-a7e3-406d-ac8f-cf74ce2e5dec.png)
+
 Otherwise, once things are done, you can merge your branch in. An new PR will automatically be created looking like the following:
 
 ![release version](https://user-images.githubusercontent.com/44563205/227377619-8080c41a-89a6-4e27-be5b-d82920dcc13a.png)
