@@ -1,5 +1,11 @@
 # @paperxyz/sdk-common-utils
 
+## 0.0.2
+
+### Patch Changes
+
+- 90b7ab4: test commit
+
 ## 0.0.1
 
 ### Patch Changes
