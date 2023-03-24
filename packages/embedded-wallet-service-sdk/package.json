@@ -1,7 +1,7 @@
 {
-  "name": "@paperxyz/dummy-repo",
+  "name": "@paperxyz/embedded-wallet-service-sdk",
   "description": "Paper.xyz sdk for embedded wallets",
-  "version": "0.0.23",
+  "version": "0.0.21",
   "files": [
     "dist/**/*"
   ],
@@ -14,7 +14,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "clean": "rm -rf .turbo node_modules dist",
     "prepublish": "yarn build",
     "release": "yarn build && changeset publish"
   },
@@ -22,9 +22,9 @@
   "author": "Paper.xyz <team@paper.xyz>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/paperxyz/embedded-wallet-service-sdk/issues"
+    "url": "https://github.com/paperxyz/js-sdk/issues"
   },
-  "homepage": "https://github.com/paperxyz/embedded-wallet-service-sdk",
+  "homepage": "https://github.com/paperxyz/js-sdk",
   "devDependencies": {
     "@types/node": "^18.7.11",
     "eslint-config-paperxyz": "*",
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paperxyz/embedded-wallet-service-sdk.git"
+    "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
   "publishConfig": {
     "access": "public"
