@@ -87,6 +87,10 @@ export { ChainToPublicRpc, type Chain } from "./constants/blockchain";
 // add more exports here
 ```
 
+Note that if you are creating an internal package not meant to be published but is a dependency in other packages, you have to update `tsup.config.ts`.
+
+In particular, add the bundle name under the `noExternal` setting so that it gets bundled appropriately in the client facing packages.
+
 ## Releasing
 
 If you're simply making changes to the example repository, you should see something like the following
