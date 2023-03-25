@@ -1,5 +1,5 @@
-import type { MessageType, StyleObject } from "@paperxyz/sdk-common-utils";
-import { getPaperOriginUrl } from "@paperxyz/sdk-common-utils";
+import type { MessageType, StyleObject } from "@paperxyz/sdk-common-utilities";
+import { getPaperOriginUrl } from "@paperxyz/sdk-common-utilities";
 import { EMBEDDED_WALLET_PATH } from "../../constants/settings";
 
 type IFrameCommunicatorProps = {

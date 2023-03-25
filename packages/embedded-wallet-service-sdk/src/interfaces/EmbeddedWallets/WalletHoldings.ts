@@ -1,4 +1,4 @@
-import type { Chain } from "@paperxyz/sdk-common-utils";
+import type { Chain } from "@paperxyz/sdk-common-utilities";
 
 export type WalletHoldingInputType = {
   chain: Chain;

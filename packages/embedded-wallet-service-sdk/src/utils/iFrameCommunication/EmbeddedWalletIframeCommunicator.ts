@@ -1,5 +1,5 @@
-import type { CustomizationOptionsType } from "@paperxyz/sdk-common-utils";
-import { getPaperOriginUrl } from "@paperxyz/sdk-common-utils";
+import type { CustomizationOptionsType } from "@paperxyz/sdk-common-utilities";
+import { getPaperOriginUrl } from "@paperxyz/sdk-common-utilities";
 import { EMBEDDED_WALLET_PATH } from "../../constants/settings";
 import { LocalStorage } from "../Storage/LocalStorage";
 import { IframeCommunicator } from "./IframeCommunicator";
