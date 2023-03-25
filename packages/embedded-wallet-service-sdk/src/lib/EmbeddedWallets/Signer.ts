@@ -2,6 +2,10 @@ import type {
   Provider,
   TransactionRequest,
 } from "@ethersproject/abstract-provider";
+import type {
+  TypedDataDomain,
+  TypedDataField,
+} from "@ethersproject/abstract-signer";
 import { Signer } from "@ethersproject/abstract-signer";
 import type { Bytes } from "@ethersproject/bytes";
 import type { Deferrable } from "@ethersproject/properties";
@@ -9,6 +13,7 @@ import { defineReadOnly } from "@ethersproject/properties";
 import type { ClientIdWithQuerierType } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import type {
   GetAddressReturnType,
+  SignedTypedDataReturnType,
   SignMessageReturnType,
   SignTransactionReturnType,
 } from "../../interfaces/EmbeddedWallets/Signer";
@@ -21,6 +26,11 @@ export type SignerProcedureTypes = {
   signTransaction: {
     transaction: Deferrable<TransactionRequest>;
     chainId: number | undefined;
+  };
+  signTypedDataV4: {
+    domain: TypedDataDomain;
+    types: Record<string, Array<TypedDataField>>;
+    value: Record<string, unknown>;
   };
   connect: { provider: Provider };
 };
@@ -77,6 +87,23 @@ export class EthersSigner extends Signer {
         },
       });
     return signedTransaction;
+  }
+
+  async _signTypedData({
+    domain,
+    types,
+    value,
+  }: SignerProcedureTypes["signTypedDataV4"]): Promise<string> {
+    const { signedTypedData } =
+      await this.querier.call<SignedTypedDataReturnType>({
+        procedureName: "signTypedDataV4",
+        params: {
+          domain,
+          types,
+          value,
+        },
+      });
+    return signedTypedData;
   }
 
   override connect(provider: Provider): EthersSigner {

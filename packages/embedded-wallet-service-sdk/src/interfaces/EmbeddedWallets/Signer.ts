@@ -3,3 +3,6 @@ export type SignMessageReturnType = { signedMessage: string };
 export type SignTransactionReturnType = {
   signedTransaction: string;
 };
+export type SignedTypedDataReturnType = {
+  signedTypedData: string;
+};
