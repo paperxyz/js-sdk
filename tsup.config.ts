@@ -8,6 +8,6 @@ export default defineConfig((options) => {
     format: ["cjs", "esm"],
     minify: !options.watch,
     // Internal packages not meant for client consumption should be here
-    noExternal: ["@paperxyz/sdk-common-utils"],
+    noExternal: [],
   };
 });

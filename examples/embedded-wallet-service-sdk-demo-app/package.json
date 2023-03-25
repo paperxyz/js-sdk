@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "dev": "yarn start",
     "dev-ews": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",
