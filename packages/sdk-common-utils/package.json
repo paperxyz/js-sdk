@@ -1,7 +1,8 @@
 {
   "name": "@paperxyz/sdk-common-utils",
+  "description": "Internal utilities for Paper's internal SDK",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -9,9 +10,18 @@
   "files": [
     "dist/**"
   ],
+  "bugs": {
+    "url": "https://github.com/paperxyz/js-sdk/issues"
+  },
+  "homepage": "https://github.com/paperxyz/js-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperxyz/js-sdk.git"
+  },
+  "author": "Paper.xyz <team@paper.xyz>",
   "scripts": {
-    "build": "tsup src/index.ts",
-    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.ts --env.NODE_ENV production",
+    "dev": "tsup src/index.ts --env.NODE_ENV development --watch",
     "dev-ews": "yarn dev",
     "dev-checkout": "yarn dev",
     "lint": "eslint \"src/**/*.ts*\"",
@@ -22,5 +32,8 @@
     "@paperxyz/tsconfig": "*",
     "eslint-config-paperxyz": "*",
     "typescript": "^4.7.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
