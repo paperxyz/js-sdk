@@ -1,4 +1,4 @@
-import type { Chain } from "@paperxyz/sdk-common-utils";
+import type { Chain } from "../../../../sdk-common-utilities/dist";
 import type { ClientIdWithQuerierAndChainType } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import type {
   CallContractReturnType,

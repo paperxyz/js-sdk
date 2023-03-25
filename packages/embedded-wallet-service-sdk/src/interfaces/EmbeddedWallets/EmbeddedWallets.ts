@@ -1,7 +1,7 @@
 import type {
   Chain,
   CustomizationOptionsType,
-} from "@paperxyz/sdk-common-utils";
+} from "../../../../sdk-common-utilities/dist";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 
