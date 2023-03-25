@@ -30,10 +30,6 @@ function App() {
   const [userDetails, setUserDetails] = useState<GetUser>();
 
   useEffect(() => {
-    console.log(
-      "process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID",
-      process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID,
-    );
     const paper = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
       chain: "Mumbai",

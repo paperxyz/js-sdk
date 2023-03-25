@@ -32,15 +32,13 @@ The topics we'll be covering:
 
 ### To start developing
 
-- `yarn dev` - Run all the packages locally
+- `yarn dev` - Run `paper-web` locally
 - `yarn dev-ews` - Run all packages needed to develop for the Paper embedded wallet service
 - `yarn dev-checkout` - Run all packages needed to develop for Paper's checkout experience
 
-You likely only use the latter two at any one time.
-
 If your machine has a memory bottleneck, you can run a specific package at a time.
 
-To run a specific package, say `paper-web`, run `yarn dev --filter=paper-web`. Replace `paper-web` with the repo name of your choice. [Read more on filtering task](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+To run a specific package, say `@paperxyz/embedded-wallet-service-sdk`, run `yarn dev --filter=@paperxyz/embedded-wallet-service-sdk`. Replace `@paperxyz/embedded-wallet-service-sdk` with the repo name of your choice. [Read more on filtering task](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
 
 ### Installing Packages
 
@@ -86,6 +84,10 @@ When adding a new file or function, ensure the component is also exported from t
 export { ChainToPublicRpc, type Chain } from "./constants/blockchain";
 // add more exports here
 ```
+
+Note that if you are creating an internal package not meant to be published but is a dependency in other packages, you have to update `tsup.config.ts`.
+
+In particular, add the bundle name under the `noExternal` setting so that it gets bundled appropriately in the client facing packages.
 
 ## Releasing
 

@@ -1,4 +1,5 @@
 {
+  "name": "js-sdk-monorepo",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -17,11 +18,15 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "prepare": "ts-node ./scripts/postInstall"
   },
-  "devDependencies": {
+  "dependencies": {
     "@changesets/cli": "^2.26.1",
+    "@manypkg/cli": "^0.20.0",
     "eslint-config-paperxyz": "*",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
     "turbo": "latest"
   },

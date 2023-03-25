@@ -1,2 +1,8 @@
-**/node_modueles
-**/dist
+node_modules
+out
+dist
+graphql
+public
+schema
+hasura
+.eslintrc.js

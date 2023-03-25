@@ -1,6 +1,7 @@
 module.exports = {
   extends: [
     "turbo",
+    "prettier",
     "eslint:recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
@@ -19,8 +20,8 @@ module.exports = {
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/no-unsafe-assignment": "warn",
     "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/no-misused-promises": "warn",
     "no-fallthrough": "off",
   },
   parser: "@typescript-eslint/parser",
-  root: true,
 };
