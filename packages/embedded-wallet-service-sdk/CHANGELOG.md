@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.23
+
+### Patch Changes
+
+- 16ab360: chore: update internal dependency
+
 ## 0.0.22
 
 ### Patch Changes
