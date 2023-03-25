@@ -44,7 +44,7 @@
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
-    "@paperxyz/sdk-common-utils": "*"
+    "@paperxyz/sdk-common-utilities": "*"
   },
   "publishConfig": {
     "access": "public"

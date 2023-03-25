@@ -26,9 +26,10 @@ The topics we'll be covering:
 ### Installation
 
 - `git clone` the repository
+- `git submodule update --init --recursive` to clone `paper-web` (to be confirmed)
+- Go through `paper-web` ReadMe to complete the set-up
 - Run `yarn` at the top level of the repository
 - Initialize the packages with `yarn build --filter=./packages/*`
-- Go through `paper-web` ReadMe to complete the set-up
 
 ### To start developing
 
@@ -61,9 +62,9 @@ This monorepo currently includes the following packages and applications:
 
 - `apps/paper-web`: Main web app, linked to our private repo via git submodules
 - `examples/embedded-wallet-service-sdk-demo-app`: Demo app using Paper's embedded wallet service SDK
-- `packages/@paperxyz/embedded-wallet-service-sdk`: Client facing embedded wallet service SDK
-- `packages/@paperxyz/sdk-common-utils`: Shared React utilities
-- `packages/@paperxyz/tsconfig`: Shared `tsconfig.json`s used throughout the monorepo
+- `packages/@paperxyz/embedded-wallet-service-sdk` (published): Client facing embedded wallet service SDK
+- `packages/@paperxyz/sdk-common-utilities`(published): Shared SDK utilities. Mostly typing and common functions.
+- `packages/@paperxyz/tsconfig`: Shared `tsconfig.json` used throughout the monorepo
 - `packages/eslint-config-paperxyz`: ESLint preset
 
 ## Making Changes
@@ -95,7 +96,7 @@ If you're simply making changes to the example repository, you should see someth
 
 ![regular release preview](https://user-images.githubusercontent.com/44563205/227390338-4ad76489-0d95-4c62-b4c0-d895836fbe0a.png)
 
-If you are making changes to the packages itself and things need to be updated, you'll need to create a `changeset`.
+If you are making changes to the folders in `/packages` itself and it's published (see the [repository layout](#repository-layout) section), you'll need to create a `changeset` in order to have it published to NPM.
 
 We use [Changesets](https://github.com/changesets/changesets) to manage versions, create changelogs, and publish to npm.
 

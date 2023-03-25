@@ -1,7 +1,7 @@
 import type { Networkish } from "@ethersproject/providers";
 import { getDefaultProvider } from "@ethersproject/providers";
-import type { Chain } from "@paperxyz/sdk-common-utils";
-import { ChainToPublicRpc } from "@paperxyz/sdk-common-utils";
+import type { Chain } from "@paperxyz/sdk-common-utilities";
+import { ChainToPublicRpc } from "@paperxyz/sdk-common-utilities";
 import type {
   ClientIdWithQuerierAndChainType,
   GetUserWalletStatusFnReturnType,
