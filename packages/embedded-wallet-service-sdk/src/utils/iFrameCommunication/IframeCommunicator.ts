@@ -86,8 +86,10 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
     return async () => {
       const promise = new Promise<boolean>(async (res, rej) => {
         const channel = new MessageChannel();
+        console.log("channel", channel);
         channel.port1.onmessage = (event: MessageEvent<MessageType<void>>) => {
           const { data } = event;
+          console.log("data", data);
           channel.port1.close();
           if (!data.success) {
             return rej(data.error);
@@ -100,7 +102,9 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
         };
         // iFrame takes a bit of time after loading to be ready for message receiving
         // This is hacky
+        console.log("sleeping");
         await sleep(prePostMessageSleepInSeconds);
+        console.log("slept");
         const INIT_IFRAME_EVENT = "initIframe";
         iframe?.contentWindow?.postMessage(
           // ? We initialise the iframe with a bunch
@@ -113,6 +117,7 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
           `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
           [channel.port2],
         );
+        console.log("post messaged to iframe");
       });
       await promise;
     };
