@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.25
+
+### Patch Changes
+
+- d845d38: perf: make iframe calls more robust
+
 ## 0.0.24
 
 ### Patch Changes
