@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.24
+
+### Patch Changes
+
+- 8812469: feat: add support for eth_signTypedData_v4
+
 ## 0.0.23
 
 ### Patch Changes
