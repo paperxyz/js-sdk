@@ -31,6 +31,7 @@ export type SignerProcedureTypes = {
     domain: TypedDataDomain;
     types: Record<string, Array<TypedDataField>>;
     value: Record<string, unknown>;
+    chainId: number | undefined;
   };
   connect: { provider: Provider };
 };
@@ -93,7 +94,10 @@ export class EthersSigner extends Signer {
     domain,
     types,
     value,
-  }: SignerProcedureTypes["signTypedDataV4"]): Promise<string> {
+  }: Omit<
+    SignerProcedureTypes["signTypedDataV4"],
+    "chainId"
+  >): Promise<string> {
     const { signedTypedData } =
       await this.querier.call<SignedTypedDataReturnType>({
         procedureName: "signTypedDataV4",
@@ -101,6 +105,9 @@ export class EthersSigner extends Signer {
           domain,
           types,
           value,
+          chainId:
+            (await this.provider?.getNetwork())?.chainId ??
+            this.DEFAULT_ETHEREUM_CHAIN_ID,
         },
       });
     return signedTypedData;
