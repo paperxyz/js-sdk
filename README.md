@@ -81,7 +81,7 @@ Create a new PR on this repo and wait for build to pass
 
 When adding a new file or function, ensure the component is also exported from the entry `index.tsx` file if it's meant to be exposed to some other clients.
 
-```tsx:sdk-common-utils/src/index.tsx
+```tsx:sdk-common-utilities/src/index.tsx
 export { ChainToPublicRpc, type Chain } from "./constants/blockchain";
 // add more exports here
 ```

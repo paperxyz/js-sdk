@@ -22,6 +22,7 @@ interface Props {
 enum Features {
   GET_WALLET = "GET_WALLET",
   SIGN_MESSAGE = "SIGN_MESSAGE",
+  SIGN_TYPED_DATA = "SIGN_TYPED_DATA",
   SIGN_T_ETH = "SIGN_T_ETH",
   SIGN_T_GOERLI = "SIGN_T_GOERLI",
   CALL_GASLESS_CONTRACT = "CALL_GASLESS_CONTRACT",
@@ -61,6 +62,47 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
     });
     setLoading(null);
     console.log("signedMessage", signedMessage);
+  };
+
+  const signTypedDataV4 = async () => {
+    setLoading(Features.SIGN_TYPED_DATA);
+    const signer = await wallet?.getEthersJsSigner({
+      rpcEndpoint: "mainnet",
+    });
+    const signedTypedData = await signer?._signTypedData({
+      domain: {
+        version: "1.0.0",
+        name: "Paper Embedded wallet demo",
+        chainId: 1,
+      },
+      types: {
+        Person: [
+          { name: "name", type: "string" },
+          { name: "wallet", type: "address" },
+        ],
+        Mail: [
+          { name: "from", type: "Person" },
+          { name: "to", type: "Person" },
+          { name: "contents", type: "string" },
+        ],
+      },
+      value: {
+        from: {
+          name: "Cow",
+          wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+        },
+        to: {
+          name: "Bob",
+          wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+        },
+        contents: "Hello, Bob!",
+      },
+    });
+    setLoading(null);
+
+    onResult({
+      signedTypedData,
+    });
   };
 
   const callContractGasless = async () => {
@@ -125,6 +167,22 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
             </Button>
             <Code borderRadius={8} p={4} width="full">
               {result?.signedMessage || (
+                <Text color="gray.500" fontStyle="italic" size="sm">
+                  {PLACEHOLDER}
+                </Text>
+              )}
+            </Code>
+          </Stack>
+          <Stack>
+            <Button
+              onClick={signTypedDataV4}
+              colorScheme="blue"
+              isLoading={loading === Features.SIGN_TYPED_DATA}
+            >
+              Sign Type Data (EIP712)
+            </Button>
+            <Code borderRadius={8} p={4} width="full">
+              {result?.signedTypedData || (
                 <Text color="gray.500" fontStyle="italic" size="sm">
                   {PLACEHOLDER}
                 </Text>
