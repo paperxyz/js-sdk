@@ -84,8 +84,8 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
     onIframeInitialize?: () => void,
   ) {
     return async () => {
-      const channel = new MessageChannel();
-      const promise = new Promise<boolean>((res, rej) => {
+      const promise = new Promise<boolean>(async (res, rej) => {
+        const channel = new MessageChannel();
         channel.port1.onmessage = (event: MessageEvent<MessageType<void>>) => {
           const { data } = event;
           channel.port1.close();
@@ -98,22 +98,22 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
           }
           return res(true);
         };
+        // iFrame takes a bit of time after loading to be ready for message receiving
+        // This is hacky
+        await sleep(prePostMessageSleepInSeconds);
+        const INIT_IFRAME_EVENT = "initIframe";
+        iframe?.contentWindow?.postMessage(
+          // ? We initialise the iframe with a bunch
+          // of useful information so that we don't have to pass it
+          // through in each of the future call. This would be where we do it.
+          {
+            eventType: INIT_IFRAME_EVENT,
+            data: await this.onIframeLoadedInitVariables(),
+          },
+          `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
+          [channel.port2],
+        );
       });
-      // iFrame takes a bit of time after loading to be ready for message receiving
-      // This is hacky
-      await sleep(prePostMessageSleepInSeconds);
-      const INIT_IFRAME_EVENT = "initIframe";
-      iframe?.contentWindow?.postMessage(
-        // ? We initialise the iframe with a bunch
-        // of useful information so that we don't have to pass it
-        // through in each of the future call. This would be where we do it.
-        {
-          eventType: INIT_IFRAME_EVENT,
-          data: await this.onIframeLoadedInitVariables(),
-        },
-        `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
-        [channel.port2],
-      );
       await promise;
     };
   }
@@ -135,8 +135,8 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
       // magic number to let the display render before performing the animation of the modal in
       await sleep(0.005);
     }
-    const channel = new MessageChannel();
     const promise = new Promise<ReturnData>((res, rej) => {
+      const channel = new MessageChannel();
       channel.port1.onmessage = async (
         event: MessageEvent<MessageType<ReturnData>>,
       ) => {
@@ -153,12 +153,12 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
           res(data.data);
         }
       };
+      this.iframe.contentWindow?.postMessage(
+        { eventType: procedureName, data: params },
+        `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
+        [channel.port2],
+      );
     });
-    this.iframe.contentWindow?.postMessage(
-      { eventType: procedureName, data: params },
-      `${getPaperOriginUrl()}${EMBEDDED_WALLET_PATH}`,
-      [channel.port2],
-    );
     return promise;
   }
 
