@@ -69,13 +69,13 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
     const signer = await wallet?.getEthersJsSigner({
       rpcEndpoint: "mainnet",
     });
-    const signedTypedData = await signer?._signTypedData({
-      domain: {
+    const signedTypedData = await signer?._signTypedData(
+      {
         version: "1.0.0",
         name: "Paper Embedded wallet demo",
         chainId: 1,
       },
-      types: {
+      {
         Person: [
           { name: "name", type: "string" },
           { name: "wallet", type: "address" },
@@ -86,7 +86,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
           { name: "contents", type: "string" },
         ],
       },
-      value: {
+      {
         from: {
           name: "Cow",
           wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
@@ -97,7 +97,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
         },
         contents: "Hello, Bob!",
       },
-    });
+    );
     setLoading(null);
 
     onResult({
