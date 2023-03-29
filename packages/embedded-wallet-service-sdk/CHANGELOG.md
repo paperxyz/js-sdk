@@ -1,5 +1,13 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.26
+
+### Patch Changes
+
+- a4bda22: BREAKING: `\_signTypedData` now matches ethers `\_signTypedData` function.
+
+  Almost all developer should be unaffected by this change.
+
 ## 0.0.25
 
 ### Patch Changes
