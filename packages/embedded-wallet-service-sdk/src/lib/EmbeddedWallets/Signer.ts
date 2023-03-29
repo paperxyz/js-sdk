@@ -90,21 +90,18 @@ export class EthersSigner extends Signer {
     return signedTransaction;
   }
 
-  async _signTypedData({
-    domain,
-    types,
-    value,
-  }: Omit<
-    SignerProcedureTypes["signTypedDataV4"],
-    "chainId"
-  >): Promise<string> {
+  async _signTypedData(
+    domain: SignerProcedureTypes["signTypedDataV4"]["domain"],
+    types: SignerProcedureTypes["signTypedDataV4"]["types"],
+    message: SignerProcedureTypes["signTypedDataV4"]["value"],
+  ): Promise<string> {
     const { signedTypedData } =
       await this.querier.call<SignedTypedDataReturnType>({
         procedureName: "signTypedDataV4",
         params: {
           domain,
           types,
-          value,
+          message,
           chainId:
             (await this.provider?.getNetwork())?.chainId ??
             this.DEFAULT_ETHEREUM_CHAIN_ID,
