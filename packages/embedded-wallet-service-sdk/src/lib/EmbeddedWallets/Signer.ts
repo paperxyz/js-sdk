@@ -30,7 +30,7 @@ export type SignerProcedureTypes = {
   signTypedDataV4: {
     domain: TypedDataDomain;
     types: Record<string, Array<TypedDataField>>;
-    value: Record<string, unknown>;
+    message: Record<string, unknown>;
     chainId: number | undefined;
   };
   connect: { provider: Provider };
@@ -93,7 +93,7 @@ export class EthersSigner extends Signer {
   async _signTypedData(
     domain: SignerProcedureTypes["signTypedDataV4"]["domain"],
     types: SignerProcedureTypes["signTypedDataV4"]["types"],
-    message: SignerProcedureTypes["signTypedDataV4"]["value"],
+    message: SignerProcedureTypes["signTypedDataV4"]["message"],
   ): Promise<string> {
     const { signedTypedData } =
       await this.querier.call<SignedTypedDataReturnType>({
