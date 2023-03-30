@@ -2,8 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "outputs": ["dist/**", "storybook-static/**"],
+      "outputs": ["dist/**", ".next"],
       "dependsOn": ["^build"]
+    },
+    "build-package-ews": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-package-ews"]
+    },
+    "build-package-checkout": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-package-checkout"]
     },
     "test": {
       "outputs": ["coverage/**"],
@@ -12,14 +20,18 @@
     "lint": {},
     "lint:fix": {},
     "dev": {
+      "dependsOn": ["^build-package-checkout", "^build-package-ews"],
       "cache": false,
       "persistent": true
     },
     "dev-ews": {
+      "dependsOn": ["^build-package-checkout", "^build-package-ews"],
+      "outputs": ["dist/**"],
       "cache": false,
       "persistent": true
     },
     "dev-checkout": {
+      "dependsOn": ["^build-package-ews"],
       "cache": false,
       "persistent": true
     },

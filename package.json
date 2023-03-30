@@ -8,9 +8,11 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build-package-ews": "turbo run build-package-ews",
+    "build-package-checkout": "turbo run build-package-checkout",
     "dev": "turbo run dev --no-cache --continue --parallel",
     "dev-ews": "turbo run dev-ews --no-cache --continue --parallel",
-    "dev-checkout": "turbo run dev --no-cache --continue --parallel",
+    "dev-checkout": "turbo run dev-checkout --no-cache --continue --parallel",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "clean": "turbo run clean && rm -rf node_modules",
@@ -19,14 +21,13 @@
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
     "test": "turbo run test",
-    "prepare": "ts-node ./scripts/postInstall"
+    "prepare": "node ./scripts/postInstall"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
     "@manypkg/cli": "^0.20.0",
     "eslint-config-paperxyz": "*",
     "shelljs": "^0.8.5",
-    "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
     "turbo": "latest"
   },
