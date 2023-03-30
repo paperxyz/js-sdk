@@ -1,7 +1,7 @@
-import { ModalStyles, StyleObject } from '../../interfaces/Modal';
-import { getDefaultModalStyles, modalKeyframeAnimations } from './styles';
+import type { ModalStyles, StyleObject } from "../../interfaces/Modal";
+import { getDefaultModalStyles, modalKeyframeAnimations } from "./styles";
 
-export const DRAWER_ID = 'paper-js-sdk-drawer';
+export const DRAWER_ID = "paper-js-sdk-drawer";
 export class Drawer {
   protected container: HTMLElement;
   protected main: HTMLDivElement;
@@ -22,20 +22,20 @@ export class Drawer {
       this.mergeStyles(styles);
     }
 
-    this.main = document.createElement('div');
+    this.main = document.createElement("div");
     this.main.id = DRAWER_ID;
 
-    this.overlay = document.createElement('div');
-    this.body = document.createElement('div');
-    this.closeButton = document.createElement('button');
-    this.closeButton.innerHTML = 'x';
+    this.overlay = document.createElement("div");
+    this.body = document.createElement("div");
+    this.closeButton = document.createElement("button");
+    this.closeButton.innerHTML = "x";
     this.closeButton.onclick = () => {
       this.close();
     };
-    this.iframe = document.createElement('iframe');
-    this.iframe.allow = 'camera; microphone; payment';
+    this.iframe = document.createElement("iframe");
+    this.iframe.allow = "camera; microphone; payment";
 
-    this.style = document.createElement('style');
+    this.style = document.createElement("style");
     this.style.innerHTML = modalKeyframeAnimations;
 
     this.assignStyles(this.main, this.styles.main);
@@ -61,15 +61,15 @@ export class Drawer {
     this.main.appendChild(this.closeButton);
 
     this.container.appendChild(this.main);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return this.iframe;
   }
 
   close() {
-    this.body.style.animation = 'pew-drawer-slideOut 0.2s forwards';
+    this.body.style.animation = "pew-drawer-slideOut 0.2s forwards";
 
     this.closeTimeout = window.setTimeout(() => {
-      document.body.style.overflow = 'visible';
+      document.body.style.overflow = "visible";
       this.main.remove();
 
       window.clearTimeout(this.closeTimeout);
@@ -110,10 +110,10 @@ export class Drawer {
   }
 
   protected addAccessibility() {
-    this.main.setAttribute('aria-hidden', 'true');
-    this.overlay.setAttribute('aria-hidden', 'true');
-    this.body.setAttribute('aria-modal', 'true');
-    this.body.setAttribute('role', 'dialog');
+    this.main.setAttribute("aria-hidden", "true");
+    this.overlay.setAttribute("aria-hidden", "true");
+    this.body.setAttribute("aria-modal", "true");
+    this.body.setAttribute("role", "dialog");
   }
 
   protected assignStyles(el: HTMLElement, styles: StyleObject) {

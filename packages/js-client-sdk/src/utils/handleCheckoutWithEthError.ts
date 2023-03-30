@@ -1,7 +1,5 @@
-import {
-  PaperSDKError,
-  PayWithCryptoErrorCode,
-} from '../interfaces/PaperSDKError';
+import type { PaperSDKError } from "../interfaces/PaperSDKError";
+import { PayWithCryptoErrorCode } from "../interfaces/PaperSDKError";
 
 export interface IErrorObject {
   isErrorObject: boolean;
@@ -12,16 +10,16 @@ export interface IErrorObject {
 export function handlePayWithCryptoError(
   error: Error | IErrorObject,
   onError?: (code: PaperSDKError) => void,
-  postToParent?: (errorObject: Omit<IErrorObject, 'isErrorObject'>) => void,
+  postToParent?: (errorObject: Omit<IErrorObject, "isErrorObject">) => void,
 ) {
-  if ('isErrorObject' in error) {
+  if ("isErrorObject" in error) {
     if (onError) {
       onError({ code: error.title, error: new Error(error.title) });
     }
     if (postToParent) {
       postToParent({ ...error });
     }
-  } else if (!('message' in error)) {
+  } else if (!("message" in error)) {
     if (onError) {
       onError({
         code: PayWithCryptoErrorCode.ErrorSendingTransaction,
@@ -36,19 +34,19 @@ export function handlePayWithCryptoError(
     }
   } else {
     if (
-      error.message.includes('rejected') ||
-      error.message.includes('denied transaction')
+      error.message.includes("rejected") ||
+      error.message.includes("denied transaction")
     ) {
       if (onError) {
         onError({ code: PayWithCryptoErrorCode.TransactionCancelled, error });
       }
       if (postToParent) {
         postToParent({
-          description: '',
+          description: "",
           title: PayWithCryptoErrorCode.TransactionCancelled,
         });
       }
-    } else if (error.message.includes('insufficient funds')) {
+    } else if (error.message.includes("insufficient funds")) {
       if (onError) {
         onError({
           code: PayWithCryptoErrorCode.InsufficientBalance,
@@ -62,7 +60,7 @@ export function handlePayWithCryptoError(
           title: PayWithCryptoErrorCode.InsufficientBalance,
         });
       }
-    } else if (error.message.includes('Error switching chain')) {
+    } else if (error.message.includes("Error switching chain")) {
       if (onError) {
         onError({
           code: PayWithCryptoErrorCode.ChainSwitchUnderway,
@@ -71,7 +69,7 @@ export function handlePayWithCryptoError(
       }
       if (postToParent) {
         postToParent({
-          description: 'Check your wallet app',
+          description: "Check your wallet app",
           title: PayWithCryptoErrorCode.ChainSwitchUnderway,
         });
       }

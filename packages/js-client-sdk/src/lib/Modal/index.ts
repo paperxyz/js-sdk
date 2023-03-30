@@ -1,7 +1,7 @@
-import { ModalStyles, StyleObject } from '../../interfaces/Modal';
-import { getDefaultModalStyles, modalKeyframeAnimations } from './styles';
+import type { ModalStyles, StyleObject } from "../../interfaces/Modal";
+import { getDefaultModalStyles, modalKeyframeAnimations } from "./styles";
 
-export const MODAL_ID = 'paper-js-sdk-modal';
+export const MODAL_ID = "paper-js-sdk-modal";
 export class Modal {
   protected container: HTMLElement;
   protected main: HTMLDivElement;
@@ -20,18 +20,18 @@ export class Modal {
       this.mergeStyles(styles);
     }
 
-    this.main = document.createElement('div');
+    this.main = document.createElement("div");
     this.main.id = MODAL_ID;
 
-    this.overlay = document.createElement('div');
+    this.overlay = document.createElement("div");
     this.overlay.id = `${MODAL_ID}-overlay`;
-    this.body = document.createElement('div');
+    this.body = document.createElement("div");
     this.body.id = `${MODAL_ID}-body`;
-    this.iframe = document.createElement('iframe');
+    this.iframe = document.createElement("iframe");
     this.iframe.id = `${MODAL_ID}-iframe`;
-    this.iframe.allow = 'camera; microphone; payment';
+    this.iframe.allow = "camera; microphone; payment";
 
-    this.style = document.createElement('style');
+    this.style = document.createElement("style");
     this.style.innerHTML = modalKeyframeAnimations;
 
     this.assignStyles(this.main, this.styles.main);
@@ -53,14 +53,14 @@ export class Modal {
     this.main.appendChild(this.body);
 
     this.container.appendChild(this.main);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   }
 
   close() {
-    this.body.style.animation = 'pew-modal-slideOut 0.2s forwards';
+    this.body.style.animation = "pew-modal-slideOut 0.2s forwards";
 
     this.closeTimeout = window.setTimeout(() => {
-      document.body.style.overflow = 'visible';
+      document.body.style.overflow = "visible";
       this.main.remove();
 
       window.clearTimeout(this.closeTimeout);
@@ -90,10 +90,10 @@ export class Modal {
   }
 
   protected addAccessibility() {
-    this.main.setAttribute('aria-hidden', 'true');
-    this.overlay.setAttribute('aria-hidden', 'true');
-    this.body.setAttribute('aria-modal', 'true');
-    this.body.setAttribute('role', 'dialog');
+    this.main.setAttribute("aria-hidden", "true");
+    this.overlay.setAttribute("aria-hidden", "true");
+    this.body.setAttribute("aria-modal", "true");
+    this.body.setAttribute("role", "dialog");
   }
 
   protected assignStyles(el: HTMLElement, styles: StyleObject) {

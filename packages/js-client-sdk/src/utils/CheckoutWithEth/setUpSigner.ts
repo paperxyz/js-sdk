@@ -1,5 +1,5 @@
-import type { FetchSignerResult } from '@wagmi/core';
-import { ethers } from 'ethers';
+import type { FetchSignerResult } from "@wagmi/core";
+import type { ethers } from "ethers";
 
 export async function setUpSigner({
   signer,
@@ -15,11 +15,11 @@ export async function setUpSigner({
   try {
     if (signer) {
       if ((await signer.getChainId()) !== chainId) {
-        const { switchNetwork, fetchSigner } = await import('@wagmi/core');
+        const { switchNetwork, fetchSigner } = await import("@wagmi/core");
         await switchNetwork({ chainId: chainId });
         signer = await fetchSigner();
         if (!signer) {
-          throw new Error('BAD STATE. Missing signer');
+          throw new Error("BAD STATE. Missing signer");
         }
       }
       onSuccess();

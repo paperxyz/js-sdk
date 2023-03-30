@@ -1,10 +1,10 @@
-import type { ethers } from 'ethers';
-import { ALCHEMY_API_KEY } from '../constants/settings';
-import { createConnectWalletButton } from './CheckoutWithEth/createConnectWalletButton';
-import { createWalletConnectorContainer } from './CheckoutWithEth/createWalletConnectorContainer';
-import { isTestnet } from './CheckoutWithEth/isTestnet';
-import { setUpSigner } from './CheckoutWithEth/setUpSigner';
-import { walletDisplayName } from './CheckoutWithEth/walletDisplayName';
+import type { ethers } from "ethers";
+import { ALCHEMY_API_KEY } from "../constants/settings";
+import { createConnectWalletButton } from "./CheckoutWithEth/createConnectWalletButton";
+import { createWalletConnectorContainer } from "./CheckoutWithEth/createWalletConnectorContainer";
+import { isTestnet } from "./CheckoutWithEth/isTestnet";
+import { setUpSigner } from "./CheckoutWithEth/setUpSigner";
+import { walletDisplayName } from "./CheckoutWithEth/walletDisplayName";
 
 export async function getSignerInfo({
   container,
@@ -25,26 +25,26 @@ export async function getSignerInfo({
       createClient,
       goerli,
       mainnet,
-    } = await import('@wagmi/core');
+    } = await import("@wagmi/core");
     const { MetaMaskConnector } = await import(
-      '@wagmi/core/connectors/metaMask'
+      "@wagmi/core/connectors/metaMask"
     );
     const { WalletConnectLegacyConnector } = await import(
-      '@wagmi/core/connectors/walletConnectLegacy'
+      "@wagmi/core/connectors/walletConnectLegacy"
     );
     const { CoinbaseWalletConnector } = await import(
-      '@wagmi/core/connectors/coinbaseWallet'
+      "@wagmi/core/connectors/coinbaseWallet"
     );
-    const { alchemyProvider } = await import('@wagmi/core/providers/alchemy');
+    const { alchemyProvider } = await import("@wagmi/core/providers/alchemy");
 
     const payloadObj = JSON.parse(
-      Buffer.from(sdkClientSecret.split('.')[1], 'base64').toString('utf-8'),
+      Buffer.from(sdkClientSecret.split(".")[1], "base64").toString("utf-8"),
     );
     if (!payloadObj) {
-      throw new Error('Invalid sdkClientSecret given');
+      throw new Error("Invalid sdkClientSecret given");
     }
     // TODO: Stop hacking types LoL
-    const chainName = (payloadObj as any).pricingDetails.chainName;
+    const chainName = payloadObj.pricingDetails.chainName;
     const isTestnetChain = isTestnet(chainName);
     const chains = isTestnetChain ? [goerli] : [mainnet];
     const { provider, webSocketProvider } = configureChains(
@@ -66,7 +66,7 @@ export async function getSignerInfo({
     });
     const coinbaseConnector = new CoinbaseWalletConnector({
       options: {
-        appName: appName ?? 'Paper',
+        appName: appName ?? "Paper",
         jsonRpcUrl: isTestnetChain
           ? `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_API_KEY}`
           : `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
@@ -86,14 +86,14 @@ export async function getSignerInfo({
     await client.autoConnect();
     const existingSigner = await fetchSigner();
 
-    const connectWalletPageId = 'paper-connect-wallet-page';
+    const connectWalletPageId = "paper-connect-wallet-page";
     const existingPage = document.getElementById(connectWalletPageId);
 
     if (existingPage && existingSigner) {
       const result = await setUpSigner({
         chainId: chains[0].id,
         onSuccess: () => {
-          existingPage.style.display = 'none';
+          existingPage.style.display = "none";
         },
         signer: existingSigner,
       });
@@ -126,7 +126,7 @@ export async function getSignerInfo({
             const result = await setUpSigner({
               chainId: chains[0].id,
               onSuccess: () => {
-                connectWalletPage.style.display = 'none';
+                connectWalletPage.style.display = "none";
               },
               signer,
               walletType: displayName,
@@ -140,7 +140,7 @@ export async function getSignerInfo({
       },
     );
   } catch (err) {
-    console.log('error on connect wallet page', err);
+    console.log("error on connect wallet page", err);
     throw err;
   }
 }
