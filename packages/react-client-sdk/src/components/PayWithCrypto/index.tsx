@@ -1,25 +1,21 @@
-import { Transition } from '@headlessui/react';
-import { PayWithCryptoErrorCode } from '@paperxyz/js-client-sdk';
-import React, { useEffect, useState } from 'react';
-import { useSigner } from 'wagmi';
-import {
+import { Transition } from "@headlessui/react";
+import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
+import React, { useEffect, useState } from "react";
+import { useSigner } from "wagmi";
+import type {
   ContractType,
   CustomContractArgWrapper,
-  fetchCustomContractArgsFromProps,
-} from '../../interfaces/CustomContract';
-import {
-  onWalletConnectedType,
-  WalletType,
-} from '../../interfaces/WalletTypes';
-import { ConnectWallet } from '../common/ConnectWallet';
-import {
-  ViewPricingDetails,
-  ViewPricingDetailsProps,
-} from './ViewPricingDetails';
+} from "../../interfaces/CustomContract";
+import { fetchCustomContractArgsFromProps } from "../../interfaces/CustomContract";
+import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 import {
   commonTransitionProps,
   transitionContainer,
-} from '../../lib/utils/styles';
+} from "../../lib/utils/styles";
+import { ConnectWallet } from "../common/ConnectWallet";
+import type { ViewPricingDetailsProps } from "./ViewPricingDetails";
+import { ViewPricingDetails } from "./ViewPricingDetails";
 
 export enum PayWithCryptoPage {
   ConnectWallet,
@@ -30,7 +26,7 @@ type PayWithCryptoProps<T extends ContractType> = CustomContractArgWrapper<
   {
     onWalletConnected?: onWalletConnectedType;
     onPageChange?: (currentPage: PayWithCryptoPage) => void;
-  } & Omit<ViewPricingDetailsProps, 'setIsTryingToChangeWallet'>,
+  } & Omit<ViewPricingDetailsProps, "setIsTryingToChangeWallet">,
   T
 >;
 

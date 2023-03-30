@@ -1,12 +1,14 @@
-import React from 'react';
-import { CoinbaseWalletIcon } from '../../icons/CoinbaseWalleticon';
+import React from "react";
+import { CoinbaseWalletIcon } from "../../icons/CoinbaseWalleticon";
 
-import { IconProps, MetaMaskIcon } from '../../icons/MetaMaskIcon';
-import { WalletConnectIcon } from '../../icons/WalletConnectIcon';
-import { ConnectWalletProps, WalletType } from '../../interfaces/WalletTypes';
-import { useConnectWallet } from '../../lib/hooks/useConnectWallet';
-import { Button } from './Button';
-import { css } from '@emotion/css';
+import { css } from "@emotion/css";
+import type { IconProps } from "../../icons/MetaMaskIcon";
+import { MetaMaskIcon } from "../../icons/MetaMaskIcon";
+import { WalletConnectIcon } from "../../icons/WalletConnectIcon";
+import type { ConnectWalletProps } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
+import { useConnectWallet } from "../../lib/hooks/useConnectWallet";
+import { Button } from "./Button";
 
 export function WalletIcon({
   walletType,
@@ -66,7 +68,7 @@ export const ConnectWallet = ({
             `}
             disabled={isConnecting}
             isLoading={isConnecting && connector.id === pendingConnector?.id}
-            loadingText='Connecting'
+            loadingText="Connecting"
             key={connector.id}
             onClick={connectWallet(
               connector,

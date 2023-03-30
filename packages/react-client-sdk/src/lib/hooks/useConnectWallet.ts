@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Connector, useAccount, useConnect, useDisconnect } from 'wagmi';
-import {
+import { useState } from "react";
+import type { Connector } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import type {
   onWalletConnectedType,
   onWalletConnectFailType,
-  WalletType,
-} from '../../interfaces/WalletTypes';
+} from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 
 export function useConnectWallet() {
   const [isUpdatingMetaMaskAccount, setIsUpdatingMetaMaskAccount] =
@@ -38,7 +39,7 @@ export function useConnectWallet() {
         try {
           await window.ethereum?.request({
             //@ts-ignore
-            method: 'wallet_requestPermissions',
+            method: "wallet_requestPermissions",
             //@ts-ignore
             params: [{ eth_accounts: {} }],
           });

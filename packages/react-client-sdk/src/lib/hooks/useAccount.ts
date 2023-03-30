@@ -1,6 +1,6 @@
-import { ethers } from 'ethers';
-import { useEffect, useState } from 'react';
-import { useAccount as useAccountWagmi } from 'wagmi';
+import type { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { useAccount as useAccountWagmi } from "wagmi";
 
 export const useAccount = ({ signer }: { signer?: ethers.Signer }) => {
   const { address: _address, connector } = useAccountWagmi();

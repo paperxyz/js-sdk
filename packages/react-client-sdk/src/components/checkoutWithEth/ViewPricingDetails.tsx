@@ -1,42 +1,42 @@
-import { css } from '@emotion/css';
+import { css } from "@emotion/css";
 import type {
   CheckoutWithEthLinkArgs,
   CheckoutWithEthMessageHandlerArgs,
-} from '@paperxyz/js-client-sdk';
+} from "@paperxyz/js-client-sdk";
 import {
   DEFAULT_BRAND_OPTIONS,
   PayWithCryptoErrorCode,
   PAY_WITH_ETH_ERROR,
-} from '@paperxyz/js-client-sdk';
-import type { ethers } from 'ethers';
+} from "@paperxyz/js-client-sdk";
+import type { ethers } from "ethers";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { useAccount } from '../../lib/hooks/useAccount';
-import { useCheckoutWithEthLink } from '../../lib/hooks/useCheckoutWithEthLink';
-import { useSendTransaction } from '../../lib/hooks/useSendTransaction';
-import { useSwitchNetwork } from '../../lib/hooks/useSwitchNetwork';
-import { handlePayWithCryptoError } from '../../lib/utils/handleError';
-import { postMessageToIframe } from '../../lib/utils/postMessageToIframe';
-import { usePaperSDKContext } from '../../Provider';
-import { IFrameWrapper } from '../common/IFrameWrapper';
-import { SpinnerWrapper } from '../common/SpinnerWrapper';
+} from "react";
+import { useAccount } from "../../lib/hooks/useAccount";
+import { useCheckoutWithEthLink } from "../../lib/hooks/useCheckoutWithEthLink";
+import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
+import { useSwitchNetwork } from "../../lib/hooks/useSwitchNetwork";
+import { handlePayWithCryptoError } from "../../lib/utils/handleError";
+import { postMessageToIframe } from "../../lib/utils/postMessageToIframe";
+import { usePaperSDKContext } from "../../Provider";
+import { IFrameWrapper } from "../common/IFrameWrapper";
+import { SpinnerWrapper } from "../common/SpinnerWrapper";
 
 export interface PayWithCryptoChildrenProps {
   openModal: () => void;
 }
 
 export type ViewPricingDetailsProps = Omit<
-  Omit<CheckoutWithEthLinkArgs, 'appName'>,
-  'payingWalletSigner'
+  Omit<CheckoutWithEthLinkArgs, "appName">,
+  "payingWalletSigner"
 > &
   Omit<
-    Omit<CheckoutWithEthMessageHandlerArgs, 'iframe'>,
-    'payingWalletSigner'
+    Omit<CheckoutWithEthMessageHandlerArgs, "iframe">,
+    "payingWalletSigner"
   > & {
     setIsTryingToChangeWallet: React.Dispatch<React.SetStateAction<boolean>>;
     payingWalletSigner?: ethers.Signer;
@@ -97,10 +97,10 @@ export const ViewPricingDetails = ({
       // This allows us to have the ability to have wallet connection handled by the SDK
       const { data } = event;
       switch (data.eventType) {
-        case 'payWithEth': {
+        case "payWithEth": {
           if (data.error) {
             handlePayWithCryptoError(
-              new Error(data.error) as Error,
+              new Error(data.error),
               onError,
               (errorObject) => {
                 if (iframeRef.current) {
@@ -116,10 +116,10 @@ export const ViewPricingDetails = ({
           // Allows Dev's to inject any chain switching for their custom signer here.
           if (signer && setUpUserPayingWalletSigner) {
             try {
-              console.log('setting up signer');
+              console.log("setting up signer");
               await setUpUserPayingWalletSigner({ chainId: data.chainId });
             } catch (error) {
-              console.log('error setting up signer', error);
+              console.log("error setting up signer", error);
               handlePayWithCryptoError(
                 error as Error,
                 onError,
@@ -139,7 +139,7 @@ export const ViewPricingDetails = ({
           // try switching network first if needed or supported
           try {
             if (chainId !== data.chainId && switchNetworkAsync) {
-              console.log('switching signer network');
+              console.log("switching signer network");
               await switchNetworkAsync(data.chainId);
             } else if (chainId !== data.chainId) {
               throw {
@@ -149,7 +149,7 @@ export const ViewPricingDetails = ({
               };
             }
           } catch (error) {
-            console.log('error switching network');
+            console.log("error switching network");
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
@@ -163,7 +163,7 @@ export const ViewPricingDetails = ({
 
           // send the transaction
           try {
-            console.log('sending funds');
+            console.log("sending funds");
             const result = await sendTransactionAsync?.({
               chainId: data.chainId,
               request: {
@@ -171,7 +171,7 @@ export const ViewPricingDetails = ({
                 data: data.blob,
                 to: data.paymentAddress,
               },
-              mode: 'recklesslyUnprepared',
+              mode: "recklesslyUnprepared",
             });
             if (onSuccess && result) {
               onSuccess({
@@ -180,13 +180,13 @@ export const ViewPricingDetails = ({
               });
             }
             if (iframeRef.current && result) {
-              postMessageToIframe(iframeRef.current, 'paymentSuccess', {
+              postMessageToIframe(iframeRef.current, "paymentSuccess", {
                 suppressErrorToast,
                 transactionHash: result.hash,
               });
             }
           } catch (error) {
-            console.log('error sending funds', error);
+            console.log("error sending funds", error);
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
@@ -198,13 +198,13 @@ export const ViewPricingDetails = ({
           }
           break;
         }
-        case 'goBackToChoosingWallet':
+        case "goBackToChoosingWallet":
           setIsTryingToChangeWallet(true);
           break;
-        case 'checkout-with-eth-sizing': {
+        case "checkout-with-eth-sizing": {
           if (iframeRef.current) {
-            iframeRef.current.style.height = data.height + 'px';
-            iframeRef.current.style.maxHeight = data.height + 'px';
+            iframeRef.current.style.height = data.height + "px";
+            iframeRef.current.style.maxHeight = data.height + "px";
           }
           break;
         }
@@ -212,10 +212,10 @@ export const ViewPricingDetails = ({
           break;
       }
     };
-    window.addEventListener('message', handleMessage);
+    window.addEventListener("message", handleMessage);
 
     return () => {
-      window.removeEventListener('message', handleMessage);
+      window.removeEventListener("message", handleMessage);
     };
   }, [
     signer,
@@ -231,7 +231,7 @@ export const ViewPricingDetails = ({
       {checkoutWithEthUrl && (
         <IFrameWrapper
           ref={iframeRef}
-          id='checkout-with-eth-iframe'
+          id="checkout-with-eth-iframe"
           className={css`
             margin-left: auto;
             margin-right: auto;
@@ -242,7 +242,7 @@ export const ViewPricingDetails = ({
           `}
           src={checkoutWithEthUrl.href}
           onLoad={onLoad}
-          scrolling='no'
+          scrolling="no"
           allowTransparency
         />
       )}

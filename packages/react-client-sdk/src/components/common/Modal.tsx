@@ -1,7 +1,7 @@
-import { cx, css } from '@emotion/css';
-import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useEffect } from 'react';
-import { opacity0, opacity1 } from '../../lib/utils/styles';
+import { css, cx } from "@emotion/css";
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment, useEffect } from "react";
+import { opacity0, opacity1 } from "../../lib/utils/styles";
 
 export const Modal: React.FC<{
   isOpen: boolean;
@@ -17,35 +17,35 @@ export const Modal: React.FC<{
   onClose,
   escapeToClose = true,
   clickOutsideModalToClose = false,
-  bgColor = '#FAFAFA',
+  bgColor = "#FAFAFA",
   isFullScreen,
   hasCloseButton = true,
   children,
 }) => {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
     if (escapeToClose) {
-      document.addEventListener('keydown', keyDownHandler);
+      document.addEventListener("keydown", keyDownHandler);
     }
 
     return () => {
-      document.removeEventListener('keydown', keyDownHandler);
+      document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
 
-  const additionalDialogClasses = isFullScreen ? '' : dialogContainedClasses;
-  const dialogPanelBg = isFullScreen ? 'transparent' : bgColor;
+  const additionalDialogClasses = isFullScreen ? "" : dialogContainedClasses;
+  const dialogPanelBg = isFullScreen ? "transparent" : bgColor;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
-        as='div'
+        as="div"
         className={cx(
-          'paper-modal',
+          "paper-modal",
           css`
             position: relative;
             z-index: 1000;
@@ -65,7 +65,7 @@ export const Modal: React.FC<{
         >
           <div
             className={cx(
-              'paper-modal-overlay',
+              "paper-modal-overlay",
               css`
                 position: fixed;
                 top: 0;
@@ -107,7 +107,7 @@ export const Modal: React.FC<{
             >
               <Dialog.Panel
                 className={cx(
-                  'paper-modal-content',
+                  "paper-modal-content",
                   dialogClasses,
                   additionalDialogClasses,
                 )}
@@ -127,7 +127,7 @@ export const Modal: React.FC<{
 const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <button
-      aria-label='close modal'
+      aria-label="close modal"
       className={css`
         position: absolute;
         top: 0.5rem;
@@ -150,16 +150,16 @@ const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           height: 1.25rem;
         `}
         onClick={onClose}
-        fill='none'
-        stroke='currentColor'
-        viewBox='0 0 24 24'
-        xmlns='http://www.w3.org/2000/svg'
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          strokeWidth='2'
-          d='M6 18L18 6M6 6l12 12'
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M6 18L18 6M6 6l12 12"
         ></path>
       </svg>
     </button>

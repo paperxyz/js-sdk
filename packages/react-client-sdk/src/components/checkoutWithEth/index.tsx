@@ -1,22 +1,18 @@
-import { Transition } from '@headlessui/react';
-import { PayWithCryptoErrorCode } from '@paperxyz/js-client-sdk';
-import React, { useEffect, useState } from 'react';
-import { useSigner } from 'wagmi';
-import {
-  onWalletConnectedType,
-  WalletType,
-} from '../../interfaces/WalletTypes';
+import { Transition } from "@headlessui/react";
+import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
+import React, { useEffect, useState } from "react";
+import { useSigner } from "wagmi";
+import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 import {
   commonTransitionProps,
   transitionContainer,
-} from '../../lib/utils/styles';
-import { ConnectWallet } from '../common/ConnectWallet';
-import {
-  ViewPricingDetails,
-  ViewPricingDetailsProps,
-} from './ViewPricingDetails';
+} from "../../lib/utils/styles";
+import { ConnectWallet } from "../common/ConnectWallet";
+import type { ViewPricingDetailsProps } from "./ViewPricingDetails";
+import { ViewPricingDetails } from "./ViewPricingDetails";
 
-var packageJson = require('../../../package.json');
+const packageJson = require("../../../package.json");
 
 export enum CheckoutWithEthPage {
   ConnectWallet,
@@ -26,7 +22,7 @@ export enum CheckoutWithEthPage {
 type CheckoutWithEthProps = {
   onWalletConnected?: onWalletConnectedType;
   onPageChange?: (currentPage: CheckoutWithEthPage) => void;
-} & Omit<ViewPricingDetailsProps, 'setIsTryingToChangeWallet'>;
+} & Omit<ViewPricingDetailsProps, "setIsTryingToChangeWallet">;
 
 export const CheckoutWithEth = ({
   sdkClientSecret,

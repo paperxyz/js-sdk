@@ -1,14 +1,9 @@
-import type { Locale, } from '@paperxyz/js-client-sdk';
-import {
-  createWallet,
-  initialiseCreateWallet,
-  PaperSDKError,
-  PaperUser,
-} from '@paperxyz/js-client-sdk';
-import React, { useEffect } from 'react';
-import { usePaperSDKContext } from '../Provider';
-import { Button } from './common/Button';
-var packageJson = require('../../package.json');
+import type { Locale, PaperSDKError, PaperUser } from "@paperxyz/js-client-sdk";
+import { createWallet, initialiseCreateWallet } from "@paperxyz/js-client-sdk";
+import React, { useEffect } from "react";
+import { usePaperSDKContext } from "../Provider";
+import { Button } from "./common/Button";
+const packageJson = require("../../package.json");
 
 interface CreateWalletProps {
   emailAddress: string;
@@ -36,7 +31,7 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
   children,
 }) => {
   const { chainName } = usePaperSDKContext();
-  const isChildrenFunction = typeof children === 'function';
+  const isChildrenFunction = typeof children === "function";
 
   useEffect(() => {
     initialiseCreateWallet({

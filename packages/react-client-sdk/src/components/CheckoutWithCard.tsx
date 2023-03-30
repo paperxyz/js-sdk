@@ -3,17 +3,17 @@ import type {
   Locale,
   PaperSDKError,
   ReviewResult,
-} from '@paperxyz/js-client-sdk';
+} from "@paperxyz/js-client-sdk";
 import {
   createCheckoutWithCardElement,
   DEFAULT_BRAND_OPTIONS,
-} from '@paperxyz/js-client-sdk';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { PaymentSuccessResult } from '../interfaces/PaymentSuccessResult';
-import { iframeContainer } from '../lib/utils/styles';
-import { usePaperSDKContext } from '../Provider';
-import { SpinnerWrapper } from './common/SpinnerWrapper';
-var packageJson = require('../../package.json');
+} from "@paperxyz/js-client-sdk";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
+import { iframeContainer } from "../lib/utils/styles";
+import { usePaperSDKContext } from "../Provider";
+import { SpinnerWrapper } from "./common/SpinnerWrapper";
+const packageJson = require("../../package.json");
 
 interface CheckoutWithCardProps {
   sdkClientSecret: string;

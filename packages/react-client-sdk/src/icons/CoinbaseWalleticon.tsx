@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './MetaMaskIcon';
+import type { IconProps } from './MetaMaskIcon';
 
 export const CoinbaseWalletIcon = ({
   className,
