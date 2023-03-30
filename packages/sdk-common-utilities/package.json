@@ -18,9 +18,11 @@
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
-  "author": "Paper.xyz <team@paper.xyz>",
+  "author": "Paper <team@withpaper.com>",
   "scripts": {
     "build": "tsup src/index.ts --env.NODE_ENV production",
+    "build-package-ews": "yarn build",
+    "build-package-checkout": "yarn build",
     "dev": "tsup src/index.ts --env.NODE_ENV development --watch",
     "dev-ews": "yarn dev",
     "dev-checkout": "yarn dev",
