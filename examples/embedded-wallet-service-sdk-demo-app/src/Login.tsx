@@ -9,7 +9,7 @@ import {
   Heading,
   Input,
   Stack,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { PaperEmbeddedWalletSdk } from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const loginWithPaperEmailOtp = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
     e.preventDefault();
@@ -62,7 +62,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   };
 
   const loginWithPaperEmailOtpHeadless = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
     e.preventDefault();
@@ -78,14 +78,14 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
       }
       console.error(
         "Something went wrong sending otp email in headless flow",
-        e
+        e,
       );
     }
     setIsLoading(false);
   };
 
   const finishHeadlessOtpLogin = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
     e.preventDefault();
