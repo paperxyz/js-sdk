@@ -1,5 +1,0 @@
-{
-  "extends": "@paperxyz/tsconfig/js-library.json",
-  "include": ["src"],
-  "exclude": ["dist", "build", "node_modules"]
-}

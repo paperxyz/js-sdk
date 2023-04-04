@@ -31,7 +31,7 @@
       "persistent": true
     },
     "dev-checkout": {
-      "dependsOn": ["^build-package-ews"],
+      "dependsOn": ["^build-package-checkout", "^build-package-ews"],
       "cache": false,
       "persistent": true
     },

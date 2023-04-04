@@ -21,6 +21,7 @@ const iframeBaseStyle = {
   width: "100%",
   border: "none",
   backgroundColor: "transparent",
+  colorScheme: "light",
   position: "fixed",
   top: "0px",
   right: "0px",
