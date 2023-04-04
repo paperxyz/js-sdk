@@ -277,3 +277,44 @@ export async function createCheckoutWithEthElement({
     link: checkoutWithEthUrl,
   });
 }
+
+export interface renderCheckoutWithEthProps {
+  // The client secret created from your backend containing information about the purchase
+  sdkClientSecret: string;
+  // the id of the element you want to render the iframe in
+  elementOrId: string;
+  // called when the iframe has completed loading
+  onLoad?: () => void;
+  // called when the user has successfully submitted ETH
+  onPaymentSuccess?: (args: {
+    paperTransactionId: string;
+    paymentTransactionHash: string;
+  }) => void;
+  // called when an error occurs at any point in the payment process
+  onError?: (error: PaperSDKError) => void;
+  // called when the user the user's purchased has been successfully fulfilled
+  onNftTransferSuccess?: (args: {
+    paperTransactionId: string;
+    paymentTransactionHash: string;
+    claimedTokens: any;
+  }) => void;
+  advanceOptions?: {
+    // if provided, we will not show users an option to connect their wallet
+    payingWalletSigner?: ethers.Signer;
+  };
+  // defaults to en
+  locale?: Locale;
+  customizationOptions?: ICustomizationOptions;
+}
+export async function renderCheckoutWithEth({
+  sdkClientSecret,
+  elementOrId,
+  onError,
+  onLoad,
+  onNftTransferSuccess,
+  onPaymentSuccess,
+  advanceOptions,
+  customizationOptions,
+  locale,
+}: renderCheckoutWithEthProps) {}
+  

@@ -5,13 +5,13 @@ import type {
   ReviewResult,
 } from "@paperxyz/js-client-sdk";
 import {
-  createCheckoutWithCardElement,
   DEFAULT_BRAND_OPTIONS,
+  createCheckoutWithCardElement,
 } from "@paperxyz/js-client-sdk";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePaperSDKContext } from "../Provider";
 import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
-import { usePaperSDKContext } from "../Provider";
 import { SpinnerWrapper } from "./common/SpinnerWrapper";
 const packageJson = require("../../package.json");
 
