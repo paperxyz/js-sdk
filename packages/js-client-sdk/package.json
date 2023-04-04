@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/js-client-sdk",
-  "description": "Paper js SDK for Checkout Elements",
-  "version": "0.0.57",
+  "description": "Paper JS SDK for Checkout Elements",
+  "version": "0.0.60",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,16 +9,7 @@
   "files": [
     "dist/**/*"
   ],
-  "scripts": {
-    "build": "tsup src/index.ts --env.NODE_ENV production",
-    "build-package-checkout": "yarn build",
-    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --watch",
-    "lint": "eslint \"src/**/*.ts*\"",
-    "lint:fix": "yarn lint --fix",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
-  },
   "keywords": [],
-  "author": "Paper <team@withpaper.com>",
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
   },
@@ -27,14 +18,23 @@
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
+  "author": "Paper.xyz <team@paper.xyz>",
+  "scripts": {
+    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --watch",
+    "build-package-checkout": "yarn build",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "yarn lint --fix",
+    "build": "tsup src/index.ts --env.NODE_ENV production",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
+    "@types/node": "^18.7.11",
     "eslint-config-paperxyz": "*",
     "typescript": "^4.7.4"
   },
   "dependencies": {
     "@paperxyz/sdk-common-utilities": "*",
-    "@wagmi/core": "^0.10.1",
     "ethers": "^5.7.2"
   },
   "publishConfig": {

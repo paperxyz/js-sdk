@@ -1,7 +1,11 @@
 import type { ModalStyles, StyleObject } from "../../interfaces/Modal";
-import { getDefaultModalStyles, modalKeyframeAnimations } from "./styles";
+import { getDefaultModalStyles } from "./styles";
 
-export const DRAWER_ID = "paper-js-sdk-drawer";
+const MAIN_CLASSNAME = "paper--drawer-main";
+const OVERLAY_CLASSNAME = "paper--drawer-overlay";
+const BODY_CLASSNAME = "paper--drawer-body";
+const CLOSE_CLASSNAME = "paper--drawer-close";
+
 export class Drawer {
   protected container: HTMLElement;
   protected main: HTMLDivElement;
@@ -10,7 +14,6 @@ export class Drawer {
   protected iframe: HTMLIFrameElement;
   protected onCloseCallback: (() => void) | undefined;
 
-  protected style: HTMLStyleElement;
   protected closeTimeout: number | undefined;
   styles = getDefaultModalStyles();
   body: HTMLDivElement;
@@ -23,20 +26,23 @@ export class Drawer {
     }
 
     this.main = document.createElement("div");
-    this.main.id = DRAWER_ID;
+    this.main.className = MAIN_CLASSNAME;
 
     this.overlay = document.createElement("div");
+    this.overlay.className = OVERLAY_CLASSNAME;
+
     this.body = document.createElement("div");
+    this.body.className = BODY_CLASSNAME;
+
     this.closeButton = document.createElement("button");
-    this.closeButton.innerHTML = "x";
+    this.closeButton.className = CLOSE_CLASSNAME;
+    this.closeButton.innerHTML = "&#x2715;";
     this.closeButton.onclick = () => {
       this.close();
     };
+
     this.iframe = document.createElement("iframe");
     this.iframe.allow = "camera; microphone; payment";
-
-    this.style = document.createElement("style");
-    this.style.innerHTML = modalKeyframeAnimations;
 
     this.assignStyles(this.main, this.styles.main);
     this.assignStyles(this.overlay, this.styles.overlay);
@@ -56,26 +62,35 @@ export class Drawer {
     this.addAccessibility();
 
     this.main.appendChild(this.overlay);
-    this.main.appendChild(this.style);
     this.main.appendChild(this.body);
     this.main.appendChild(this.closeButton);
 
     this.container.appendChild(this.main);
     document.body.style.overflow = "hidden";
+
+    // Animate in.
+    this.overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    this.body.style.right = "0px";
+    this.body.style.opacity = "1";
+
     return this.iframe;
   }
 
   close() {
-    this.body.style.animation = "pew-drawer-slideOut 0.2s forwards";
+    this.closeButton.remove();
 
+    // Animate out.
+    this.overlay.style.backgroundColor = "rgba(0, 0, 0, 0)";
+    this.body.style.right = "-100px";
+    this.body.style.opacity = "0";
+
+    // Remove drawer from DOM.
     this.closeTimeout = window.setTimeout(() => {
       document.body.style.overflow = "visible";
       this.main.remove();
 
       window.clearTimeout(this.closeTimeout);
-      if (this.onCloseCallback) {
-        this.onCloseCallback();
-      }
+      this.onCloseCallback?.();
     }, 250);
   }
 
@@ -103,6 +118,7 @@ export class Drawer {
       ...this.styles.iframe,
       ...(styles.iframe || {}),
     };
+
     this.styles.closeButton = {
       ...this.styles.closeButton,
       ...(styles.closeButton || {}),

@@ -19,39 +19,54 @@ export const getDefaultModalStyles = (): ModalStyles => ({
   overlay: {
     ...fullScreen,
     position: "absolute",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.33)",
   },
   body: {
-    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.25)",
-    backgroundColor: window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "#2F2F2F"
-      : "white",
+    background: "transparent",
     borderRadius: "12px",
-    padding: "0px",
     position: "relative",
-    maxWidth: "500px",
-    width: "100%",
-    animation: "pew-modal-slideIn 0.2s forwards",
-    height: "700px",
-    maxHeight: "80vh",
     overflow: "hidden",
+    width: "100%",
+    maxWidth: "500px",
+    height: "700px",
+    maxHeight: "80%",
+    animation: "pew-modal-slideIn 0.2s forwards",
+  },
+  spinner: {
+    position: "absolute",
+    top: "0",
+    bottom: "0",
+    left: "0",
+    right: "0",
+    margin: "auto",
+    borderWidth: "3px",
+    borderColor: "#2D3748 #2D3748 transparent transparent",
+    borderRadius: "50%",
+    width: "30px",
+    height: "30px",
+    animation: "spin 1s linear infinite",
   },
   iframe: {
+    position: "relative",
     height: "100%",
     width: "100%",
     border: "none",
-    backgroundColor: "transparent",
+    background: "transparent",
   },
 });
 
 export const modalKeyframeAnimations = `
   @keyframes pew-modal-slideIn {
-    from {opacity: 0; transform: translate3d(0, -20px, 0);}
+    from {opacity: 0; transform: translate3d(0, 20px, 0);}
     to {opacity: 1; transform: translate3d(0, 0, 0);}
   }
 
   @keyframes pew-modal-slideOut {
     from {opacity: 1; transform: translate3d(0, 0, 0);}
-    to {opacity: 0; transform: translate3d(0, -20px, 0);}
+    to {opacity: 0; transform: translate3d(0, 20px, 0);}
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 `;

@@ -4,9 +4,9 @@ export interface ICustomizationOptions {
   colorText?: string;
   borderRadius?: number;
   fontFamily?: string;
+
+  inputBackgroundColor?: string;
+  inputBorderColor?: string;
 }
 
-export enum Locale {
-  EN = 'en',
-  FR = 'fr',
-}
+export type Locale = 'en' | 'fr' | 'es' | 'it' | 'de' | 'ja' | 'ko' | 'zh';

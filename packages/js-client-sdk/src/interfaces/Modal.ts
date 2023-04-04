@@ -6,6 +6,7 @@ export interface ModalStyles {
   body: StyleObject;
   iframe: StyleObject;
   closeButton?: StyleObject;
+  spinner: StyleObject;
 }
 
 export interface ModalInterface {

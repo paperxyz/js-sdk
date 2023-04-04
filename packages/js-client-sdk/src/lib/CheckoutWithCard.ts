@@ -58,6 +58,7 @@ export interface CheckoutWithCardMessageHandlerArgs {
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;
   onCloseKycModal?: () => void;
+  onBeforeModalOpen?: (props: { url: string }) => void;
   useAltDomain?: boolean;
 }
 
@@ -66,6 +67,7 @@ export function createCheckoutWithCardMessageHandler({
   onError,
   onReview,
   onPaymentSuccess,
+  onBeforeModalOpen,
 }: CheckoutWithCardMessageHandlerArgs) {
   let modal: Modal;
 
@@ -75,7 +77,6 @@ export function createCheckoutWithCardMessageHandler({
     }
 
     const { data } = event;
-
     switch (data.eventType) {
       case "checkoutWithCardError":
         if (onError) {
@@ -106,12 +107,22 @@ export function createCheckoutWithCardMessageHandler({
         break;
 
       case "openModalWithUrl":
-        modal = new Modal(undefined, {
-          body: {
-            colorScheme: "light",
-          },
-        });
-        modal.open({ iframeUrl: data.url });
+        if (
+          onBeforeModalOpen &&
+          data.url &&
+          data.url.includes("promptKYCModal")
+        ) {
+          onBeforeModalOpen({
+            url: data.url,
+          });
+        } else {
+          modal = new Modal(undefined, {
+            body: {
+              colorScheme: "light",
+            },
+          });
+          modal.open({ iframeUrl: data.url });
+        }
         break;
 
       case "completedSDKModal":
@@ -121,7 +132,7 @@ export function createCheckoutWithCardMessageHandler({
         }
         break;
 
-      case "requestedPopup": {
+      case "requestedPopup":
         // The iframe requested a popup.
         // The reference to this window is not stored so the popup cannot
         // be programmatically closed.
@@ -134,7 +145,7 @@ export function createCheckoutWithCardMessageHandler({
           console.error("CheckoutWithCard: Unable to open popup.");
         }
         break;
-      }
+
       case "sizing":
         iframe.style.height = data.height + "px";
         iframe.style.maxHeight = data.height + "px";
@@ -165,6 +176,7 @@ export function createCheckoutWithCardElement({
   options,
   onPaymentSuccess,
   onReview,
+  onBeforeModalOpen,
   useAltDomain = true,
 }: CheckoutWithCardElementArgs) {
   const checkoutWithCardId = "checkout-with-card-iframe";
@@ -176,6 +188,7 @@ export function createCheckoutWithCardElement({
       onError,
       onPaymentSuccess,
       onReview,
+      onBeforeModalOpen,
       useAltDomain,
     });
 

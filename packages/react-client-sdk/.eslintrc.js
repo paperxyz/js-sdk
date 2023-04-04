@@ -17,3 +17,4 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "warn",
   },
 };
+  

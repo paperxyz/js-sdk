@@ -1,5 +1,6 @@
 import { PAPER_APP_URL } from "../constants/settings";
 import { Drawer } from "./Drawer";
+
 async function sleepForSeconds(seconds: number) {
   return new Promise((res) => {
     setTimeout(() => {
@@ -32,12 +33,18 @@ export function renderPaperCheckoutLink({
   const formattedCheckoutLinkUrl = new URL(checkoutLinkUrl);
   formattedCheckoutLinkUrl.searchParams.set("display", "DRAWER");
   drawer.open({ iframeUrl: formattedCheckoutLinkUrl.href });
+  if (onModalClosed) {
+    drawer.setOnCloseCallback(onModalClosed);
+  }
 
   const messageHandler = async (e: MessageEvent) => {
     if (e.origin !== PAPER_APP_URL) {
       return;
     }
     const result = e.data;
+    if (!result.eventType) {
+      return;
+    }
     switch (result.eventType) {
       case "paymentSuccess": {
         const transactionId = e.data.id;

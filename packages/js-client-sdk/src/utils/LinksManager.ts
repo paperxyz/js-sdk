@@ -1,5 +1,7 @@
-import type { ICustomizationOptions } from "../interfaces/CommonCheckoutElementTypes";
-import { Locale } from "../interfaces/CommonCheckoutElementTypes";
+import type {
+  ICustomizationOptions,
+  Locale,
+} from "../interfaces/CommonCheckoutElementTypes";
 
 export class LinksManager {
   private link: URL;
@@ -27,6 +29,15 @@ export class LinksManager {
     if (options.fontFamily) {
       this.link.searchParams.set("fontFamily", options.fontFamily);
     }
+    if (options.inputBackgroundColor) {
+      this.link.searchParams.set(
+        "inputBackgroundColor",
+        options.inputBackgroundColor,
+      );
+    }
+    if (options.inputBorderColor) {
+      this.link.searchParams.set("inputBorderColor", options.inputBorderColor);
+    }
   }
 
   addClientSecret(sdkClientSecret: string) {
@@ -34,10 +45,9 @@ export class LinksManager {
   }
 
   addLocale(locale?: Locale) {
-    this.link.searchParams.set(
-      "locale",
-      locale?.toString() || Locale.EN.toString(),
-    );
+    if (locale) {
+      this.link.searchParams.set("locale", locale.toString());
+    }
   }
 
   addOTP() {
