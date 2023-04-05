@@ -57,6 +57,10 @@ export class Auth {
     this.onAuthSuccess = onAuthSuccess;
   }
 
+  private async preLogin() {
+    await this.logout();
+  }
+
   private async postLogin({
     storedToken,
     walletDetails,
@@ -86,6 +90,7 @@ export class Auth {
     authProvider,
     recoveryCode,
   }: AuthQuerierTypes["loginWithJwtAuthCallback"]): Promise<AuthLoginReturnType> {
+    await this.preLogin();
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithJwtAuthCallback",
       params: {
@@ -114,6 +119,7 @@ export class Auth {
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
   async loginWithPaperModal(): Promise<AuthLoginReturnType> {
+    await this.preLogin();
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
       params: undefined,
@@ -144,6 +150,7 @@ export class Auth {
   }: {
     email: string;
   }): Promise<AuthLoginReturnType> {
+    await this.preLogin();
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
       params: { email },
@@ -181,6 +188,7 @@ export class Auth {
   async sendPaperEmailLoginOtp({
     email,
   }: AuthQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
+    await this.preLogin();
     const { isNewUser, isNewDevice } =
       await this.AuthQuerier.call<SendEmailOtpReturnType>({
         procedureName: "sendPaperEmailLoginOtp",
