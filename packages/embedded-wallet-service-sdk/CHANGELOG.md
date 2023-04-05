@@ -1,5 +1,15 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.27
+
+### Patch Changes
+
+- f0a7691: fix: logout existing user before starting login flows
+
+  This prevents the odd case where you you can use any OTP to login to a user that is already logged in in the headless flow
+
+- d39ec78: feat: add `recoveryCode` in `authDetails` on user login wherever possible
+
 ## 0.0.26
 
 ### Patch Changes
