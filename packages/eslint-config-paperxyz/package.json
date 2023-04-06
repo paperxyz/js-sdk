@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "private": true,
+  "scripts": {
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/eslint-config-paperxyz"
+  },
   "dependencies": {
     "@paperxyz/tsconfig": "*",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
