@@ -6490,24 +6490,6 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-1.0.4.tgz#b740f68609dfae8aa71c3a6cab15d816407ba493"
   integrity sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==
 
-"@paperxyz/js-client-sdk@^0.0.57":
-  version "0.0.57"
-  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.57.tgz#a8e781572b43f497960750a17b71e9f3b1949807"
-  integrity sha512-I1yCGY1IiEGskid0z4Thm3ss4ec7BoIofCS6xCaJtPH9FRfGK6ojrei1tlUtZn0+2SJgcJY2YphcfdE5qXvIzA==
-  dependencies:
-    ethers "^5.7.2"
-
-"@paperxyz/react-client-sdk@^0.8.22":
-  version "0.8.22"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.8.22.tgz#5e3e5cb41bcd9de0adcc0735c872e6e5b1e5bb20"
-  integrity sha512-xM9VJFzP1tYyrTC6NZqdXtXySK2aJXV0ZblJuPw/skeSSW7NyLZ2ED8FxLyFdn/Z6zXATQf6TSJYmdfqRJaTNQ==
-  dependencies:
-    "@emotion/css" "11.10.5"
-    "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "^0.0.57"
-    ethers "^5"
-    wagmi "0.7.15"
-
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pdf-lib/standard-fonts/-/standard-fonts-1.0.0.tgz#8ba691c4421f71662ed07c9a0294b44528af2d7f"
