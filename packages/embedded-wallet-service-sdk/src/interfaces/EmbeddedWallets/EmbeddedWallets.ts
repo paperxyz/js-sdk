@@ -1,6 +1,6 @@
 import type {
   Chain,
-  ICustomizationOptionsType,
+  ICustomizationOptions,
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
@@ -11,7 +11,7 @@ import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommuni
 export type ClientIdConstructorType = { clientId: string };
 export type PaperConstructorType = ClientIdConstructorType & {
   chain: Chain;
-  styles?: IICustomizationOptionsType;
+  styles?: ICustomizationOptions;
 };
 export type ClientIdWithQuerierType = ClientIdConstructorType & {
   querier: EmbeddedWalletIframeCommunicator<any>;
