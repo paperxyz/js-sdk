@@ -10,7 +10,9 @@ export interface ICustomizationOptions {
   inputBackgroundColor?: string;
   inputBorderColor?: string;
 }
-
+export type CustomizationOptionsTypes = {
+  [key in keyof ICustomizationOptions]: string;
+};
 export type Locale = "en" | "fr" | "es" | "it" | "de" | "ja" | "ko" | "zh";
 
 export const DEFAULT_BRAND_OPTIONS = {
