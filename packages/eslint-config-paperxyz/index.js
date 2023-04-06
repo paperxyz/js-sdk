@@ -8,6 +8,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "next",
   ],
   rules: {
     "@typescript-eslint/consistent-type-imports": [
@@ -23,6 +24,7 @@ module.exports = {
     "no-async-promise-executor": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "no-fallthrough": "off",
+    "@next/next/no-html-link-for-pages": "off",
   },
   parser: "@typescript-eslint/parser",
 };
