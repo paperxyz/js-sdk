@@ -27,22 +27,24 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
+    "build-package-ews": "yarn build",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
-    "clean": "rm -rf .turbo node_modules dist",
-    "prepublish": "yarn build",
-    "release": "yarn build && changeset publish"
+    "clean": "rm -rf .turbo node_modules dist"
+  },
+  "devDependencies": {
+    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "eslint-config-paperxyz": "*",
+    "wagmi": "^0.12.9",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "wagmi": "^0.12.9"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {},
-  "dependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "^0.0.26"
-  },
-  "peerDependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "^0.0.26",
-    "wagmi": "^0.12.9"
   }
 }

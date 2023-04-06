@@ -1,2 +1,2 @@
-export * from "./interfaces/connector";
-export * from "./lib/connector";
+export type { IPaperEmbeddedWalletWagmiConnectorOptions } from "./interfaces/connector";
+export { PaperEmbeddedWalletWagmiConnector } from "./lib/connector";
