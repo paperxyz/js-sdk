@@ -6497,13 +6497,6 @@
   dependencies:
     ethers "^5.7.2"
 
-"@paperxyz/js-client-sdk@^0.0.60":
-  version "0.0.60"
-  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.60.tgz#fbedd4067809a5091940b5be7c7b801b678faafe"
-  integrity sha512-wovpCopmHH+AGfHX1XArX9sTNjvQ5wMs2e/HAGSNOpOCzcULRowyqdASe9VWWeq9UVKnxStxwKzKCLkbqvsuAA==
-  dependencies:
-    ethers "^5.7.2"
-
 "@paperxyz/react-client-sdk@^0.8.22":
   version "0.8.22"
   resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.8.22.tgz#5e3e5cb41bcd9de0adcc0735c872e6e5b1e5bb20"

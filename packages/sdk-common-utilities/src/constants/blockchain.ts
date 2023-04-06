@@ -8,3 +8,5 @@ export const ChainToPublicRpc: Record<Chain, string> = {
 
 // General Embedded wallet types
 export type Chain = "Polygon" | "Mumbai" | "Goerli" | "Ethereum" | "Avalanche";
+
+export type SupportedChainName = Chain | "Rinkeby" | "Solana" | "SolanaDevnet";
