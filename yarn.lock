@@ -6720,13 +6720,6 @@
   dependencies:
     ethers "^5.7.2"
 
-"@paperxyz/js-client-sdk@^0.0.60":
-  version "0.0.60"
-  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.60.tgz#fbedd4067809a5091940b5be7c7b801b678faafe"
-  integrity sha512-wovpCopmHH+AGfHX1XArX9sTNjvQ5wMs2e/HAGSNOpOCzcULRowyqdASe9VWWeq9UVKnxStxwKzKCLkbqvsuAA==
-  dependencies:
-    ethers "^5.7.2"
-
 "@paperxyz/react-client-sdk@^0.8.22":
   version "0.8.22"
   resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.8.22.tgz#5e3e5cb41bcd9de0adcc0735c872e6e5b1e5bb20"
@@ -30102,7 +30095,7 @@ wagmi@0.7.15:
     abitype "^0.1.7"
     use-sync-external-store "^1.2.0"
 
-wagmi@^0.12.7, wagmi@^0.12.9:
+wagmi@^0.12.9:
   version "0.12.9"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.12.9.tgz#ca91ab44287a19b257d83f4c3d806e3d37d48b27"
   integrity sha512-grEXM33sUeGSjWSVZGq/8+FCWUOUYrAdAxOqT3OB1C3JrfI7jBXFKQih8KGLrwC8tB4CwZWBYHMlEnZ4vOPu4w==
