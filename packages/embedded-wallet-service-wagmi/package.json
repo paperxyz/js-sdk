@@ -1,7 +1,7 @@
 {
-  "name": "@paperxyz/embedded-wallet-service-sdk",
-  "description": "Embedded Wallets SDK by Paper",
-  "version": "0.0.27",
+  "name": "@paperxyz/embedded-wallet-service-wagmi",
+  "description": "Wagmi connector for Embedded Wallets by Paper",
+  "version": "0.0.1",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -14,7 +14,8 @@
     "crypto",
     "wallet",
     "paper sdk",
-    "crypto wallet"
+    "crypto wallet",
+    "wagmi"
   ],
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
@@ -26,24 +27,22 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
-    "dev-ews": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
+    "build-package-ews": "yarn build",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
-    "build-package-ews": "yarn build",
     "clean": "rm -rf .turbo node_modules dist"
   },
   "devDependencies": {
-    "@types/node": "^18.7.11",
+    "@paperxyz/embedded-wallet-service-sdk": "*",
     "eslint-config-paperxyz": "*",
+    "wagmi": "^0.12.9",
     "typescript": "^4.7.4"
   },
-  "dependencies": {
-    "@ethersproject/abstract-signer": "^5.7.0",
-    "@ethersproject/bytes": "^5.7.0",
-    "@ethersproject/properties": "^5.7.0",
-    "@ethersproject/providers": "^5.7.2",
-    "@paperxyz/sdk-common-utilities": "*"
+  "dependencies": {},
+  "peerDependencies": {
+    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "wagmi": "^0.12.9"
   },
   "publishConfig": {
     "access": "public"
