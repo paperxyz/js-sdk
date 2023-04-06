@@ -1,4 +1,4 @@
-import type { CustomizationOptionsType } from "@paperxyz/sdk-common-utilities";
+import type { ICustomizationOptionsType } from "@paperxyz/sdk-common-utilities";
 import { getPaperOriginUrl } from "@paperxyz/sdk-common-utilities";
 import { EMBEDDED_WALLET_PATH } from "../../constants/settings";
 import { LocalStorage } from "../Storage/LocalStorage";
@@ -13,7 +13,7 @@ export class EmbeddedWalletIframeCommunicator<
     customizationOptions,
   }: {
     clientId: string;
-    customizationOptions?: CustomizationOptionsType;
+    customizationOptions?: IICustomizationOptionsType;
   }) {
     super({
       iframeId: EMBEDDED_WALLET_IFRAME_ID,
