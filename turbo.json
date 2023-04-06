@@ -13,6 +13,10 @@
       "outputs": ["dist/**"],
       "dependsOn": ["^build-package-checkout"]
     },
+    "build-packages": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-package-ews", "^build-package-checkout"]
+    },
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": []
@@ -31,7 +35,7 @@
       "persistent": true
     },
     "dev-checkout": {
-      "dependsOn": ["^build-package-ews"],
+      "dependsOn": ["^build-package-checkout", "^build-package-ews"],
       "cache": false,
       "persistent": true
     },

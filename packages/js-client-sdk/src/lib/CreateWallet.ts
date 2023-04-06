@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import type {
+  Locale,
+  SupportedChainName,
+} from "@paperxyz/sdk-common-utilities";
 import { CREATE_WALLET_IFRAME_URL, PAPER_APP_URL } from "../constants/settings";
-import type { Locale } from "../interfaces/CommonCheckoutElementTypes";
 import type { PaperSDKError } from "../interfaces/PaperSDKError";
 import { PaperSDKErrorCode } from "../interfaces/PaperSDKError";
 import type { PaperUser } from "../interfaces/PaperUser";
-import type { SupportedChainName } from "../interfaces/SupportedChainName";
 import { LinksManager } from "../utils/LinksManager";
 import { postMessageToIframe } from "../utils/postMessageToIframe";
 

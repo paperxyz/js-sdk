@@ -1,28 +1,23 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { ethers } from "ethers";
 import {
   CHECKOUT_WITH_ETH_IFRAME_URL,
-  DEFAULT_BRAND_OPTIONS,
   PAPER_APP_URL,
 } from "../constants/settings";
+
 import type {
   ICustomizationOptions,
   Locale,
-} from "../interfaces/CommonCheckoutElementTypes";
+} from "@paperxyz/sdk-common-utilities";
+import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { PaperSDKError } from "../interfaces/PaperSDKError";
 import { PayWithCryptoErrorCode } from "../interfaces/PaperSDKError";
-import { getSignerInfo } from "../utils/getSigner";
-import { handlePayWithCryptoError } from "../utils/handleCheckoutWithEthError";
 import { LinksManager } from "../utils/LinksManager";
+import { handlePayWithCryptoError } from "../utils/handleCheckoutWithEthError";
 import { postMessageToIframe } from "../utils/postMessageToIframe";
 import type { PaperPaymentElementConstructorArgs } from "./CreatePaymentElement";
 import { PaperPaymentElement } from "./CreatePaymentElement";
 
 export const PAY_WITH_ETH_ERROR = "payWithEthError";
-
-let isPaying = false;
 
 export async function checkAndSendEth({
   data,
@@ -74,32 +69,15 @@ export async function checkAndSendEth({
   // send the transaction
   try {
     console.log("sending funds");
-    if (isPaying) {
-      return;
-    }
-    isPaying = true;
-    const { sendTransaction, prepareSendTransaction } = await import(
-      "@wagmi/core"
-    );
-    const config = await prepareSendTransaction({
-      request: {
-        chainId: data.chainId,
-        data: data.blob,
-        to: data.paymentAddress,
-        value: data.value,
-      },
+    const result = await payingWalletSigner.sendTransaction({
+      chainId: data.chainId,
+      data: data.blob,
+      to: data.paymentAddress,
+      value: data.value,
     });
-    const result = await sendTransaction(config);
-
     if (onSuccess && result) {
-      if (!payingWalletSigner.provider) {
-        throw new Error("Missing provider for signer");
-      }
-      const response = await payingWalletSigner.provider.getTransaction(
-        result.hash,
-      );
       onSuccess({
-        transactionResponse: response,
+        transactionResponse: result,
         transactionId: data.transactionId,
       });
     }
@@ -109,9 +87,7 @@ export async function checkAndSendEth({
         transactionHash: result.hash,
       });
     }
-    isPaying = false;
   } catch (error) {
-    isPaying = false;
     console.log("error sending funds", error);
     handlePayWithCryptoError(error as Error, onError, (errorObject) => {
       postMessageToIframe(iframe, PAY_WITH_ETH_ERROR, {
@@ -138,7 +114,6 @@ export interface CheckoutWithEthMessageHandlerArgs {
     chainName?: string;
   }) => void | Promise<void>;
   payingWalletSigner: ethers.Signer;
-  onGoBackToChooseWallet?: () => void;
 }
 
 export function createCheckoutWithEthMessageHandler({
@@ -148,7 +123,6 @@ export function createCheckoutWithEthMessageHandler({
   suppressErrorToast = false,
   setUpUserPayingWalletSigner,
   payingWalletSigner,
-  onGoBackToChooseWallet,
 }: CheckoutWithEthMessageHandlerArgs) {
   return async (event: MessageEvent) => {
     if (!event.origin.startsWith(PAPER_APP_URL)) {
@@ -202,10 +176,6 @@ export function createCheckoutWithEthMessageHandler({
       case "checkout-with-eth-sizing": {
         iframe.style.height = data.height + "px";
         iframe.style.maxHeight = data.height + "px";
-        break;
-      }
-      case "goBackToChoosingWallet": {
-        onGoBackToChooseWallet?.();
         break;
       }
       default:
@@ -279,7 +249,6 @@ export async function createCheckoutWithEthElement({
   locale,
   options,
   elementOrId,
-  onGoBackToChooseWallet,
 }: CheckoutWithEthElementArgs): Promise<HTMLIFrameElement> {
   const checkoutWithEthId = "checkout-with-eth-iframe";
   const checkoutWithEthMessageHandler = (iframe: HTMLIFrameElement) =>
@@ -289,7 +258,6 @@ export async function createCheckoutWithEthElement({
       onSuccess,
       onError,
       suppressErrorToast,
-      onGoBackToChooseWallet,
     });
   const checkoutWithEthUrl = await createCheckoutWithEthLink({
     payingWalletSigner,
@@ -309,53 +277,4 @@ export async function createCheckoutWithEthElement({
     iframeId: checkoutWithEthId,
     link: checkoutWithEthUrl,
   });
-}
-
-export async function renderCheckoutWithEth(
-  args: Omit<CheckoutWithEthElementArgs, "payingWalletSigner"> &
-    Partial<Pick<CheckoutWithEthElementArgs, "payingWalletSigner">>,
-) {
-  if (args.payingWalletSigner) {
-    return createCheckoutWithEthElement({
-      ...args,
-      payingWalletSigner: args.payingWalletSigner,
-    });
-  }
-
-  let container: HTMLElement | null;
-  if (typeof args.elementOrId === "string") {
-    container = document.getElementById(args.elementOrId);
-    if (!container) {
-      throw new Error("Invalid element ID given");
-    }
-  } else {
-    container = args.elementOrId;
-  }
-  const result = await getSignerInfo({
-    container,
-    sdkClientSecret: args.sdkClientSecret,
-    appName: args.appName,
-  });
-  if (result?.signer) {
-    const { signer, walletType } = result;
-    return createCheckoutWithEthElement({
-      ...args,
-      payingWalletSigner: signer,
-      showConnectWalletOptions: true,
-      receivingWalletType: walletType,
-      onGoBackToChooseWallet: async () => {
-        const { disconnect } = await import("@wagmi/core");
-        await disconnect();
-        if (container) {
-          // remove the current iframe
-          while (container.firstChild) {
-            container.removeChild(container.firstChild);
-          }
-        }
-        // Note that this ends up registering multiple event listeners
-        await renderCheckoutWithEth(args);
-      },
-    });
-  }
-  return;
 }

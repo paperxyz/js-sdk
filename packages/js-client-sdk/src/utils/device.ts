@@ -20,7 +20,7 @@ export const openCenteredPopup = ({
   const x = window.top.outerWidth / 2 + window.top.screenX - width / 2;
   return window.open(
     url,
-    '_blank',
+    "_blank",
     `popup=true,width=${width},height=${height},top=${y},left=${x}`,
   );
 };

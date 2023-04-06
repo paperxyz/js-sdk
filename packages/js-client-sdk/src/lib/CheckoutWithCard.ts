@@ -1,13 +1,14 @@
-import {
-  CHECKOUT_WITH_CARD_IFRAME_URL,
-  DEFAULT_BRAND_OPTIONS,
-  PAPER_APP_URL,
-} from "../constants/settings";
-import type { KycModal, ReviewResult } from "../interfaces/CheckoutWithCard";
 import type {
   ICustomizationOptions,
   Locale,
-} from "../interfaces/CommonCheckoutElementTypes";
+} from "@paperxyz/sdk-common-utilities";
+import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
+import {
+  CHECKOUT_WITH_CARD_IFRAME_URL,
+  PAPER_APP_URL,
+} from "../constants/settings";
+import type { KycModal, ReviewResult } from "../interfaces/CheckoutWithCard";
+
 import type {
   PaperSDKError,
   PaperSDKErrorCode,
@@ -58,6 +59,7 @@ export interface CheckoutWithCardMessageHandlerArgs {
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;
   onCloseKycModal?: () => void;
+  onBeforeModalOpen?: (props: { url: string }) => void;
   useAltDomain?: boolean;
 }
 
@@ -66,6 +68,7 @@ export function createCheckoutWithCardMessageHandler({
   onError,
   onReview,
   onPaymentSuccess,
+  onBeforeModalOpen,
 }: CheckoutWithCardMessageHandlerArgs) {
   let modal: Modal;
 
@@ -75,7 +78,6 @@ export function createCheckoutWithCardMessageHandler({
     }
 
     const { data } = event;
-
     switch (data.eventType) {
       case "checkoutWithCardError":
         if (onError) {
@@ -106,12 +108,22 @@ export function createCheckoutWithCardMessageHandler({
         break;
 
       case "openModalWithUrl":
-        modal = new Modal(undefined, {
-          body: {
-            colorScheme: "light",
-          },
-        });
-        modal.open({ iframeUrl: data.url });
+        if (
+          onBeforeModalOpen &&
+          data.url &&
+          data.url.includes("promptKYCModal")
+        ) {
+          onBeforeModalOpen({
+            url: data.url,
+          });
+        } else {
+          modal = new Modal(undefined, {
+            body: {
+              colorScheme: "light",
+            },
+          });
+          modal.open({ iframeUrl: data.url });
+        }
         break;
 
       case "completedSDKModal":
@@ -135,6 +147,7 @@ export function createCheckoutWithCardMessageHandler({
         }
         break;
       }
+
       case "sizing":
         iframe.style.height = data.height + "px";
         iframe.style.maxHeight = data.height + "px";
@@ -165,6 +178,7 @@ export function createCheckoutWithCardElement({
   options,
   onPaymentSuccess,
   onReview,
+  onBeforeModalOpen,
   useAltDomain = true,
 }: CheckoutWithCardElementArgs) {
   const checkoutWithCardId = "checkout-with-card-iframe";
@@ -176,6 +190,7 @@ export function createCheckoutWithCardElement({
       onError,
       onPaymentSuccess,
       onReview,
+      onBeforeModalOpen,
       useAltDomain,
     });
 

@@ -1,4 +1,4 @@
-export type StyleObject = Partial<CSSStyleDeclaration>;
+import type { StyleObject } from "@paperxyz/sdk-common-utilities";
 
 export interface ModalStyles {
   main: StyleObject;
@@ -6,6 +6,7 @@ export interface ModalStyles {
   body: StyleObject;
   iframe: StyleObject;
   closeButton?: StyleObject;
+  spinner: StyleObject;
 }
 
 export interface ModalInterface {

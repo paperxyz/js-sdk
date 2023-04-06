@@ -21,7 +21,11 @@ export type ClientIdWithQuerierAndChainType = ClientIdWithQuerierType & {
 };
 
 // Auth Types
-export type AuthDetails = { email: string; userWalletId: string };
+export type AuthDetails = {
+  email: string;
+  userWalletId: string;
+  recoveryCode?: string;
+};
 
 export type InitializedUser = {
   status: UserStatus.LOGGED_IN_WALLET_INITIALIZED;
@@ -45,9 +49,7 @@ export enum UserWalletStatus {
 export type WalletAddressObjectType = {
   walletAddress: string;
 };
-export type SetUpWalletReturnType = WalletAddressObjectType & {
-  initialUserStatus: UserWalletStatus;
-};
+
 export type SetUpWalletRpcReturnType = WalletAddressObjectType & {
   deviceShareStored: string;
   isIframeStorageEnabled: boolean;

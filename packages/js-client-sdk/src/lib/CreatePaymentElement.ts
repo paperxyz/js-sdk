@@ -1,12 +1,13 @@
-const packageJson = require('../../package.json');
+const packageJson = require("../../package.json");
 
 export interface PaperPaymentElementConstructorArgs {
   onLoad?: (event?: Event) => void;
-  elementOrId: string | HTMLElement;
+  elementOrId?: string | HTMLElement;
 }
+
 export class PaperPaymentElement {
-  private elementOrId?: PaperPaymentElementConstructorArgs['elementOrId'];
-  private onLoad?: PaperPaymentElementConstructorArgs['onLoad'];
+  private elementOrId?: PaperPaymentElementConstructorArgs["elementOrId"];
+  private onLoad?: PaperPaymentElementConstructorArgs["onLoad"];
 
   constructor({ elementOrId, onLoad }: PaperPaymentElementConstructorArgs) {
     this.elementOrId = elementOrId;
@@ -23,13 +24,13 @@ export class PaperPaymentElement {
     link: URL;
     iframeId: string;
   }) {
-    const iframe = document.createElement('iframe');
+    const iframe = document.createElement("iframe");
     iframe.src = link.href;
     iframe.id = iframeId;
-    iframe.allow = 'payment';
+    iframe.allow = "payment";
     iframe.setAttribute(
-      'style',
-      'margin-left:auto; margin-right:auto; width:100%; transition-property:all; transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1); transition-duration:150ms; color-scheme: light;',
+      "style",
+      "margin-left:auto; margin-right:auto; width:100%; transition-property:all; transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1); transition-duration:150ms; color-scheme: light;",
     );
     iframe.onload = (event: Event) => {
       if (this.onLoad) {
@@ -37,26 +38,26 @@ export class PaperPaymentElement {
       }
     };
     iframe.setAttribute(
-      'data-paper-sdk-version',
+      "data-paper-sdk-version",
       `@paperxyz/js-client-sdk@${packageJson.version}`,
     );
 
     if (!this.elementOrId) {
-      window.addEventListener('message', handler(iframe));
+      window.addEventListener("message", handler(iframe));
       return iframe;
     }
 
     let container: HTMLElement | string = this.elementOrId;
-    if (typeof container === 'string') {
+    if (typeof container === "string") {
       const domElement = document.getElementById(container);
       if (!domElement) {
-        throw new Error('Invalid id given');
+        throw new Error("Invalid id given");
       }
       container = domElement;
     }
 
     const existing: HTMLIFrameElement | null = container.querySelector(
-      '#' + iframeId,
+      "#" + iframeId,
     );
     // if we already created an iframe, consider updating the iframe link if it's new
     if (existing) {
@@ -67,7 +68,7 @@ export class PaperPaymentElement {
       return existing;
     }
 
-    window.addEventListener('message', handler(iframe));
+    window.addEventListener("message", handler(iframe));
     return container.appendChild(iframe);
   }
 }
