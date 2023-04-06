@@ -27,9 +27,9 @@ The topics we'll be covering:
 
 - `git clone` the repository
 - `git submodule update --init --recursive` to clone `paper-web` (to be confirmed)
-- Go through `paper-web` ReadMe to complete the set-up
-- Run `yarn` at the top level of the repository
-- Initialize the packages with `yarn build --filter=./packages/*`
+- Go through `paper-web` ReadMep to complete the set-up
+- Run `yarn` at the top level of the repository to instal packages
+- Run `yarn build-packages` at the top level of the repository
 
 ### To start developing
 

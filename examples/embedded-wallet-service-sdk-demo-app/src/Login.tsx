@@ -93,7 +93,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode: sendEmailOtpResult?.isNewUser
+        recoveryCode: sendEmailOtpResult?.isNewDevice
           ? undefined
           : recoveryCode || "",
       });
@@ -101,10 +101,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
 
       onLoginSuccess();
     } catch (e) {
-      if (e instanceof Error) {
-        setVerifyOtpErrorMessage(`${e.message}. Please try again`);
-      }
-      console.error("something went wrong verifying otp in headless flow", e);
+      setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
     }
     setIsLoading(false);
   };
@@ -166,7 +163,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
                       }}
                     />
                     {!!verifyOtpErrorMessage &&
-                      sendEmailOtpResult.isNewUser && (
+                      !sendEmailOtpResult.isNewDevice && (
                         <FormErrorMessage>
                           {verifyOtpErrorMessage}
                         </FormErrorMessage>
