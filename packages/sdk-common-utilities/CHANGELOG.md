@@ -1,5 +1,11 @@
 # @paperxyz/sdk-common-utilities
 
+## 0.0.2
+
+### Patch Changes
+
+- e96f1e9: fix (iframeCommunicator): Use `string` for error messages through iframe instead of `Error` for better serialization support
+
 ## 0.0.1
 
 ### Patch Changes
