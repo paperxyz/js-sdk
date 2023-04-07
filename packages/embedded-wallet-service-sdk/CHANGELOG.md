@@ -1,5 +1,13 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.0.28
+
+### Patch Changes
+
+- e96f1e9: fix (iframeCommunicator): Use `string` for error messages through iframe instead of `Error` for better serialization support
+- Updated dependencies [e96f1e9]
+  - @paperxyz/sdk-common-utilities@0.0.2
+
 ## 0.0.27
 
 ### Patch Changes
