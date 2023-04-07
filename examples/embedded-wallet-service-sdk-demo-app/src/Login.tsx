@@ -111,7 +111,12 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
       <CardBody>
         <Heading size="md">Log in</Heading>
         <Divider my={4} />
-        <Button colorScheme="blue" onClick={loginWithPaperModal} w="full">
+        <Button
+          colorScheme="blue"
+          onClick={loginWithPaperModal}
+          w="full"
+          isLoading={isLoading}
+        >
           Login with Paper Modal
         </Button>
 

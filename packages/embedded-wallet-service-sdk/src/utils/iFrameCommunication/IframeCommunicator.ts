@@ -91,7 +91,7 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
           const { data } = event;
           channel.port1.close();
           if (!data.success) {
-            return rej(data.error);
+            return rej(new Error(data.error));
           }
           isIframeLoaded.set(iframe.src, true);
           if (onIframeInitialize) {
@@ -149,7 +149,7 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
           this.iframe.style.display = "none";
         }
         if (!data.success) {
-          rej(data.error);
+          rej(new Error(data.error));
         } else {
           res(data.data);
         }

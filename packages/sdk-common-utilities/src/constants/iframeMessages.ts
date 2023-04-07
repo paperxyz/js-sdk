@@ -7,5 +7,5 @@ export type MessageType<T> =
   | {
       eventType: string;
       success: false;
-      error: Error;
+      error: string;
     };
