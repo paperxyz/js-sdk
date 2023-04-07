@@ -26,8 +26,9 @@ The topics we'll be covering:
 ### Installation
 
 - `git clone` the repository
-- `git submodule update --init --recursive` to clone `paper-web` (to be confirmed)
-- Go through `paper-web` ReadMep to complete the set-up
+- `git submodule update --init --recursive` to clone `paper-web`
+- Go through `paper-web` ReadMe to complete the set-up
+  - The main thing is getting your env passphrase
 - Run `yarn` at the top level of the repository to instal packages
 - Run `yarn build-packages` at the top level of the repository
 
@@ -35,6 +36,8 @@ The topics we'll be covering:
 
 - `yarn dev` - Run `paper-web` locally
 - `yarn dev-ews` - Run all packages needed to develop for the Paper embedded wallet service
+  - You'll have to run `yarn dev` and navigate to the [embedded wallet dashboard](http://localhost:3000/dashboard/embedded-wallets/auth-settings) to grab your wallet client ID first.
+  - Once that is done, create a `.env` file based on `.env.example` and update the required fields
 - `yarn dev-checkout` - Run all packages needed to develop for Paper's checkout experience
 
 If your machine has a memory bottleneck, you can run a specific package at a time.

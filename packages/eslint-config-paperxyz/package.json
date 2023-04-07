@@ -4,11 +4,15 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "private": true,
+  "scripts": {
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/eslint-config-paperxyz"
+  },
   "dependencies": {
     "@paperxyz/tsconfig": "*",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "eslint": "^8.36.0",
+    "eslint-config-next": "^13.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-turbo": "0.0.8",
     "eslint-plugin-import": "^2.27.5",

@@ -27,17 +27,18 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
-    "build-package-ews": "yarn build",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
-    "clean": "rm -rf .turbo node_modules dist"
+    "build-package-ews": "yarn build",
+    "clean": "rm -rf .turbo node_modules dist",
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/embedded-wallet-service-wagmi"
   },
   "devDependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
     "eslint-config-paperxyz": "*",
-    "wagmi": "^0.12.9",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "wagmi": "^0.12.9"
   },
   "dependencies": {},
   "peerDependencies": {
