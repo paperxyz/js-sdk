@@ -52,7 +52,6 @@ export function createEmbeddedWalletIframeLink({
   queryParams?: { [key: string]: string | number };
 }) {
   const embeddedWalletUrl = new URL(path, getPaperOriginUrl());
-  embeddedWalletUrl.searchParams.set("clientId", clientId);
   if (queryParams) {
     for (const queryKey of Object.keys(queryParams)) {
       embeddedWalletUrl.searchParams.set(
@@ -61,6 +60,7 @@ export function createEmbeddedWalletIframeLink({
       );
     }
   }
+  embeddedWalletUrl.searchParams.set("clientId", clientId);
   return embeddedWalletUrl;
 }
 export const EMBEDDED_WALLET_IFRAME_ID = "paper-embedded-wallet-iframe";
