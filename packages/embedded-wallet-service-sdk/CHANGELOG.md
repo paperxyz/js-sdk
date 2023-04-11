@@ -1,5 +1,17 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.1.0
+
+### Minor Changes
+
+- 5936f4c: feat(embedded-wallet-service-sdk): Add ability to remove the asking of recovery code from users in the `loginWithPaperEmailOtp` flow
+
+  style(eslint-config-paperxyz): prevent using of promises in conditional
+
+### Patch Changes
+
+- e20f644: security(EmbeddedWalletIframeCommunicator): set `clientId` after user set query params when creating iframe link
+
 ## 0.0.28
 
 ### Patch Changes
