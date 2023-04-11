@@ -229,7 +229,7 @@ export class Auth {
    *  @description
    * Used to verify the otp that the user receives from  Paper
    *
-   * See {@link Auth.sendPaperEmailLoginOtp} for how the headless call flow looks like
+   * See {@link Auth.sendPaperEmailLoginOtp} for how the headless call flow looks like. Simply swap out the calls to `loginWithPaperEmailOtp` with `verifyPaperEmailLoginOtp`
    *
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @param {string} props.otp The code that the user received in their email
