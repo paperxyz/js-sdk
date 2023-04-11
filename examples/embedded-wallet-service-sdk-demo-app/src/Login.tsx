@@ -94,8 +94,8 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
         email: email || "",
         otp: otpCode || "",
         recoveryCode: sendEmailOtpResult?.isNewDevice
-          ? undefined
-          : recoveryCode || "",
+          ? recoveryCode || ""
+          : undefined,
       });
       console.log("verifyPaperEmailLoginOtp result", result);
 
