@@ -20,9 +20,15 @@ module.exports = {
     ],
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/no-unsafe-assignment": "warn",
-    "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/require-await": "off",
     "no-async-promise-executor": "off",
-    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+        checkConditionals: true,
+      },
+    ],
     "no-fallthrough": "off",
     "@next/next/no-html-link-for-pages": "off",
   },
