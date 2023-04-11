@@ -21,8 +21,7 @@
   "scripts": {
     "build": "tsup src/index.ts --env.NODE_ENV production",
     "build-package-checkout": "yarn build",
-    "dev": "tsup src/index.ts --env.NODE_ENV development --watch",
-    "dev-checkout": "yarn dev",
+    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --watch",
     "lint": "eslint \"src/**/*.ts*\"",
     "lint:fix": "yarn lint --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
