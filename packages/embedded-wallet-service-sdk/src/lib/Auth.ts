@@ -17,7 +17,7 @@ export type AuthQuerierTypes = {
     authProvider: AuthProvider;
     recoveryCode?: string;
   };
-  loginWithPaperModal: void | { email: string };
+  loginWithPaperModal: void | { email: string; recoveryCode?: string };
   logout: void;
   sendPaperEmailLoginOtp: { email: string };
   verifyPaperEmailLoginOtp: {
@@ -147,13 +147,15 @@ export class Auth {
    */
   async loginWithPaperEmailOtp({
     email,
+    recoveryCode,
   }: {
     email: string;
+    recoveryCode?: string;
   }): Promise<AuthLoginReturnType> {
     await this.preLogin();
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { email },
+      params: { email, recoveryCode },
       showIframe: true,
     });
     return this.postLogin(result);
