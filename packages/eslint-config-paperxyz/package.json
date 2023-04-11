@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "main": "index.js",
   "license": "Apache-2.0",
-  "private": true,
   "scripts": {
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/eslint-config-paperxyz"
   },
@@ -18,5 +17,8 @@
     "eslint-plugin-import": "^2.27.5",
     "prettier": "^2.8.6",
     "typescript": "^4.7.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
