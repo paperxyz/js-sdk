@@ -42,7 +42,6 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "*",
     "wagmi": "^0.12.9"
   },
   "publishConfig": {
