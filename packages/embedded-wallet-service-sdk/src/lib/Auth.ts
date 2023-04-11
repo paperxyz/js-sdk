@@ -133,6 +133,7 @@ export class Auth {
    * Used to log the user into their Paper wallet using email OTP
    *
    * @example
+   *  // Basic Flow
    *  const Paper = new PaperEmbeddedWalletSdk({clientId: "", chain: "Polygon"});
    *  try {
    *    // prompts user to enter the code they received
@@ -142,6 +143,31 @@ export class Auth {
    *    // User closed the OTP modal or something else went wrong during the authentication process
    *    console.error(e)
    *  }
+   *
+   * @example
+   *  // If you want users to never be prompted for a recovery code.
+   *  const Paper = new PaperEmbeddedWalletSdk({clientId: "", chain: "Polygon"});
+   *  try {
+   *    const email = "you@example.com";
+   *
+   *    // getRecoveryCodeForUser is a function to get a recovery code based on an email
+   *    // you write the function below
+   *    const recoveryCode: string | undefined = await getRecoveryCodeForUser(email);
+   *
+   *    // prompts user to enter the code they received
+   *    // Because you pass in a recovery code wherever possible, for existing users on a new device, they would not be prompted to enter the recovery code flow
+   *    const user = await Paper.auth.loginWithPaperEmailOtp({ email, recoveryCode });
+   *    // user is now logged in
+   *    if (user.authDetails.recoveryCode) {
+   *      // user has a recovery code that you can store to pass in to the function above
+   *      // you write the function below
+   *      await storeRecoveryCodeForUser(email, user.authDetails.recoveryCode);
+   *    }
+   *  } catch (e) {
+   *    // User closed the OTP modal or something else went wrong during the authentication process
+   *    console.error(e)
+   *  }
+   *
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
