@@ -6,9 +6,14 @@ import {
   PaperEmbeddedWalletSdk,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
-import type { Signer, ethers } from "ethers";
-import type { Address, Chain, ConnectorData } from "wagmi";
-import { Connector } from "wagmi";
+import type { Signer, providers } from "ethers";
+import {
+  Address,
+  Chain,
+  Connector,
+  ConnectorData,
+  UserRejectedRequestError,
+} from "wagmi";
 import {
   avalanche,
   goerli,
@@ -23,7 +28,7 @@ const IS_SERVER = typeof window === "undefined";
  * @returns A Wagmi-compatible connector.
  */
 export class PaperEmbeddedWalletWagmiConnector extends Connector<
-  ethers.providers.Provider,
+  providers.Provider,
   PaperConstructorType
 > {
   readonly ready = !IS_SERVER;
@@ -32,7 +37,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
 
   #sdk: PaperEmbeddedWalletSdk;
   #paperOptions: PaperConstructorType;
-  #provider?: ethers.providers.Provider;
+  #provider?: providers.Provider;
   #user: InitializedUser | null;
 
   constructor(config: { chains?: Chain[]; options: PaperConstructorType }) {
@@ -79,7 +84,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
 
   async getProvider(config?: {
     chainId?: number;
-  }): Promise<ethers.providers.Provider> {
+  }): Promise<providers.Provider> {
     if (!this.#provider) {
       const signer = await this.getSigner();
       if (!signer.provider) {
@@ -99,20 +104,16 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     return signer;
   }
 
-  protected onAccountsChanged(accounts: string[]): void {
+  protected onAccountsChanged(accounts: Address[]): void {
     const account = accounts[0];
     if (!account) {
       this.emit("disconnect");
     } else {
-      this.emit("change", {
-        account: account.startsWith("0x")
-          ? (account as Address)
-          : `0x${account}`,
-      });
+      this.emit("change", { account });
     }
   }
 
-  protected onDisconnect(): void {
+  protected onDisconnect(error: Error): void {
     this.emit("disconnect");
   }
 
@@ -127,11 +128,15 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     // If not authenticated, prompt the user to log in.
     const isAuthenticated = await this.isAuthorized();
     if (!isAuthenticated) {
-      const resp = await this.#sdk.auth.loginWithPaperModal();
-      if (resp.user.status !== UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
-        throw new Error(
-          "Unexpected user status after logging in. Please try logging in again.",
-        );
+      try {
+        const resp = await this.#sdk.auth.loginWithPaperModal();
+        if (resp.user.status !== UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
+          throw new Error(
+            "Unexpected user status after logging in. Please try logging in again.",
+          );
+        }
+      } catch (e) {
+        throw new UserRejectedRequestError(e);
       }
     }
 
