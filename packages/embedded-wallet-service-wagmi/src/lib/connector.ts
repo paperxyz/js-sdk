@@ -7,13 +7,8 @@ import {
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import type { Signer, providers } from "ethers";
-import {
-  Address,
-  Chain,
-  Connector,
-  ConnectorData,
-  UserRejectedRequestError,
-} from "wagmi";
+import type { Address, Chain, ConnectorData } from "wagmi";
+import { Connector, UserRejectedRequestError } from "wagmi";
 import {
   avalanche,
   goerli,
