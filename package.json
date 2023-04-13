@@ -9,10 +9,12 @@
   "scripts": {
     "build": "turbo run build",
     "build-package-ews": "turbo run build-package-ews",
+    "build-package-ews-connectors": "turbo run build-package-ews-connectors",
     "build-package-checkout": "turbo run build-package-checkout",
     "build-packages": "turbo run build-packages",
     "dev": "turbo run dev --no-cache --continue --parallel",
     "dev-ews": "turbo run dev-ews --no-cache --continue --parallel",
+    "dev-ews-connectors": "turbo run dev-ews-connectors --no-cache --continue --parallel",
     "dev-checkout": "turbo run dev-checkout --no-cache --continue --parallel",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",

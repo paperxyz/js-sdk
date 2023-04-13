@@ -9,13 +9,21 @@
       "outputs": ["dist/**"],
       "dependsOn": ["^build-package-ews"]
     },
+    "build-package-ews-connectors": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build-package-ews-connectors"]
+    },
     "build-package-checkout": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build-package-checkout"]
     },
     "build-packages": {
       "outputs": ["dist/**"],
-      "dependsOn": ["^build-package-ews", "^build-package-checkout"]
+      "dependsOn": [
+        "^build-package-ews",
+        "^build-package-checkout",
+        "^build-package-ews-connector"
+      ]
     },
     "test": {
       "outputs": ["coverage/**"],
@@ -30,7 +38,11 @@
     },
     "dev-ews": {
       "dependsOn": ["^build-package-checkout", "^build-package-ews"],
-      "outputs": ["dist/**"],
+      "cache": false,
+      "persistent": true
+    },
+    "dev-ews-connectors": {
+      "dependsOn": ["^build-package-ews-connectors"],
       "cache": false,
       "persistent": true
     },
