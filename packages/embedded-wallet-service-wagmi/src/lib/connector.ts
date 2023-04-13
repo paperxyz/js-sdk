@@ -6,7 +6,7 @@ import {
   PaperEmbeddedWalletSdk,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
-import type { Signer, ethers } from "ethers";
+import type { Signer, providers } from "ethers";
 import type { Address, Chain, ConnectorData } from "wagmi";
 import { Connector, UserRejectedRequestError } from "wagmi";
 import {
@@ -16,26 +16,26 @@ import {
   polygon,
   polygonMumbai,
 } from "wagmi/chains";
-import type { IPaperEmbeddedWalletWagmiConnectorOptions } from "../interfaces/connector";
 
 const IS_SERVER = typeof window === "undefined";
-const CONNECT_EMAIL = "wagmi-paper-connector.connect.email";
-const CONNECT_TIME_KEY = "wagmi-paper-connector.connect.time";
-const CONNECT_DURATION = 1000 * 60 * 60 * 24 * 7;
 
 /**
  * @returns A Wagmi-compatible connector.
  */
-export class PaperEmbeddedWalletWagmiConnector extends Connector {
-  ready = !IS_SERVER;
+export class PaperEmbeddedWalletWagmiConnector extends Connector<
+  providers.Provider,
+  PaperConstructorType
+> {
+  readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
-  readonly name = "Email";
+  readonly name = "Paper Embedded Wallet";
 
-  sdk: PaperEmbeddedWalletSdk;
-  paperOptions: PaperConstructorType;
-  provider?: ethers.providers.Provider;
+  #sdk: PaperEmbeddedWalletSdk;
+  #paperOptions: PaperConstructorType;
+  #provider?: providers.Provider;
+  #user: InitializedUser | null;
 
-  constructor(config: IPaperEmbeddedWalletWagmiConnectorOptions) {
+  constructor(config: { chains?: Chain[]; options: PaperConstructorType }) {
     super(config);
 
     if (!config.options.clientId) {
@@ -44,12 +44,13 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector {
       );
     }
 
-    this.paperOptions = config.options;
-    this.sdk = new PaperEmbeddedWalletSdk(this.paperOptions);
+    this.#paperOptions = config.options;
+    this.#sdk = new PaperEmbeddedWalletSdk(this.#paperOptions);
+    this.#user = null;
   }
 
   getChain(): Chain {
-    switch (this.paperOptions.chain) {
+    switch (this.#paperOptions.chain) {
       case "Ethereum":
         return mainnet;
       case "Goerli":
@@ -70,46 +71,44 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector {
   async getAccount(): Promise<Address> {
     const user = await this.getUser();
     if (!user) {
-      throw new Error("No logged-in user found.");
+      throw new Error(`User is not logged in. Try calling "connect()" first.`);
     }
     const account = user.walletAddress;
     return account.startsWith("0x") ? (account as Address) : `0x${account}`;
   }
 
-  async getProvider(): Promise<ethers.providers.Provider | null> {
-    if (!this.provider) {
+  async getProvider(config?: {
+    chainId?: number;
+  }): Promise<providers.Provider> {
+    if (!this.#provider) {
       const signer = await this.getSigner();
-      if (!signer?.provider) {
-        return null;
+      if (!signer.provider) {
+        throw new Error(`Failed to get Signer. Try calling "connect()" first.`);
       }
-      this.provider = signer.provider;
+      this.#provider = signer.provider;
     }
-    return this.provider;
+    return this.#provider;
   }
 
-  async getSigner(): Promise<Signer | null> {
+  async getSigner(): Promise<Signer> {
     const user = await this.getUser();
     if (!user) {
-      return null;
+      throw new Error(`User is not logged in. Try calling "connect()" first.`);
     }
     const signer = await user.wallet.getEthersJsSigner();
     return signer;
   }
 
-  protected onAccountsChanged(accounts: string[]): void {
+  protected onAccountsChanged(accounts: Address[]): void {
     const account = accounts[0];
     if (!account) {
       this.emit("disconnect");
     } else {
-      this.emit("change", {
-        account: account.startsWith("0x")
-          ? (account as Address)
-          : `0x${account}`,
-      });
+      this.emit("change", { account });
     }
   }
 
-  protected onDisconnect(): void {
+  protected onDisconnect(error: Error): void {
     this.emit("disconnect");
   }
 
@@ -121,64 +120,29 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector {
       provider.on("disconnect", this.onDisconnect.bind(this));
     }
 
-    // Check if there is a user logged in.
-    const [isAuthenticated, currentUser, chainId] = await Promise.all([
-      this.isAuthorized(),
-      this.getUser(),
-      this.getChainId(),
-    ]);
-
-    // Return the authenticated user, if any.
-    if (
-      isAuthenticated &&
-      localStorage.getItem(CONNECT_EMAIL) === currentUser?.authDetails.email
-    ) {
-      return {
-        provider,
-        chain: {
-          id: chainId,
-          unsupported: false,
-        },
-        account: await this.getAccount(),
-      };
-    }
-
-    // Prompt the user to log in via the modal.
-    try {
-      const resp = await this.sdk.auth.loginWithPaperModal();
-      const email = resp?.user?.authDetails?.email;
-
-      if (email) {
-        const signer = await this.getSigner();
-        if (!signer) {
-          throw new Error("No signer.");
+    // If not authenticated, prompt the user to log in.
+    const isAuthenticated = await this.isAuthorized();
+    if (!isAuthenticated) {
+      try {
+        const resp = await this.#sdk.auth.loginWithPaperModal();
+        if (resp.user.status !== UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
+          throw new Error(
+            "Unexpected user status after logging in. Please try logging in again.",
+          );
         }
-
-        const account = (await signer.getAddress()) as Address;
-
-        // storing timestamp and email of connected paper wallet
-        window.localStorage.setItem(
-          CONNECT_TIME_KEY,
-          String(new Date().getTime()),
-        );
-        window.localStorage.setItem(CONNECT_EMAIL, email);
-
-        return {
-          provider,
-          chain: {
-            id: chainId,
-            unsupported: false,
-          },
-          account,
-        };
+      } catch (e) {
+        throw new UserRejectedRequestError(e);
       }
-    } catch (error) {
-      console.error("Authenticating to Paper Embedded Wallet:", error);
     }
 
-    throw new UserRejectedRequestError(
-      "Unable to authenticate a Paper Embedded Wallet user.",
-    );
+    return {
+      provider,
+      chain: {
+        id: await this.getChainId(),
+        unsupported: false,
+      },
+      account: await this.getAccount(),
+    };
   }
 
   getChainId(): Promise<number> {
@@ -187,21 +151,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector {
 
   async isAuthorized() {
     const user = await this.getUser();
-    const connectTime = window.localStorage.getItem(CONNECT_TIME_KEY);
-    if (
-      user === null ||
-      !connectTime ||
-      !window.localStorage.getItem(CONNECT_EMAIL)
-    ) {
-      return false;
-    }
-    return parseInt(connectTime) + CONNECT_DURATION > new Date().getTime();
+    return !!user;
   }
 
   async disconnect(): Promise<void> {
-    window.localStorage.removeItem(CONNECT_TIME_KEY);
-    window.localStorage.removeItem(CONNECT_EMAIL);
-    await this.sdk.auth.logout();
+    await this.#sdk.auth.logout();
+    this.#user = null;
   }
 
   protected onChainChanged(chainId: string | number): void {
@@ -211,11 +166,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector {
   }
 
   async getUser(): Promise<InitializedUser | null> {
-    const userStatus = await this.sdk.getUser();
-    if (userStatus.status === UserStatus.LOGGED_OUT) {
-      return null;
+    if (!this.#user) {
+      const userStatus = await this.#sdk.getUser();
+      if (userStatus.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
+        this.#user = userStatus;
+      }
     }
-
-    return userStatus;
+    return this.#user;
   }
 }
