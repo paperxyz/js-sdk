@@ -16,34 +16,41 @@ easily onboards users without a wallet or cryptocurrency.
 
 ## Installation
 
-Install this SDK:
+Install **embedded-wallet-service-wagmi** and peer dependencies ([wagmi](https://wagmi.sh/react) and [ethers](https://docs.ethers.org/v5/)):
 
 ```shell
-npm install @paperxyz/embedded-wallet-service-wagmi
-yarn add @paperxyz/embedded-wallet-service-wagmi
-pnpm add @paperxyz/embedded-wallet-service-wagmi
+npm install @paperxyz/embedded-wallet-service-wagmi wagmi ethers@^5
+yarn add @paperxyz/embedded-wallet-service-wagmi wagmi ethers@^5
 ```
 
-Add the connector:
+Add the Embedded Wallet connector to wagmi:
 
 ```typescript
-import { createClient, configureChains, mainnet } from "wagmi";
+import { createClient, configureChains } from "wagmi";
+import { polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
-const { chains, provider } = configureChains([mainnet], [publicProvider()]);
+const { chains, provider } = configureChains([polygon], [publicProvider()]);
+
+// Create a Wagmi-compatible connector for Paper Embedded Wallet.
+const paperEmbeddedWallet = new PaperEmbeddedWalletWagmiConnector({
+  chains,
+  options: {
+    chain: "Polygon",
+    clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  },
+});
 
 const client = createClient({
-  connectors: [
-    new PaperEmbeddedWalletWagmiConnector({
-      chains,
-      // options: { ... }
-    }),
-  ],
+  connectors: [paperEmbeddedWallet],
   provider,
 });
-```
 
-See [Wagmi - Getting Started](https://wagmi.sh/react) for more help.
+// Wrap your application with WagmiConfig.
+function App() {
+  return <WagmiConfig client={client}>// ...your app</WagmiConfig>;
+}
+```
 
 ## Arguments
 

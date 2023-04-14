@@ -3,7 +3,7 @@
     <a href="https://withpaper.com"><img src="./assets/paper-logo.svg" width="100" alt=""/></a>
     <br />
 </p>
-<h1 align="center">Paper Embedded Wallet Service - RainbowKit Wallet</h1>
+<h1 align="center">Paper Embedded Wallet Service - Connect Wallet</h1>
 <p align="center">
     <a href="https://www.npmjs.com/package/@paperxyz/embedded-wallet-service-rainbowkit"><img src="https://img.shields.io/npm/v/@paperxyz/embedded-wallet-service-rainbowkit" alt="npm version"/></a>
     <a href="https://discord.gg/mnUa29J2Fp"><img alt="Join our Discord!" src="https://img.shields.io/discord/936354866358546453.svg?color=7289da&label=discord&logo=discord&style=flat"/></a>
@@ -16,84 +16,67 @@ easily onboards users without a wallet or cryptocurrency.
 
 ## Installation
 
-Install this SDK:
+Install **embedded-wallet-service-rainbowkit** and peer dependencies ([wagmi](https://wagmi.sh/react) and [ethers](https://docs.ethers.org/v5/)):
 
 ```shell
-npm install @paperxyz/embedded-wallet-service-rainbowkit
-yarn add @paperxyz/embedded-wallet-service-rainbowkit
-pnpm add @paperxyz/embedded-wallet-service-rainbowkit
+npm install @paperxyz/embedded-wallet-service-rainbowkit wagmi ethers@^5
+yarn add @paperxyz/embedded-wallet-service-rainbowkit wagmi ethers@^5
 ```
 
-Add the wallet to RainbowKit:
+Wrap your application with the provider:
 
 ```typescript
-const { chains, provider, webSocketProvider } = configureChains(
-  [polygon],
-  [publicProvider()],
-);
-
-const connectors = connectorsForWallets([
-  {
-    groupName: "Log In With Email",
-    wallets: [
-      PaperEmbeddedWalletRainbowKitWallet({
-        chains,
-        options: {
-          clientId: "EWS_CLIENT_ID",
-          chain: "Polygon",
-        },
-      }),
-    ],
-  },
-  {
-    groupName: "Log In With Wallet",
-    wallets: [
-      metaMaskWallet({ chains }),
-      walletConnectWallet({ chains }),
-      coinbaseWallet({ appName: "Acme Inc.", chains }),
-    ],
-  },
-]);
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-  webSocketProvider,
-});
-
-<WagmiConfig client={wagmiClient}>
-  <RainbowKitProvider chains={chains}>
-    <ConnectButton />
-  </RainbowKitProvider>
-</WagmiConfig>;
-```
-
-See [RainbowKit - Introduction](https://www.rainbowkit.com/docs) for more help.
-
-NOTE: If the Embedded Wallet login modal appears behind RainbowKit modal, lower the z-index of the RainbowKit modal:
-
-```css
-[data-rk] [aria-labelledby="rk_connect_title"] {
-  z-index: 2147483645 !important;
+function App() {
+  return (
+    // Wrap your application.
+    <PaperEmbeddedWalletProvider
+      appName="Paper RainbowKit Provider Example"
+      walletOptions={{
+        clientId: "992d8417-9cd1-443c-bae3-f9eac1d64767",
+        chain: "Polygon",
+      }}
+    >
+      // ...your app // Add the connect button anywhere in your app. // Make
+      sure it's wrapped within `PaperEmbeddedWalletProvider`.
+      <ConnectButton />
+    </PaperEmbeddedWalletProvider>
+  );
 }
 ```
 
-## Arguments
+## Customize the button
 
-### name
+Pass your own button to match your app's branding. Here's an example with [Chakra UI](https://chakra-ui.com/).
 
-The name of the wallet option on RainbowKit. Defaults to "Email".
+```typescript
+<ConnectButton>
+  <Button size="lg" rounded="full">
+    Sign In
+  </Button>
+</ConnectButton>
+```
 
-### iconUrl
+## Customize the modal
 
-The icon to display next to the name.
+The RainbowKit modal is highly customizable and `modalOptions` supports all `<RainbowKitProvider>` props. See [RainbowKit's theme guide](https://www.rainbowkit.com/docs/theming) for the full list of options.
 
-### chain
+Here's an example of a few customizations:
 
-The chain the wallet will be managed on.
-Note: A user receives the same wallet address across all EVM chains, mainnet and testnet.
+```typescript
+import { darkTheme } from "@paperxyz/embedded-wallet-service-rainbowkit";
 
-### options
-
-The argument passed into the `PaperEmbeddedWalletSdk` constructor. See [PaperEmbeddedWalletSdk](https://docs.withpaper.com/docs/embedded-wallet-service-sdk-reference#paperembeddedwalletsdk).
+<PaperEmbeddedWalletProvider
+  modalOptions={{
+    modalSize: "wide",
+    theme: darkTheme({
+      accentColor: "#7b3fe4",
+      accentColorForeground: "white",
+      borderRadius: "small",
+      fontStack: "system",
+      overlayBlur: "small",
+    }),
+  }}
+>
+  // ...
+</PaperEmbeddedWalletProvider>;
+```

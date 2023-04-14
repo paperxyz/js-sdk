@@ -101,16 +101,13 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   protected onAccountsChanged(accounts: Address[]): void {
     const account = accounts[0];
     if (!account) {
-      // @ts-ignore
       this?.emit("disconnect");
     } else {
-      // @ts-ignore
       this?.emit("change", { account });
     }
   }
 
   protected onDisconnect(error: Error): void {
-    // @ts-ignore
     this?.emit("disconnect");
   }
 
@@ -162,7 +159,6 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   protected onChainChanged(chainId: string | number): void {
     const id = Number(chainId);
     const unsupported = this.isChainUnsupported(id);
-    // @ts-ignore
     this?.emit("change", { chain: { id, unsupported } });
   }
 

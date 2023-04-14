@@ -1,5 +1,8 @@
 import { getChain } from "@paperxyz/embedded-wallet-service-wagmi";
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  connectorsForWallets,
+} from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   coinbaseWallet,
@@ -7,9 +10,9 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import React from "react";
-import { configureChains, createClient } from "wagmi";
+import { WagmiConfig, configureChains, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import {
+import type {
   PaperEmbeddedWalletProviderProps,
   RequiredModalOptions,
 } from "../interfaces/provider";
@@ -57,17 +60,15 @@ export const PaperEmbeddedWalletProvider = ({
     webSocketProvider,
   });
 
-  /* Lower the z-index of RainbowKit's modal in favor of Paper's modal. */
-  // <style>{`
-  // [data-rk] [aria-labelledby="rk_connect_title"] {
-  //   z-index: 2147483645 !important;
-  // }
-  // `}</style>
-  // {children}
-
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} {...providerOptions}>
+        {/* Lower the z-index of RainbowKit's modal in favor of Paper's modal. */}
+        <style>{`
+        [data-rk] [aria-labelledby="rk_connect_title"] {
+          z-index: 2147483645 !important;
+        }
+        `}</style>
         {children}
       </RainbowKitProvider>
     </WagmiConfig>

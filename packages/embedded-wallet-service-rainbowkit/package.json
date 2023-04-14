@@ -31,24 +31,27 @@
     "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
-    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
     "build-package-ews-connectors": "yarn build",
+    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
     "clean": "rm -rf .turbo node_modules dist",
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/embedded-wallet-service-rainbowkit"
   },
   "devDependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*",
-    "typescript": "^4.7.4"
+    "@paperxyz/tsconfig": "*",
+    "eslint-config-paperxyz": "*",
+    "ethers": "^5",
+    "typescript": "^4.7.4",
+    "wagmi": "^0.12"
   },
   "dependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "^0.1.0",
-    "@paperxyz/embedded-wallet-service-wagmi": "^0.0.3",
-    "@rainbow-me/rainbowkit": "^0.12.8",
-    "ethers": "^5",
-    "wagmi": "^0.12.10"
+    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "@paperxyz/embedded-wallet-service-wagmi": "*",
+    "@rainbow-me/rainbowkit": "^0.12.8"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "ethers": "^5",
+    "wagmi": "^0.12"
+  },
   "publishConfig": {
     "access": "public"
   }

@@ -1,3 +1,7 @@
+import {
+  ConnectButton,
+  PaperEmbeddedWalletProvider,
+} from "@paperxyz/embedded-wallet-service-rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const ProviderDemo = () => {
@@ -9,7 +13,7 @@ const ProviderDemo = () => {
         chain: "Polygon",
       }}
     >
-      <PaperEmbeddedWalletConnectButton>
+      <ConnectButton>
         <button
           style={{
             padding: "10px",
@@ -18,7 +22,7 @@ const ProviderDemo = () => {
         >
           Enter Philtopia
         </button>
-      </PaperEmbeddedWalletConnectButton>
+      </ConnectButton>
     </PaperEmbeddedWalletProvider>
   );
 };
