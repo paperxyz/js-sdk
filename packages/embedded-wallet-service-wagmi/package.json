@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
   },
-  "homepage": "https://github.com/paperxyz/js-sdk",
+  "homepage": "https://docs.withpaper.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
@@ -38,13 +38,13 @@
   "devDependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
     "eslint-config-paperxyz": "*",
-    "typescript": "^4.7.4",
+    "typescript": "^5.0.4",
     "wagmi": "^0.12.9"
   },
   "dependencies": {},
   "peerDependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "wagmi": "^0.12.9"
+    "wagmi": "^0.12.10"
   },
   "publishConfig": {
     "access": "public"

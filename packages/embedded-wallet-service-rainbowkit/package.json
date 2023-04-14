@@ -21,32 +21,35 @@
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
   },
-  "homepage": "https://github.com/paperxyz/js-sdk",
+  "homepage": "https://docs.withpaper.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
+    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
+    "build-package-ews-connectors": "yarn build",
     "clean": "rm -rf .turbo node_modules dist",
-    "prepublish": "yarn build",
-    "release": "yarn build && changeset publish"
-  },
-  "publishConfig": {
-    "access": "public"
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/embedded-wallet-service-rainbowkit"
   },
   "devDependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*"
+    "@paperxyz/embedded-wallet-service-wagmi": "*",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "^0.1.0",
     "@paperxyz/embedded-wallet-service-wagmi": "^0.0.3",
     "@rainbow-me/rainbowkit": "^0.12.8",
+    "ethers": "^5",
     "wagmi": "^0.12.10"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
 }
