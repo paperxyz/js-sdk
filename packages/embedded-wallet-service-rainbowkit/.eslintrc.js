@@ -1,11 +1,8 @@
 module.exports = {
-  extends: ["paperxyz"],
   root: true,
+  extends: ["paperxyz"],
   parserOptions: {
     project: true,
     tsconfigRootDir: __dirname,
-  },
-  rules: {
-    "@typescript-eslint/unbound-method": "warn",
   },
 };

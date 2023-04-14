@@ -22,7 +22,7 @@
       "dependsOn": [
         "^build-package-ews",
         "^build-package-checkout",
-        "^build-package-ews-connector"
+        "^build-package-ews-connectors"
       ]
     },
     "test": {
