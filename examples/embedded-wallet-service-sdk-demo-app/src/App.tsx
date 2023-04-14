@@ -21,9 +21,9 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { CodeSnippet } from "./CodeSnippet";
 import { Login } from "./Login";
-import { UserDetails } from "./snippets/UserDetails";
 import { WalletFeatures } from "./WalletFeatures";
 import { WalletInfo } from "./WalletInfo";
+import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [paper, setPaper] = useState<PaperEmbeddedWalletSdk>();
@@ -65,9 +65,13 @@ function App() {
       <GridItem colSpan={2} bg="blue.500" h={12}>
         <Flex w="full" h="full" align="center" justify="center" color="white">
           <Text fontSize="xl">
-            For more information, check out{" "}
-            <Link isExternal href="https://ews.withpaper.com" fontWeight="bold">
-              the docs
+            For more information,{" "}
+            <Link
+              isExternal
+              href="https://docs.withpaper.com/reference/embedded-wallet-service-overview"
+              fontWeight="bold"
+            >
+              read the docs &rarr;
             </Link>
           </Text>
         </Flex>

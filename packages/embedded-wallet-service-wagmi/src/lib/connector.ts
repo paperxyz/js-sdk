@@ -19,6 +19,11 @@ import {
 
 const IS_SERVER = typeof window === "undefined";
 
+export type PaperEmbeddedWalletWagmiConnectorProps = {
+  chains?: Chain[];
+  options: PaperConstructorType;
+};
+
 /**
  * @returns A Wagmi-compatible connector.
  */
@@ -29,13 +34,14 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
   readonly name = "Paper Embedded Wallet";
+  override readonly chains: Chain[];
 
-  #sdk: PaperEmbeddedWalletSdk;
+  #sdk?: PaperEmbeddedWalletSdk;
   #paperOptions: PaperConstructorType;
   #provider?: providers.Provider;
   #user: InitializedUser | null;
 
-  constructor(config: { chains?: Chain[]; options: PaperConstructorType }) {
+  constructor(config: PaperEmbeddedWalletWagmiConnectorProps) {
     super(config);
 
     if (!config.options.clientId) {
@@ -44,28 +50,21 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
       );
     }
 
-    this.#paperOptions = config.options;
-    this.#sdk = new PaperEmbeddedWalletSdk(this.#paperOptions);
     this.#user = null;
+    this.#paperOptions = config.options;
+    this.chains = [getChain(this.#paperOptions.chain)];
+
+    // Preload the SDK.
+    if (typeof window !== "undefined") {
+      this.getSdk();
+    }
   }
 
-  getChain(): Chain {
-    switch (this.#paperOptions.chain) {
-      case "Ethereum":
-        return mainnet;
-      case "Goerli":
-        return goerli;
-      case "Polygon":
-        return polygon;
-      case "Mumbai":
-        return polygonMumbai;
-      case "Avalanche":
-        return avalanche;
-      default:
-        throw new Error(
-          "Unsupported chain. See https://docs.withpaper.com/docs/embedded-wallets-faq for supported chains.",
-        );
+  protected getSdk(): PaperEmbeddedWalletSdk {
+    if (!this.#sdk) {
+      this.#sdk = new PaperEmbeddedWalletSdk(this.#paperOptions);
     }
+    return this.#sdk;
   }
 
   async getAccount(): Promise<Address> {
@@ -102,29 +101,25 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   protected onAccountsChanged(accounts: Address[]): void {
     const account = accounts[0];
     if (!account) {
-      this.emit("disconnect");
+      // @ts-ignore
+      this?.emit("disconnect");
     } else {
-      this.emit("change", { account });
+      // @ts-ignore
+      this?.emit("change", { account });
     }
   }
 
   protected onDisconnect(error: Error): void {
-    this.emit("disconnect");
+    // @ts-ignore
+    this?.emit("disconnect");
   }
 
   async connect(): Promise<Required<ConnectorData>> {
-    const provider = await this.getProvider();
-    if (provider?.on) {
-      provider.on("accountsChanged", this.onAccountsChanged.bind(this));
-      provider.on("chainChanged", this.onChainChanged.bind(this));
-      provider.on("disconnect", this.onDisconnect.bind(this));
-    }
-
     // If not authenticated, prompt the user to log in.
     const isAuthenticated = await this.isAuthorized();
     if (!isAuthenticated) {
       try {
-        const resp = await this.#sdk.auth.loginWithPaperModal();
+        const resp = await this.getSdk().auth.loginWithPaperModal();
         if (resp.user.status !== UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
           throw new Error(
             "Unexpected user status after logging in. Please try logging in again.",
@@ -134,6 +129,11 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
         throw new UserRejectedRequestError(e);
       }
     }
+
+    const provider = await this.getProvider();
+    provider.on("accountsChanged", this.onAccountsChanged);
+    provider.on("chainChanged", this.onChainChanged);
+    provider.on("disconnect", this.onDisconnect);
 
     return {
       provider,
@@ -146,7 +146,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 
   getChainId(): Promise<number> {
-    return Promise.resolve(this.getChain().id);
+    return Promise.resolve(getChain(this.#paperOptions.chain).id);
   }
 
   async isAuthorized() {
@@ -155,19 +155,20 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 
   async disconnect(): Promise<void> {
-    await this.#sdk.auth.logout();
+    await this.getSdk().auth.logout();
     this.#user = null;
   }
 
   protected onChainChanged(chainId: string | number): void {
     const id = Number(chainId);
     const unsupported = this.isChainUnsupported(id);
-    this.emit("change", { chain: { id, unsupported } });
+    // @ts-ignore
+    this?.emit("change", { chain: { id, unsupported } });
   }
 
   async getUser(): Promise<InitializedUser | null> {
     if (!this.#user) {
-      const userStatus = await this.#sdk.getUser();
+      const userStatus = await this.getSdk().getUser();
       if (userStatus.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED) {
         this.#user = userStatus;
       }
@@ -175,3 +176,22 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     return this.#user;
   }
 }
+
+export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
+  switch (chain) {
+    case "Ethereum":
+      return mainnet;
+    case "Goerli":
+      return goerli;
+    case "Polygon":
+      return polygon;
+    case "Mumbai":
+      return polygonMumbai;
+    case "Avalanche":
+      return avalanche;
+    default:
+      throw new Error(
+        "Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.",
+      );
+  }
+};
