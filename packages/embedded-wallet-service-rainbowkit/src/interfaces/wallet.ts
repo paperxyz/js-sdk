@@ -1,4 +1,4 @@
-import { PaperConstructorType } from "@paperxyz/embedded-wallet-service-sdk";
+import type { PaperConstructorType } from "@paperxyz/embedded-wallet-service-sdk";
 
 export type PaperEmbeddedWalletRainbowKitWalletProps = {
   /**

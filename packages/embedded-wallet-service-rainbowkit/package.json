@@ -28,14 +28,13 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
+    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
+    "build-package-ews-connectors": "yarn build",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
     "clean": "rm -rf .turbo node_modules dist",
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/embedded-wallet-service-rainbowkit"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
@@ -46,5 +45,8 @@
     "@paperxyz/embedded-wallet-service-wagmi": "*",
     "@rainbow-me/rainbowkit": "^0.12.7",
     "wagmi": "^0.12.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

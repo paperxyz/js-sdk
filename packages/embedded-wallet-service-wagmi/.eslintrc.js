@@ -5,4 +5,7 @@ module.exports = {
     project: true,
     tsconfigRootDir: __dirname,
   },
+  rules: {
+    "@typescript-eslint/unbound-method": "warn",
+  },
 };
