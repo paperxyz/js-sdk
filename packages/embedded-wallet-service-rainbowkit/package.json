@@ -39,16 +39,12 @@
     "access": "public"
   },
   "devDependencies": {
-    
-    "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*",
     "eslint-config-paperxyz": "*"
   },
   "dependencies": {
-    "@paperxyz/embedded-wallet-service-sdk": "^0.1.0",
-    "@paperxyz/embedded-wallet-service-wagmi": "^0.0.3",
-    "@rainbow-me/rainbowkit": "^0.12.8",
-    "wagmi": "^0.12.10"
-  },
-  "peerDependencies": {}
+    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "@paperxyz/embedded-wallet-service-wagmi": "*",
+    "@rainbow-me/rainbowkit": "^0.12.7",
+    "wagmi": "^0.12.9"
+  }
 }
