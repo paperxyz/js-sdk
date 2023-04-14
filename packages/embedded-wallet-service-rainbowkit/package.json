@@ -39,8 +39,10 @@
     "access": "public"
   },
   "devDependencies": {
+    
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*"
+    "@paperxyz/embedded-wallet-service-wagmi": "*",
+    "eslint-config-paperxyz": "*"
   },
   "dependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "^0.1.0",
