@@ -1,7 +1,7 @@
-import { Wallet } from "@rainbow-me/rainbowkit";
-import { RainbowKitProviderProps } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider";
-import { ChainProviderFn } from "wagmi";
-import { PaperEmbeddedWalletRainbowKitWalletProps } from "../interfaces/wallet";
+import type { Wallet } from "@rainbow-me/rainbowkit";
+import type { RainbowKitProviderProps } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider";
+import type { ChainProviderFn } from "wagmi";
+import type { PaperEmbeddedWalletRainbowKitWalletProps } from "../interfaces/wallet";
 
 export type RequiredModalOptions = Omit<
   RainbowKitProviderProps,
