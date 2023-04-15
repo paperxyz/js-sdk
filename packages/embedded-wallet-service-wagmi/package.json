@@ -3,13 +3,18 @@
   "description": "Wagmi connector for Embedded Wallets by Paper",
   "version": "0.0.4",
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
     "dist/**/*"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "keywords": [
     "embedded wallets",
     "crypto",
@@ -28,7 +33,7 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
-    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
+    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --env.ESM_ONLY true --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
