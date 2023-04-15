@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist/**/*"
   ],
@@ -38,17 +39,18 @@
   },
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
+    "@rainbow-me/rainbowkit": "^0.12.8",
     "eslint-config-paperxyz": "*",
-    "ethers": "^5",
+    "ethers": "^5.7.2",
     "typescript": "^4.7.4",
-    "wagmi": "^0.12"
+    "wagmi": "^0.12.9"
   },
   "dependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*",
-    "@rainbow-me/rainbowkit": "^0.12.8"
+    "@paperxyz/embedded-wallet-service-wagmi": "*"
   },
   "peerDependencies": {
+    "@rainbow-me/rainbowkit": "^0.12",
     "ethers": "^5",
     "wagmi": "^0.12"
   },

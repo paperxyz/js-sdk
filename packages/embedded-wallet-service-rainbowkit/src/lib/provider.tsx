@@ -3,7 +3,7 @@ import {
   RainbowKitProvider,
   connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
-import "@rainbow-me/rainbowkit/styles.css";
+
 import {
   coinbaseWallet,
   metaMaskWallet,
