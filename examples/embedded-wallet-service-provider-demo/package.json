@@ -1,7 +1,6 @@
 {
   "name": "embedded-wallet-service-provider-demo",
   "version": "0.1.1",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev-ews-connectors": "next dev -p 3005",
