@@ -1,6 +1,6 @@
 import { ConnectButton as RainbowKitConnectButton } from "@rainbow-me/rainbowkit";
 
-export const ConnectButton = ({ children }: { children: React.ReactNode }) => {
+export const ConnectButton = ({ children }: { children?: React.ReactNode }) => {
   return children ? (
     <RainbowKitConnectButton.Custom>
       {({ openConnectModal }) => (

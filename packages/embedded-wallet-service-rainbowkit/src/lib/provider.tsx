@@ -2,6 +2,7 @@ import { getChain } from "@paperxyz/embedded-wallet-service-wagmi";
 import {
   RainbowKitProvider,
   connectorsForWallets,
+  lightTheme,
 } from "@rainbow-me/rainbowkit";
 
 import {
@@ -12,10 +13,7 @@ import {
 import React from "react";
 import { WagmiConfig, configureChains, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import type {
-  PaperEmbeddedWalletProviderProps,
-  RequiredModalOptions,
-} from "../interfaces/provider";
+import type { PaperEmbeddedWalletProviderProps } from "../interfaces/provider";
 import { PaperEmbeddedWalletRainbowKitWallet } from "./wallet";
 
 export const PaperEmbeddedWalletProvider = ({
@@ -33,10 +31,11 @@ export const PaperEmbeddedWalletProvider = ({
   );
 
   // Apply default options.
-  const providerOptions: RequiredModalOptions = {
-    ...modalOptions,
-    modalSize: "compact",
-  };
+  const providerOptions = modalOptions ?? {};
+  providerOptions.modalSize ??= "compact";
+  providerOptions.theme ??= lightTheme({
+    borderRadius: "small",
+  });
 
   const connectors = connectorsForWallets([
     {

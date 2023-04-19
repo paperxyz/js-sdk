@@ -16,6 +16,7 @@
     "@paperxyz/embedded-wallet-service-rainbowkit": "^0.0.2",
     "@paperxyz/embedded-wallet-service-sdk": "*",
     "@paperxyz/embedded-wallet-service-wagmi": "*",
+    "@rainbow-me/rainbowkit": "^0.12.8",
     "ethers": "^5.7.2",
     "framer-motion": "8.0.1",
     "next": "12.2.5",

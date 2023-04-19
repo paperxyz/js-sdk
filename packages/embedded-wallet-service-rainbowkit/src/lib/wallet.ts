@@ -18,6 +18,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = (
   name: config.name ?? "Email",
   iconUrl: config.iconUrl ?? EMAIL_ICON_URL_BLACK_BG,
   iconBackground: config.iconBackground ?? "#39D0FF",
+  // @ts-ignore
   createConnector: () => {
     const connector = new PaperEmbeddedWalletWagmiConnector({
       chains: [getChain(config.chain)],
