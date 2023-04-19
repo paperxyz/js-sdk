@@ -1,15 +1,15 @@
 import { PAPER_APP_URL } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import React, { useEffect, useState } from "react";
-import {
+import type {
   ContractType,
   CustomContractArgWrapper,
   ReadMethodCallType,
   WriteMethodCallType,
-  fetchCustomContractArgsFromProps,
 } from "../interfaces/CustomContract";
-import { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
-import { TransferSuccessResult } from "../interfaces/TransferSuccessResult";
+import { fetchCustomContractArgsFromProps } from "../interfaces/CustomContract";
+import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
+import type { TransferSuccessResult } from "../interfaces/TransferSuccessResult";
 import { openCenteredPopup } from "../lib/utils/popup";
 
 export enum PaperCheckoutDisplay {
@@ -115,6 +115,7 @@ export const PaperCheckout = <T extends ContractType>({
 
         case "transferSuccess":
           if (onTransferSuccess) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             onTransferSuccess({
               id: data.id,

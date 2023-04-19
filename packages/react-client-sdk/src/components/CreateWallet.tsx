@@ -1,14 +1,10 @@
-import {
-  createWallet,
-  initialiseCreateWallet,
-  PaperSDKError,
-  PaperUser,
-} from "@paperxyz/js-client-sdk";
+import type { PaperSDKError, PaperUser } from "@paperxyz/js-client-sdk";
+import { createWallet, initialiseCreateWallet } from "@paperxyz/js-client-sdk";
 import type { Locale } from "@paperxyz/sdk-common-utilities";
 import React, { useEffect } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { Button } from "./common/Button";
-var packageJson = require("../../package.json");
+const packageJson = require("../../package.json");
 
 interface CreateWalletProps {
   emailAddress: string;
@@ -44,6 +40,8 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
       onEmailVerificationInitiated,
       onError,
       locale,
+    }).catch((e) => {
+      console.error(e);
     });
   }, []);
 
@@ -63,7 +61,9 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
       ) : children ? (
         <div
           onClick={() => {
-            executeVerifyEmail();
+            executeVerifyEmail().catch((e) => {
+              console.error(e);
+            });
           }}
           data-paper-sdk-version={`@paperxyz/react-client-sdk@${packageJson.version}`}
         >
@@ -72,7 +72,9 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
       ) : (
         <Button
           onClick={() => {
-            executeVerifyEmail();
+            executeVerifyEmail().catch((e) => {
+              console.error(e);
+            });
           }}
           data-paper-sdk-version={`@paperxyz/react-client-sdk@${packageJson.version}`}
         >

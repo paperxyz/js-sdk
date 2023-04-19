@@ -100,7 +100,7 @@ export const ViewPricingDetails = ({
         case "payWithEth": {
           if (data.error) {
             handlePayWithCryptoError(
-              new Error(data.error) as Error,
+              new Error(data.error),
               onError,
               (errorObject) => {
                 if (iframeRef.current) {
@@ -175,7 +175,6 @@ export const ViewPricingDetails = ({
             });
             if (onSuccess && result) {
               onSuccess({
-                // @ts-ignore
                 transactionResponse: result,
                 transactionId: data.transactionId,
               });

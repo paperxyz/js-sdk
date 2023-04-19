@@ -8,4 +8,5 @@ const IFrameBase = forwardRef(
     return <iframe ref={ref} {...props} />;
   },
 );
+IFrameBase.displayName = "IFrameBase";
 export const IFrameWrapper = memo(IFrameBase);

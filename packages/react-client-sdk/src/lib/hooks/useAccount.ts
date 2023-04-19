@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import type { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useAccount as useAccountWagmi } from "wagmi";
 
@@ -15,10 +15,12 @@ export const useAccount = ({ signer }: { signer?: ethers.Signer }) => {
       const newAddress = (await signer?.getAddress()) || _address;
       return { newChainId, newAddress };
     };
-    updateFn().then(({ newAddress, newChainId }) => {
-      setAddress(newAddress);
-      setChainId(newChainId);
-    });
+    updateFn()
+      .then(({ newAddress, newChainId }) => {
+        setAddress(newAddress);
+        setChainId(newChainId);
+      })
+      .catch((e) => console.error(e));
   }, [signer, _address, connector]);
 
   return { address, connector, chainId };

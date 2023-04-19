@@ -29,9 +29,13 @@ export function useCheckoutWithEthLink({
       options,
       receivingWalletType,
       showConnectWalletOptions,
-    }).then((url) => {
-      setCheckoutWithEthUrl(url);
-    });
+    })
+      .then((url) => {
+        setCheckoutWithEthUrl(url);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, [
     payingWalletSigner,
     sdkClientSecret,

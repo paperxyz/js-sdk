@@ -12,5 +12,6 @@ module.exports = {
     "@typescript-eslint/restrict-plus-operands": "warn",
     "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/restrict-template-expressions": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
   },
 };

@@ -1,25 +1,25 @@
-import {
-  PAPER_APP_URL,
+import type {
   PaperSDKError,
   PaperSDKErrorCode,
   ReviewResult,
 } from "@paperxyz/js-client-sdk";
+import { PAPER_APP_URL } from "@paperxyz/js-client-sdk";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  DEFAULT_BRAND_OPTIONS,
+import type {
   ICustomizationOptions,
   Locale,
 } from "@paperxyz/sdk-common-utilities";
+import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import { usePaperSDKContext } from "../Provider";
-import {
+import type {
   ContractType,
   CustomContractArgWrapper,
   ReadMethodCallType,
   WriteMethodCallType,
-  fetchCustomContractArgsFromProps,
 } from "../interfaces/CustomContract";
-import { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
+import { fetchCustomContractArgsFromProps } from "../interfaces/CustomContract";
+import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { postMessageToIframe } from "../lib/utils/postMessageToIframe";
 import {
   FULL_SCREEN_IFRAME_STYLE,

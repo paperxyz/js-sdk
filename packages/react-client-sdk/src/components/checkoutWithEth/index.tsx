@@ -14,21 +14,17 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { usePaperSDKContext } from "../../Provider";
-import {
-  WalletType,
-  onWalletConnectedType,
-} from "../../interfaces/WalletTypes";
+import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 import {
   commonTransitionProps,
   transitionContainer,
 } from "../../lib/utils/styles";
 import { ConnectWallet } from "../common/ConnectWallet";
-import {
-  ViewPricingDetails,
-  ViewPricingDetailsProps,
-} from "./ViewPricingDetails";
+import type { ViewPricingDetailsProps } from "./ViewPricingDetails";
+import { ViewPricingDetails } from "./ViewPricingDetails";
 
-var packageJson = require("../../../package.json");
+const packageJson = require("../../../package.json");
 
 export enum CheckoutWithEthPage {
   ConnectWallet,

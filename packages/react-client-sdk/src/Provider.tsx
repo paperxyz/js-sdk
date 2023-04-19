@@ -1,12 +1,6 @@
-import { SupportedChainName } from "@paperxyz/sdk-common-utilities";
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import type { SupportedChainName } from "@paperxyz/sdk-common-utilities";
+import type { Dispatch, SetStateAction } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 interface SDKContext {
   chainName: SupportedChainName;

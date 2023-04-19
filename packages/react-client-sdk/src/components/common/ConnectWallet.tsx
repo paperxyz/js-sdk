@@ -2,9 +2,11 @@ import React from "react";
 import { CoinbaseWalletIcon } from "../../icons/CoinbaseWalleticon";
 
 import { css } from "@emotion/css";
-import { IconProps, MetaMaskIcon } from "../../icons/MetaMaskIcon";
+import type { IconProps } from "../../icons/MetaMaskIcon";
+import { MetaMaskIcon } from "../../icons/MetaMaskIcon";
 import { WalletConnectIcon } from "../../icons/WalletConnectIcon";
-import { ConnectWalletProps, WalletType } from "../../interfaces/WalletTypes";
+import type { ConnectWalletProps } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 import { useConnectWallet } from "../../lib/hooks/useConnectWallet";
 import { Button } from "./Button";
 

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Connector, useAccount, useConnect, useDisconnect } from "wagmi";
-import {
-  WalletType,
+import type { Connector } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import type {
   onWalletConnectFailType,
   onWalletConnectedType,
 } from "../../interfaces/WalletTypes";
+import { WalletType } from "../../interfaces/WalletTypes";
 
 export function useConnectWallet() {
   const [isUpdatingMetaMaskAccount, setIsUpdatingMetaMaskAccount] =
@@ -27,8 +28,8 @@ export function useConnectWallet() {
     onWalletConnected: onWalletConnectedType,
     onWalletConnectFail: onWalletConnectFailType,
   ) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { connector: userConnector } = useAccount();
-
     return async () => {
       if (
         userConnector?.id === WalletType.MetaMask &&
@@ -37,9 +38,7 @@ export function useConnectWallet() {
         setIsUpdatingMetaMaskAccount(true);
         try {
           await window.ethereum?.request({
-            //@ts-ignore
             method: "wallet_requestPermissions",
-            //@ts-ignore
             params: [{ eth_accounts: {} }],
           });
 

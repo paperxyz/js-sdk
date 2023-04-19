@@ -1,16 +1,20 @@
 import { css } from "@emotion/css";
 import { Transition } from "@headlessui/react";
-import {
-  PAPER_APP_URL,
-  PaperSDKError,
-  PayWithCryptoErrorCode,
+import type {
+  PaperSDKError
 } from "@paperxyz/js-client-sdk";
 import {
-  DEFAULT_BRAND_OPTIONS,
+  PAPER_APP_URL,
+  PayWithCryptoErrorCode,
+} from "@paperxyz/js-client-sdk";
+import type {
   ICustomizationOptions,
-  Locale,
+  Locale
 } from "@paperxyz/sdk-common-utilities";
-import { ethers } from "ethers";
+import {
+  DEFAULT_BRAND_OPTIONS
+} from "@paperxyz/sdk-common-utilities";
+import type { ethers } from "ethers";
 import React, {
   useCallback,
   useEffect,
@@ -19,11 +23,13 @@ import React, {
   useState,
 } from "react";
 import { usePaperSDKContext } from "../../Provider";
-import {
+import type {
   ContractType,
   CustomContractArgWrapper,
   ReadMethodCallType,
-  WriteMethodCallType,
+  WriteMethodCallType
+} from "../../interfaces/CustomContract";
+import {
   fetchCustomContractArgsFromProps,
 } from "../../interfaces/CustomContract";
 import { WalletType } from "../../interfaces/WalletTypes";
@@ -257,7 +263,7 @@ export const ViewPricingDetails = <T extends ContractType>({
         Buffer.from(eligibilityMethodStringified, "utf-8").toString("base64"),
       );
     }
-    if (!!showConnectWalletOptions) {
+    if (showConnectWalletOptions) {
       payWithCryptoUrl.searchParams.append("showConnectWalletOptions", "true");
     }
     if (appName) {

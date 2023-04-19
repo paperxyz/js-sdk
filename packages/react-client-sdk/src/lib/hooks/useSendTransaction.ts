@@ -5,7 +5,7 @@ import {
   sendTransaction,
 } from "@wagmi/core";
 
-import { ethers } from "ethers";
+import type { ethers } from "ethers";
 import { useCallback, useState } from "react";
 
 export const useSendTransaction = ({ signer }: { signer?: ethers.Signer }) => {
