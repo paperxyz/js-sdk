@@ -1,0 +1,57 @@
+{
+  "name": "@paperxyz/react-client-sdk",
+  "version": "0.8.23",
+  "description": "Paper React Client SDK for Checkout Elements",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/**"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/paperxyz/js-sdk/issues"
+  },
+  "homepage": "https://github.com/paperxyz/js-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperxyz/js-sdk.git"
+  },
+  "author": "Paper <team@withpaper.com>",
+  "keywords": [],
+  "scripts": {
+    "build": "tsup src/index.ts --env.NODE_ENV production --env.ESM_ONLY true ",
+    "build-package-checkout": "yarn build",
+    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --watch --env.ESM_ONLY true",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "yarn lint --fix",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/react-client-sdk"
+  },
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@paperxyz/tsconfig": "*",
+    "@types/react": "18.0.26",
+    "eslint-config-paperxyz": "*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@emotion/css": "11.10.5",
+    "@headlessui/react": "1.7.6",
+    "@paperxyz/js-client-sdk": "*",
+    "@paperxyz/sdk-common-utilities": "*",
+    "ethers": "^5.7.2",
+    "wagmi": "0.7.15"
+  }
+}
