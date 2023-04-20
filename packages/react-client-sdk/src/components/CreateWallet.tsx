@@ -1,6 +1,9 @@
 import type { PaperSDKError, PaperUser } from "@paperxyz/js-client-sdk";
 import { createWallet, initialiseCreateWallet } from "@paperxyz/js-client-sdk";
-import type { Locale } from "@paperxyz/sdk-common-utilities";
+import type {
+  Locale,
+  SupportedChainName,
+} from "@paperxyz/sdk-common-utilities";
 import React, { useEffect, useMemo } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { Button } from "./common/Button";
@@ -11,7 +14,7 @@ interface CreateWalletProps {
   onSuccess: (user: PaperUser) => void;
   onEmailVerificationInitiated?: () => void;
   onError?: (error: PaperSDKError) => void;
-  chainName?: string;
+  chainName?: SupportedChainName;
   redirectUrl?: string;
   clientId?: string;
   locale?: Locale;

@@ -5,6 +5,7 @@ import React, { useEffect, useMemo } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { openCenteredPopup } from "../lib/utils/popup";
 import { Button } from "./common/Button";
+import { SupportedChainName } from "@paperxyz/sdk-common-utilities";
 const packageJson = require("../../package.json");
 
 interface VerifyOwnershipWithPaperProps {
@@ -18,7 +19,7 @@ interface VerifyOwnershipWithPaperProps {
   }) => React.ReactNode | React.ReactNode;
   redirectUrl?: string;
   className?: string;
-  chainName?: string;
+  chainName?: SupportedChainName;
   clientId?: string;
 }
 
