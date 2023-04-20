@@ -8,11 +8,11 @@ import {
   PAPER_APP_URL,
 } from "../constants/settings";
 import type { KycModal, ReviewResult } from "../interfaces/CheckoutWithCard";
-
 import type {
   PaperSDKError,
   PaperSDKErrorCode,
 } from "../interfaces/PaperSDKError";
+import type { PriceSummary } from "../interfaces/PriceSummary";
 import { openCenteredPopup } from "../utils/device";
 import { LinksManager } from "../utils/LinksManager";
 import { postMessageToIframe } from "../utils/postMessageToIframe";
@@ -60,7 +60,7 @@ export interface CheckoutWithCardMessageHandlerArgs {
   onOpenKycModal?: (props: KycModal) => void;
   onCloseKycModal?: () => void;
   onBeforeModalOpen?: (props: { url: string }) => void;
-  useAltDomain?: boolean;
+  onPriceUpdate?: (props: PriceSummary) => void;
 }
 
 export function createCheckoutWithCardMessageHandler({
@@ -69,6 +69,7 @@ export function createCheckoutWithCardMessageHandler({
   onReview,
   onPaymentSuccess,
   onBeforeModalOpen,
+  onPriceUpdate,
 }: CheckoutWithCardMessageHandlerArgs) {
   let modal: Modal;
 
@@ -153,6 +154,18 @@ export function createCheckoutWithCardMessageHandler({
         iframe.style.maxHeight = data.height + "px";
         break;
 
+      case "onPriceUpdate": {
+        const { quantity, unitPrice, networkFees, serviceFees, total } = data;
+        onPriceUpdate?.({
+          quantity,
+          unitPrice,
+          networkFees,
+          serviceFees,
+          total,
+        });
+        break;
+      }
+
       default:
       // Ignore unrecognized event
     }
@@ -179,7 +192,7 @@ export function createCheckoutWithCardElement({
   onPaymentSuccess,
   onReview,
   onBeforeModalOpen,
-  useAltDomain = true,
+  onPriceUpdate,
 }: CheckoutWithCardElementArgs) {
   const checkoutWithCardId = "checkout-with-card-iframe";
   const checkoutWithCardMessageHandler = (iframe: HTMLIFrameElement) =>
@@ -191,7 +204,6 @@ export function createCheckoutWithCardElement({
       onPaymentSuccess,
       onReview,
       onBeforeModalOpen,
-      useAltDomain,
     });
 
   const checkoutWithCardUrl = createCheckoutWithCardLink({
@@ -199,7 +211,6 @@ export function createCheckoutWithCardElement({
     appName,
     locale,
     options,
-    useAltDomain,
   });
 
   const paymentElement = new PaperPaymentElement({
