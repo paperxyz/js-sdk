@@ -1,5 +1,18 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 0.2.0
+
+### Minor Changes
+
+- 7440c1b: feat(embedded-wallet-service-sdk): Add ability to support any arbitrary evm chain via 'rpcEndpoint`override when calling`userwallet.getEthersJsSigner({ rpcEndpoint: "" })`
+
+  chore(sdk-common-utilities): update public rpc endpoints to more generous ones
+
+### Patch Changes
+
+- Updated dependencies [7440c1b]
+  - @paperxyz/sdk-common-utilities@0.0.3
+
 ## 0.1.0
 
 ### Minor Changes
