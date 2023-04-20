@@ -4,7 +4,7 @@ import type {
   Locale,
   SupportedChainName,
 } from "@paperxyz/sdk-common-utilities";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { Button } from "./common/Button";
 const packageJson = require("../../package.json");
