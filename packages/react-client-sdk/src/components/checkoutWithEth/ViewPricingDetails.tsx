@@ -74,11 +74,15 @@ export const ViewPricingDetails = ({
     signer,
   });
   const options = useMemo(() => {
-    return (
-      _options || {
-        ...DEFAULT_BRAND_OPTIONS,
-      }
-    );
+    return (_options || {
+      ...DEFAULT_BRAND_OPTIONS,
+    }) as {
+      colorPrimary: string;
+      colorBackground: string;
+      colorText: string;
+      borderRadius: number;
+      fontFamily: string;
+    };
   }, [_options]);
   const { checkoutWithEthUrl } = useCheckoutWithEthLink({
     payingWalletSigner: signer,
