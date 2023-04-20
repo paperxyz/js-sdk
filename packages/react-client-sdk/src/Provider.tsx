@@ -22,6 +22,7 @@ export interface PaperProviderProps {
 }
 
 /**
+ * @deprecated
  * @typedef PaperProviderProps
  * @type {object}
  * @property {string} appName - The name used to display
