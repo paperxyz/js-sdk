@@ -40,6 +40,7 @@ export type ViewPricingDetailsProps = Omit<
   > & {
     setIsTryingToChangeWallet: React.Dispatch<React.SetStateAction<boolean>>;
     payingWalletSigner?: ethers.Signer;
+    appName?: string;
   };
 
 export const ViewPricingDetails = ({
@@ -53,11 +54,16 @@ export const ViewPricingDetails = ({
   setUpUserPayingWalletSigner,
   locale,
   sdkClientSecret,
+  appName,
   options: _options,
 }: ViewPricingDetailsProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
-  const { appName } = usePaperSDKContext();
+  const { appName: appNameContext } = usePaperSDKContext();
+  const appNameToUse = useMemo(
+    () => appName || appNameContext,
+    [appName, appNameContext],
+  );
   const { chainId } = useAccount({
     signer,
   });
@@ -77,7 +83,7 @@ export const ViewPricingDetails = ({
   const { checkoutWithEthUrl } = useCheckoutWithEthLink({
     payingWalletSigner: signer,
     sdkClientSecret,
-    appName,
+    appName: appNameToUse,
     locale,
     options,
     receivingWalletType,

@@ -34,6 +34,7 @@ export enum CheckoutWithEthPage {
 type CheckoutWithEthProps = {
   onWalletConnected?: onWalletConnectedType;
   onPageChange?: (currentPage: CheckoutWithEthPage) => void;
+  appName?: string;
 } & Omit<ViewPricingDetailsProps, "setIsTryingToChangeWallet">;
 
 export const CheckoutWithEthInternal = ({
@@ -166,7 +167,13 @@ export const CheckoutWithEth = (
       }),
     ],
   );
-  const { appName } = usePaperSDKContext();
+  const { appName: appNameContext } = usePaperSDKContext();
+
+  const appName = useMemo(
+    () => props.appName || appNameContext,
+    [props.appName, appNameContext],
+  );
+
   const client = useMemo(
     () =>
       createClient({

@@ -34,6 +34,7 @@ interface PayWithCardProps {
   checkoutId: string;
   recipientWalletAddress: string;
   emailAddress: string;
+  appName?: string;
   onPaymentSuccess: (result: PaymentSuccessResult) => void;
   mintMethod?: WriteMethodCallType;
   eligibilityMethod?: ReadMethodCallType;
@@ -54,6 +55,7 @@ export const PayWithCard = <T extends ContractType>({
   checkoutId,
   recipientWalletAddress,
   emailAddress,
+  appName,
   quantity,
   metadata,
   eligibilityMethod,
@@ -67,7 +69,11 @@ export const PayWithCard = <T extends ContractType>({
   locale,
   ...props
 }: CustomContractArgWrapper<PayWithCardProps, T>): React.ReactElement => {
-  const { appName } = usePaperSDKContext();
+  const { appName: appNameContext } = usePaperSDKContext();
+  const appNameToUse = useMemo(
+    () => appName || appNameContext,
+    [appName, appNameContext],
+  );
   const [isCardDetailIframeLoading, setIsCardDetailIframeLoading] =
     useState<boolean>(true);
   const onCardDetailLoad = useCallback(() => {
@@ -168,8 +174,8 @@ export const PayWithCard = <T extends ContractType>({
     );
     payWithCardUrl.searchParams.append("emailAddress", emailAddress);
 
-    if (appName) {
-      payWithCardUrl.searchParams.append("appName", appName);
+    if (appNameToUse) {
+      payWithCardUrl.searchParams.append("appName", appNameToUse);
     }
     if (quantity) {
       payWithCardUrl.searchParams.append("quantity", quantity.toString());
@@ -226,7 +232,7 @@ export const PayWithCard = <T extends ContractType>({
 
     return payWithCardUrl;
   }, [
-    appName,
+    appNameToUse,
     checkoutId,
     recipientWalletAddress,
     emailAddress,
