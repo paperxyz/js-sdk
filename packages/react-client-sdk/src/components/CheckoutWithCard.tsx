@@ -1,4 +1,8 @@
-import type { PaperSDKError, ReviewResult } from "@paperxyz/js-client-sdk";
+import type {
+  PaperSDKError,
+  PriceSummary,
+  ReviewResult,
+} from "@paperxyz/js-client-sdk";
 import { createCheckoutWithCardElement } from "@paperxyz/js-client-sdk";
 import type {
   ICustomizationOptions,
@@ -6,9 +10,9 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { usePaperSDKContext } from "../Provider";
 import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
+import { usePaperSDKContext } from "../Provider";
 import { SpinnerWrapper } from "./common/SpinnerWrapper";
 const packageJson = require("../../package.json");
 
@@ -19,6 +23,7 @@ interface CheckoutWithCardProps {
   onReview?: (result: ReviewResult) => void;
   onError?: (error: PaperSDKError) => void;
   onBeforeModalOpen?: (props: { url: string }) => void;
+  onPriceUpdate?: (priceSummary: PriceSummary) => void;
 
   /**
    * @deprecated No longer used.
@@ -43,6 +48,7 @@ export const CheckoutWithCard = ({
   onReview,
   onError,
   onBeforeModalOpen,
+  onPriceUpdate,
   locale,
 }: CheckoutWithCardProps): React.ReactElement => {
   const { appName } = usePaperSDKContext();
@@ -68,6 +74,7 @@ export const CheckoutWithCard = ({
       onPaymentSuccess,
       onReview,
       onBeforeModalOpen,
+      onPriceUpdate,
       options,
     });
   }, [CheckoutWithCardIframeContainerRef.current]);
