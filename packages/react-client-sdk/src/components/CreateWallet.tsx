@@ -38,10 +38,7 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
 }) => {
   const isChildrenFunction = typeof children === "function";
   const { chainName: chainNameContext } = usePaperSDKContext();
-  const chainNameToUse = useMemo(
-    () => chainName || chainNameContext,
-    [chainName, chainNameContext],
-  );
+  const chainNameToUse = chainName || chainNameContext;
 
   useEffect(() => {
     initialiseCreateWallet({

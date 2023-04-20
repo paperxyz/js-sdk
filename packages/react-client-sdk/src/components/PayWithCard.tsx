@@ -70,10 +70,7 @@ export const PayWithCard = <T extends ContractType>({
   ...props
 }: CustomContractArgWrapper<PayWithCardProps, T>): React.ReactElement => {
   const { appName: appNameContext } = usePaperSDKContext();
-  const appNameToUse = useMemo(
-    () => appName || appNameContext,
-    [appName, appNameContext],
-  );
+  const appNameToUse = appName || appNameContext;
   const [isCardDetailIframeLoading, setIsCardDetailIframeLoading] =
     useState<boolean>(true);
   const onCardDetailLoad = useCallback(() => {

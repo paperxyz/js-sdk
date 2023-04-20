@@ -5,13 +5,7 @@ import type {
   Locale,
 } from "@paperxyz/sdk-common-utilities";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { usePaperSDKContext } from "../Provider";
 import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
@@ -60,10 +54,7 @@ export const CheckoutWithCard = ({
     setIsCardDetailIframeLoading(false);
   }, []);
   const CheckoutWithCardIframeContainerRef = useRef<HTMLDivElement>(null);
-  const appNameToUse = useMemo(
-    () => appName || appNameContext,
-    [appName, appNameContext],
-  );
+  const appNameToUse = appName || appNameContext;
 
   // Handle message events from the popup. Pass along the message to the iframe as well
   useEffect(() => {

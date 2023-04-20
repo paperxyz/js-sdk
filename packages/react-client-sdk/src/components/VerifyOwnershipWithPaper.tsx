@@ -45,10 +45,7 @@ export const VerifyOwnershipWithPaper: React.FC<
     usePaperSDKContext();
   const isChildrenFunction = typeof children === "function";
 
-  const chainNameToUse = useMemo(
-    () => chainName || chainNameContext,
-    [chainName, chainNameContext],
-  );
+  const chainNameToUse = chainName || chainNameContext;
 
   const clientIdToUse = useMemo(
     () => clientId || clientIdContext,

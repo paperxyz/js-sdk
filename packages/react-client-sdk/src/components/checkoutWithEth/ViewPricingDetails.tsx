@@ -60,10 +60,7 @@ export const ViewPricingDetails = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
   const { appName: appNameContext } = usePaperSDKContext();
-  const appNameToUse = useMemo(
-    () => appName || appNameContext,
-    [appName, appNameContext],
-  );
+  const appNameToUse = appName || appNameContext;
   const { chainId } = useAccount({
     signer,
   });

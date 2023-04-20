@@ -92,10 +92,7 @@ export const ViewPricingDetails = <T extends ContractType>({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
   const { appName: appNameContext } = usePaperSDKContext();
-  const appNameToUse = useMemo(
-    () => appName || appNameContext,
-    [appName, appNameContext],
-  );
+  const appNameToUse = appName || appNameContext;
   const { address, connector, chainId } = useAccount({ signer });
   const { sendTransactionAsync, isSendingTransaction } = useSendTransaction({
     signer,
