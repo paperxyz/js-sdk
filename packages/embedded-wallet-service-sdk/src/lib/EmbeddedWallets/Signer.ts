@@ -18,7 +18,7 @@ import type {
   SignedTypedDataReturnType,
 } from "../../interfaces/EmbeddedWallets/Signer";
 
-import { JsonRpcProvider } from "@ethersproject/providers";
+import type { JsonRpcProvider } from "@ethersproject/providers";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 
 export type SignerProcedureTypes = {
