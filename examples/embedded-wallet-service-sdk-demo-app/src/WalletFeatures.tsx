@@ -53,9 +53,11 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
 
   const signMessage = async () => {
     setLoading(Features.SIGN_MESSAGE);
+    // You can override the RPC url to whatever endpoint you need
     const signer = await wallet?.getEthersJsSigner({
-      rpcEndpoint: "mainnet",
+      rpcEndpoint: "https://bsc.blockpi.network/v1/rpc/public",
     });
+    console.log("await signer?.getChainId()", await signer?.getChainId());
     const signedMessage = await signer?.signMessage("hello world");
     onResult({
       signedMessage,
@@ -66,8 +68,9 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
 
   const signTypedDataV4 = async () => {
     setLoading(Features.SIGN_TYPED_DATA);
+    // You can override the RPC url to whatever endpoint you need
     const signer = await wallet?.getEthersJsSigner({
-      rpcEndpoint: "mainnet",
+      rpcEndpoint: "https://eth.llamarpc.com",
     });
     const signedTypedData = await signer?._signTypedData(
       {
