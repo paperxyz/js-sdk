@@ -61,6 +61,7 @@ export interface CheckoutWithCardMessageHandlerArgs {
   onCloseKycModal?: () => void;
   onBeforeModalOpen?: (props: { url: string }) => void;
   onPriceUpdate?: (props: PriceSummary) => void;
+  useAltDomain?: boolean;
 }
 
 export function createCheckoutWithCardMessageHandler({
@@ -193,6 +194,7 @@ export function createCheckoutWithCardElement({
   onReview,
   onBeforeModalOpen,
   onPriceUpdate,
+  useAltDomain = true,
 }: CheckoutWithCardElementArgs) {
   const checkoutWithCardId = "checkout-with-card-iframe";
   const checkoutWithCardMessageHandler = (iframe: HTMLIFrameElement) =>
@@ -204,6 +206,8 @@ export function createCheckoutWithCardElement({
       onPaymentSuccess,
       onReview,
       onBeforeModalOpen,
+      onPriceUpdate,
+      useAltDomain,
     });
 
   const checkoutWithCardUrl = createCheckoutWithCardLink({
@@ -211,6 +215,7 @@ export function createCheckoutWithCardElement({
     appName,
     locale,
     options,
+    useAltDomain,
   });
 
   const paymentElement = new PaperPaymentElement({
