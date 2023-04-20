@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/embedded-wallet-service-wagmi",
   "description": "Wagmi connector for Embedded Wallets by Paper",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
