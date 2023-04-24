@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk
 
+## 0.9.2
+
+### Patch Changes
+
+- 1caa827: Allow setting the RPC URL(s) for CheckoutWithEth
+
 ## 0.9.1
 
 ### Patch Changes
