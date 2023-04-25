@@ -7,6 +7,7 @@ import type {
 export enum AuthProvider {
   PAPER_EMAIL_OTP = "PaperEmailOTP",
   GOOGLE = "Google",
+  TWITTER = "Twitter",
   AUTH0 = "Auth0",
   CUSTOM_JWT = "CustomJWT",
 }
