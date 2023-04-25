@@ -143,7 +143,9 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
     }
     const promise = new Promise<ReturnData>((res, rej) => {
       if (injectRecoveryCode.isInjectRecoveryCode) {
-        const injectRecoveryCodeListener = async (e: MessageEvent) => {
+        const injectRecoveryCodeListener = async (
+          e: MessageEvent<{ type: string; userWalletId: string }>,
+        ) => {
           if (
             e.origin !== getPaperOriginUrl() ||
             e.data.type !== "paper_getRecoveryCode" ||

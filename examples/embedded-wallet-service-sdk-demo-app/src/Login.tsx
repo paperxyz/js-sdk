@@ -22,11 +22,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   const loginWithPaperModal = async () => {
     setIsLoading(true);
     try {
-      const result = await paper?.auth.loginWithPaperModal({
-        getRecoveryCode: async (userWalletId) => {
-          return "tiMvHsKGBYWWEpXO";
-        },
-      });
+      const result = await paper?.auth.loginWithPaperModal();
       console.log(`loginWithPaper result: ${JSON.stringify(result, null, 2)}`);
       onLoginSuccess();
     } catch (e) {
