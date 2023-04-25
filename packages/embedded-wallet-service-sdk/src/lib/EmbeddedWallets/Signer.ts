@@ -13,25 +13,32 @@ import { defineReadOnly } from "@ethersproject/properties";
 import type { ClientIdWithQuerierType } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import type {
   GetAddressReturnType,
-  SignedTypedDataReturnType,
   SignMessageReturnType,
   SignTransactionReturnType,
+  SignedTypedDataReturnType,
 } from "../../interfaces/EmbeddedWallets/Signer";
 
+import type { JsonRpcProvider } from "@ethersproject/providers";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 
 export type SignerProcedureTypes = {
   getAddress: void;
-  signMessage: { message: string | Bytes; chainId: number | undefined };
+  signMessage: {
+    message: string | Bytes;
+    chainId: number;
+    rpcEndpoint: string;
+  };
   signTransaction: {
     transaction: Deferrable<TransactionRequest>;
-    chainId: number | undefined;
+    chainId: number;
+    rpcEndpoint: string;
   };
   signTypedDataV4: {
     domain: TypedDataDomain;
     types: Record<string, Array<TypedDataField>>;
     message: Record<string, unknown>;
-    chainId: number | undefined;
+    chainId: number;
+    rpcEndpoint: string;
   };
   connect: { provider: Provider };
 };
@@ -39,7 +46,8 @@ export type SignerProcedureTypes = {
 export class EthersSigner extends Signer {
   protected querier: EmbeddedWalletIframeCommunicator<SignerProcedureTypes>;
   protected clientId: string;
-  private DEFAULT_ETHEREUM_CHAIN_ID = 1;
+  protected endpoint: string;
+  private DEFAULT_ETHEREUM_CHAIN_ID = 5;
   constructor({
     provider,
     clientId,
@@ -50,6 +58,8 @@ export class EthersSigner extends Signer {
     super();
     this.clientId = clientId;
     this.querier = querier;
+    // we try to extract a url if possible
+    this.endpoint = (provider as JsonRpcProvider).connection?.url;
     defineReadOnly(this, "provider", provider);
   }
 
@@ -62,6 +72,11 @@ export class EthersSigner extends Signer {
   }
 
   override async signMessage(message: string | Bytes): Promise<string> {
+    const network = await this.provider?.getNetwork();
+    if (network) {
+      network._defaultProvider;
+    }
+
     const { signedMessage } = await this.querier.call<SignMessageReturnType>({
       procedureName: "signMessage",
       params: {
@@ -69,6 +84,7 @@ export class EthersSigner extends Signer {
         chainId:
           (await this.provider?.getNetwork())?.chainId ??
           this.DEFAULT_ETHEREUM_CHAIN_ID,
+        rpcEndpoint: this.endpoint,
       },
     });
     return signedMessage;
@@ -85,6 +101,7 @@ export class EthersSigner extends Signer {
           chainId:
             (await this.provider?.getNetwork())?.chainId ??
             this.DEFAULT_ETHEREUM_CHAIN_ID,
+          rpcEndpoint: this.endpoint,
         },
       });
     return signedTransaction;
@@ -105,6 +122,7 @@ export class EthersSigner extends Signer {
           chainId:
             (await this.provider?.getNetwork())?.chainId ??
             this.DEFAULT_ETHEREUM_CHAIN_ID,
+          rpcEndpoint: this.endpoint,
         },
       });
     return signedTypedData;

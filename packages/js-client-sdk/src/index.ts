@@ -1,9 +1,10 @@
-// default customization options and base urls
+// Customization options and base urls
 export * from "./constants/settings";
-//types
+// Types
 export * from "./interfaces/CheckoutWithCard";
 export * from "./interfaces/PaperSDKError";
 export * from "./interfaces/PaperUser";
+export * from "./interfaces/PriceSummary";
 // Components
 export * from "./lib/CheckoutWithCard";
 export * from "./lib/CheckoutWithEth";

@@ -22,7 +22,7 @@ export type ClientIdWithQuerierAndChainType = ClientIdWithQuerierType & {
 
 // Auth Types
 export type AuthDetails = {
-  email: string;
+  email?: string;
   userWalletId: string;
   recoveryCode?: string;
 };

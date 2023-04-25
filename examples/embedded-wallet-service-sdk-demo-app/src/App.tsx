@@ -32,7 +32,7 @@ function App() {
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
-      chain: "Mumbai",
+      chain: "Goerli",
     });
     setPaper(paper);
   }, []);
