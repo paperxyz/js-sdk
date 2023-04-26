@@ -1,19 +1,12 @@
 import { css } from "@emotion/css";
 import { Transition } from "@headlessui/react";
-import type {
-  PaperSDKError
-} from "@paperxyz/js-client-sdk";
-import {
-  PAPER_APP_URL,
-  PayWithCryptoErrorCode,
-} from "@paperxyz/js-client-sdk";
+import type { PaperSDKError } from "@paperxyz/js-client-sdk";
+import { PAPER_APP_URL, PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
 import type {
   ICustomizationOptions,
-  Locale
+  Locale,
 } from "@paperxyz/sdk-common-utilities";
-import {
-  DEFAULT_BRAND_OPTIONS
-} from "@paperxyz/sdk-common-utilities";
+import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
 import React, {
   useCallback,
@@ -27,11 +20,9 @@ import type {
   ContractType,
   CustomContractArgWrapper,
   ReadMethodCallType,
-  WriteMethodCallType
+  WriteMethodCallType,
 } from "../../interfaces/CustomContract";
-import {
-  fetchCustomContractArgsFromProps,
-} from "../../interfaces/CustomContract";
+import { fetchCustomContractArgsFromProps } from "../../interfaces/CustomContract";
 import { WalletType } from "../../interfaces/WalletTypes";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
@@ -70,6 +61,7 @@ export interface ViewPricingDetailsProps {
   showConnectWalletOptions?: boolean;
   options?: ICustomizationOptions;
   locale?: Locale;
+  appName?: string;
 }
 
 export const ViewPricingDetails = <T extends ContractType>({
@@ -92,14 +84,15 @@ export const ViewPricingDetails = <T extends ContractType>({
     ...DEFAULT_BRAND_OPTIONS,
   },
   locale,
+  appName,
   ...props
 }: CustomContractArgWrapper<ViewPricingDetailsProps, T>) => {
   const { contractType, contractArgs } =
     fetchCustomContractArgsFromProps(props);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
-  const { appName } = usePaperSDKContext();
-
+  const { appName: appNameContext } = usePaperSDKContext();
+  const appNameToUse = appName || appNameContext;
   const { address, connector, chainId } = useAccount({ signer });
   const { sendTransactionAsync, isSendingTransaction } = useSendTransaction({
     signer,
@@ -266,8 +259,8 @@ export const ViewPricingDetails = <T extends ContractType>({
     if (showConnectWalletOptions) {
       payWithCryptoUrl.searchParams.append("showConnectWalletOptions", "true");
     }
-    if (appName) {
-      payWithCryptoUrl.searchParams.append("appName", appName);
+    if (appNameToUse) {
+      payWithCryptoUrl.searchParams.append("appName", appNameToUse);
     }
     if (emailAddress) {
       payWithCryptoUrl.searchParams.append("emailAddress", emailAddress);
@@ -323,7 +316,7 @@ export const ViewPricingDetails = <T extends ContractType>({
     recipientWalletAddress,
     address,
     checkoutId,
-    appName,
+    appNameToUse,
     emailAddress,
     quantity,
     metadataStringified,

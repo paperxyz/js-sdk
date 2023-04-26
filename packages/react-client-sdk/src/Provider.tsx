@@ -22,6 +22,7 @@ export interface PaperProviderProps {
 }
 
 /**
+ * @deprecated Pass required data to individual components as props instead
  * @typedef PaperProviderProps
  * @type {object}
  * @property {string} appName - The name used to display

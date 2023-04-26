@@ -1,6 +1,9 @@
 import type { PaperSDKError, PaperUser } from "@paperxyz/js-client-sdk";
 import { createWallet, initialiseCreateWallet } from "@paperxyz/js-client-sdk";
-import type { Locale } from "@paperxyz/sdk-common-utilities";
+import type {
+  Locale,
+  SupportedChainName,
+} from "@paperxyz/sdk-common-utilities";
 import React, { useEffect } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { Button } from "./common/Button";
@@ -11,6 +14,7 @@ interface CreateWalletProps {
   onSuccess: (user: PaperUser) => void;
   onEmailVerificationInitiated?: () => void;
   onError?: (error: PaperSDKError) => void;
+  chainName?: SupportedChainName;
   redirectUrl?: string;
   clientId?: string;
   locale?: Locale;
@@ -27,12 +31,14 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
   onSuccess,
   onEmailVerificationInitiated,
   onError,
+  chainName,
   locale,
   clientId,
   children,
 }) => {
-  const { chainName } = usePaperSDKContext();
   const isChildrenFunction = typeof children === "function";
+  const { chainName: chainNameContext } = usePaperSDKContext();
+  const chainNameToUse = chainName || chainNameContext;
 
   useEffect(() => {
     initialiseCreateWallet({
@@ -47,7 +53,7 @@ export const CreateWallet: React.FC<CreateWalletProps> = ({
 
   const executeVerifyEmail = async (emailAddressOverride?: string) => {
     await createWallet({
-      chainName,
+      chainName: chainNameToUse,
       emailAddress: emailAddressOverride ? emailAddressOverride : emailAddress,
       clientId,
       redirectUrl,

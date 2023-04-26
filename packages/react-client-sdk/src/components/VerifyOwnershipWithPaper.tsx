@@ -1,10 +1,11 @@
 import { css } from "@emotion/css";
 import type { PaperSDKError } from "@paperxyz/js-client-sdk";
 import { PAPER_APP_URL, PaperSDKErrorCode } from "@paperxyz/js-client-sdk";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { usePaperSDKContext } from "../Provider";
 import { openCenteredPopup } from "../lib/utils/popup";
 import { Button } from "./common/Button";
+import type { SupportedChainName } from "@paperxyz/sdk-common-utilities";
 const packageJson = require("../../package.json");
 
 interface VerifyOwnershipWithPaperProps {
@@ -18,6 +19,8 @@ interface VerifyOwnershipWithPaperProps {
   }) => React.ReactNode | React.ReactNode;
   redirectUrl?: string;
   className?: string;
+  chainName?: SupportedChainName;
+  clientId?: string;
 }
 
 const enum VERIFY_OWNERSHIP_WITH_PAPER_EVENT_TYPE {
@@ -35,9 +38,15 @@ export const VerifyOwnershipWithPaper: React.FC<
   className,
   children,
   redirectUrl,
+  chainName,
+  clientId,
 }) => {
-  const { chainName, clientId } = usePaperSDKContext();
+  const { chainName: chainNameContext, clientId: clientIdContext } =
+    usePaperSDKContext();
   const isChildrenFunction = typeof children === "function";
+
+  const chainNameToUse = chainName || chainNameContext;
+  const clientIdToUse = clientId || clientIdContext;
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -74,8 +83,8 @@ export const VerifyOwnershipWithPaper: React.FC<
   }, []);
 
   const url = new URL("/sdk/v1/login-with-paper", PAPER_APP_URL);
-  url.searchParams.append("chainName", chainName);
-  url.searchParams.append("clientId", clientId);
+  url.searchParams.append("chainName", chainNameToUse);
+  url.searchParams.append("clientId", clientIdToUse);
   url.searchParams.append("redirectUrl", redirectUrl || "");
   const onClick = () => {
     const loginWindow = openCenteredPopup({
