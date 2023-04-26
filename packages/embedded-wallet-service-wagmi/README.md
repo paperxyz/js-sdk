@@ -48,7 +48,7 @@ const client = createClient({
 
 // Wrap your application with WagmiConfig.
 function App() {
-  return <WagmiConfig client={client}>// ...your app</WagmiConfig>;
+  return <WagmiConfig client={client}>/** ...your app */</WagmiConfig>;
 }
 ```
 

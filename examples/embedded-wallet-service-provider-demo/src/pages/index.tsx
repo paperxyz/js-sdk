@@ -13,11 +13,10 @@ const ProviderDemo = () => {
         clientId: "992d8417-9cd1-443c-bae3-f9eac1d64767",
         chain: "Polygon",
         name: "Acme Inc.",
-        iconUrl: "https://withpaper.com/favicon.ico",
-        iconBackground: "#000000",
+        iconUrl: "https://withpaper.com/icons/paper-embedded-wallet-black.png",
+        iconBackground: "#fc03e3",
       }}
       modalOptions={{
-        modalSize: "wide",
         theme: darkTheme({
           accentColor: "#7b3fe4",
           accentColorForeground: "white",
