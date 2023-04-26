@@ -8,8 +8,8 @@ import type {
   LogoutReturnType,
   SendEmailOtpReturnType,
 } from "../interfaces/EmbeddedWallets/EmbeddedWallets";
-import type { EmbeddedWalletIframeCommunicator } from "../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 import { LocalStorage } from "../utils/Storage/LocalStorage";
+import type { EmbeddedWalletIframeCommunicator } from "../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 
 export type AuthQuerierTypes = {
   loginWithJwtAuthCallback: {
@@ -118,12 +118,18 @@ export class Auth {
    *
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
-  async loginWithPaperModal(): Promise<AuthLoginReturnType> {
+  async loginWithPaperModal(args?: {
+    getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
+  }): Promise<AuthLoginReturnType> {
     await this.preLogin();
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
       params: undefined,
       showIframe: true,
+      injectRecoveryCode: {
+        isInjectRecoveryCode: true,
+        getRecoveryCode: args?.getRecoveryCode,
+      },
     });
     return this.postLogin(result);
   }
@@ -183,6 +189,9 @@ export class Auth {
       procedureName: "loginWithPaperModal",
       params: { email, recoveryCode },
       showIframe: true,
+      injectRecoveryCode: {
+        isInjectRecoveryCode: true,
+      },
     });
     return this.postLogin(result);
   }
@@ -244,6 +253,9 @@ export class Auth {
     const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "verifyPaperEmailLoginOtp",
       params: { email, otp, recoveryCode },
+      injectRecoveryCode: {
+        isInjectRecoveryCode: true,
+      },
     });
     return this.postLogin(result);
   }

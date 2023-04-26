@@ -123,10 +123,15 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
     procedureName,
     params,
     showIframe = false,
+    injectRecoveryCode = { isInjectRecoveryCode: false },
   }: {
     procedureName: keyof T;
     params: T[keyof T];
     showIframe?: boolean;
+    injectRecoveryCode?: {
+      getRecoveryCode?: (userWalletId: string) => Promise<string | undefined>;
+      isInjectRecoveryCode: boolean;
+    };
   }) {
     while (!isIframeLoaded.get(this.iframe.src)) {
       await sleep(this.POLLING_INTERVAL_SECONDS);
@@ -137,6 +142,29 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
       await sleep(0.005);
     }
     const promise = new Promise<ReturnData>((res, rej) => {
+      if (injectRecoveryCode.isInjectRecoveryCode) {
+        const injectRecoveryCodeListener = async (
+          e: MessageEvent<{ type: string; userWalletId: string }>,
+        ) => {
+          if (
+            e.origin !== getPaperOriginUrl() ||
+            e.data.type !== "paper_getRecoveryCode" ||
+            typeof e.data.userWalletId !== "string"
+          ) {
+            return;
+          }
+          const recoveryCode = await injectRecoveryCode.getRecoveryCode?.(
+            e.data.userWalletId,
+          );
+          this.iframe.contentWindow?.postMessage(
+            { type: "paper_getRecoveryCode_response", recoveryCode },
+            getPaperOriginUrl(),
+          );
+          window.removeEventListener("message", injectRecoveryCodeListener);
+        };
+        window.addEventListener("message", injectRecoveryCodeListener);
+      }
+
       const channel = new MessageChannel();
       channel.port1.onmessage = async (
         event: MessageEvent<MessageType<ReturnData>>,

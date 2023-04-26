@@ -1,5 +1,51 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.0.0
+
+### Major Changes
+
+- 217c117: BREAKING(`user.authDetails`): `email` is now optionally returned.
+  All existing auth methods should continue to always return emails. This is to set up for future auth methods not based on emails.
+
+  Resolution:
+
+  ```typescript
+  // Before
+  const user = await paper.auth.loginWithPaperModal();
+  user.authDetails.email; // string
+
+  // After
+  const user = await paper.auth.loginWithPaperModal();
+  user.authDetails.email; // string | undefined
+  ```
+
+  feat(recovery-code free): Add ability for developers to inject recovery code in the regular `loginWithPaperModal` method.
+
+  Usage:
+
+  ```typescript
+  await paper.auth.loginWithPaperModal({
+    getRecoveryCode: async (userWalletId: string) => {
+      // grab recoveryCode for `userWalletId` here.
+      const recoveryCode = "";
+      return recoveryCode;
+    },
+  });
+  ```
+
+## 0.2.0
+
+### Minor Changes
+
+- 7440c1b: feat(embedded-wallet-service-sdk): Add ability to support any arbitrary evm chain via 'rpcEndpoint`override when calling`userwallet.getEthersJsSigner({ rpcEndpoint: "" })`
+
+  chore(sdk-common-utilities): update public rpc endpoints to more generous ones
+
+### Patch Changes
+
+- Updated dependencies [7440c1b]
+  - @paperxyz/sdk-common-utilities@0.0.3
+
 ## 0.1.0
 
 ### Minor Changes

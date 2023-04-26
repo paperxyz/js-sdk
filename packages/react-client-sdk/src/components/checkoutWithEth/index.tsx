@@ -3,23 +3,24 @@ import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
 import { createClient as createClientCore } from "@wagmi/core";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  WagmiConfig,
   chain,
   configureChains,
   createClient,
   useSigner,
+  WagmiConfig,
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { usePaperSDKContext } from "../../Provider";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { publicProvider } from "wagmi/providers/public";
 import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
 import { WalletType } from "../../interfaces/WalletTypes";
 import {
   commonTransitionProps,
   transitionContainer,
 } from "../../lib/utils/styles";
+import { usePaperSDKContext } from "../../Provider";
 import { ConnectWallet } from "../common/ConnectWallet";
 import type { ViewPricingDetailsProps } from "./ViewPricingDetails";
 import { ViewPricingDetails } from "./ViewPricingDetails";
@@ -34,7 +35,7 @@ export enum CheckoutWithEthPage {
 type CheckoutWithEthProps = {
   onWalletConnected?: onWalletConnectedType;
   onPageChange?: (currentPage: CheckoutWithEthPage) => void;
-  appName?: string;
+  rpcUrls?: string[];
 } & Omit<ViewPricingDetailsProps, "setIsTryingToChangeWallet">;
 
 export const CheckoutWithEthInternal = ({
@@ -159,19 +160,20 @@ export const CheckoutWithEthInternal = ({
 export const CheckoutWithEth = (
   props: CheckoutWithEthProps,
 ): React.ReactElement => {
+  const { appName } = usePaperSDKContext();
+
+  let providers = [publicProvider()];
+  if (props.rpcUrls) {
+    // Use the RPC URLs provided by the developer instead of a public, rate-limited one.
+    providers = props.rpcUrls.map((http) =>
+      jsonRpcProvider({
+        rpc: (chain) => ({ http }),
+      }),
+    );
+  }
   const { chains, provider } = configureChains(
     [chain.mainnet, chain.goerli],
-    [
-      alchemyProvider({
-        apiKey: "k5d8RoDGOyxZmVWy2UPNowQlqFoZM3TX",
-      }),
-    ],
-  );
-  const { appName: appNameContext } = usePaperSDKContext();
-
-  const appName = useMemo(
-    () => props.appName || appNameContext,
-    [props.appName, appNameContext],
+    providers,
   );
 
   const client = useMemo(

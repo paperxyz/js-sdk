@@ -1,5 +1,19 @@
 # @paperxyz/embedded-wallet-service-wagmi
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [217c117]
+  - @paperxyz/embedded-wallet-service-sdk@1.0.0
+
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [7440c1b]
+  - @paperxyz/embedded-wallet-service-sdk@0.2.0
+
 ## 0.0.4
 
 ### Patch Changes
