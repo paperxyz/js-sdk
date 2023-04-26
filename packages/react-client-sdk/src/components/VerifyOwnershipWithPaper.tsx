@@ -46,7 +46,6 @@ export const VerifyOwnershipWithPaper: React.FC<
   const isChildrenFunction = typeof children === "function";
 
   const chainNameToUse = chainName || chainNameContext;
-
   const clientIdToUse = clientId || clientIdContext;
 
   useEffect(() => {
