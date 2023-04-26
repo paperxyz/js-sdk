@@ -3,24 +3,24 @@ import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
 import { createClient as createClientCore } from "@wagmi/core";
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  WagmiConfig,
   chain,
   configureChains,
   createClient,
   useSigner,
-  WagmiConfig,
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
+import { usePaperSDKContext } from "../../Provider";
 import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
 import { WalletType } from "../../interfaces/WalletTypes";
 import {
   commonTransitionProps,
   transitionContainer,
 } from "../../lib/utils/styles";
-import { usePaperSDKContext } from "../../Provider";
 import { ConnectWallet } from "../common/ConnectWallet";
 import type { ViewPricingDetailsProps } from "./ViewPricingDetails";
 import { ViewPricingDetails } from "./ViewPricingDetails";
@@ -175,7 +175,6 @@ export const CheckoutWithEth = (
     [chain.mainnet, chain.goerli],
     providers,
   );
-
   const client = useMemo(
     () =>
       createClient({
