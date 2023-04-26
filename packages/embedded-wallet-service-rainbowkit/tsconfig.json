@@ -1,8 +1,5 @@
 {
-  "compilerOptions": {
-    "esModuleInterop": true
-  },
-  "extends": "@paperxyz/tsconfig/js-library.json",
-  "include": ["src", ".eslintrc.js"],
+  "extends": "@paperxyz/tsconfig/react-library.json",
+  "include": ["src", ".eslintrc.cjs"],
   "exclude": ["node_modules", "dist"]
 }

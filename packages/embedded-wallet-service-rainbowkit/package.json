@@ -3,12 +3,18 @@
   "description": "RainbowKit wallet for Embedded Wallets by Paper",
   "version": "0.0.2",
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist/**/*"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "keywords": [
     "embedded wallets",
     "crypto",
@@ -21,30 +27,37 @@
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
   },
-  "homepage": "https://github.com/paperxyz/js-sdk",
+  "homepage": "https://docs.withpaper.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
-    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
+    "dev-ews-connectors": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --env.ESM_ONLY true --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build-package-ews-connectors": "yarn build",
-    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
+    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version --env.ESM_ONLY true",
     "clean": "rm -rf .turbo node_modules dist",
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/embedded-wallet-service-rainbowkit"
   },
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
-    "eslint-config-paperxyz": "*"
+    "@rainbow-me/rainbowkit": "^0.12.8",
+    "eslint-config-paperxyz": "*",
+    "ethers": "^5.7.2",
+    "typescript": "^4.7.4",
+    "wagmi": "^0.12.9"
   },
   "dependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "@paperxyz/embedded-wallet-service-wagmi": "*",
-    "@rainbow-me/rainbowkit": "^0.12.7",
-    "wagmi": "^0.12.9"
+    "@paperxyz/embedded-wallet-service-wagmi": "*"
+  },
+  "peerDependencies": {
+    "@rainbow-me/rainbowkit": "^0.12",
+    "ethers": "^5",
+    "wagmi": "^0.12"
   },
   "publishConfig": {
     "access": "public"
