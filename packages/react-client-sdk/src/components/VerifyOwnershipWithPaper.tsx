@@ -47,10 +47,7 @@ export const VerifyOwnershipWithPaper: React.FC<
 
   const chainNameToUse = chainName || chainNameContext;
 
-  const clientIdToUse = useMemo(
-    () => clientId || clientIdContext,
-    [clientId, clientIdContext],
-  );
+  const clientIdToUse = clientId || clientIdContext;
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
