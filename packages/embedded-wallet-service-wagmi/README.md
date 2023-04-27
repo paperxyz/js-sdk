@@ -12,7 +12,7 @@
 [Paper](https://withpaper.com) is a developer platform for NFT commerce that
 easily onboards users without a wallet or cryptocurrency.
 
-## [Documentation](https://docs.paper.xyz/docs/embedded-wallets-service-overview)
+## [Documentation](https://docs.withpaper.com/reference/embedded-wallet-service-overview)
 
 ## Installation
 
@@ -60,4 +60,4 @@ The list of chains your application may use.
 
 ### options
 
-The argument passed into the `PaperEmbeddedWalletSdk` constructor. See [PaperEmbeddedWalletSdk](https://docs.withpaper.com/docs/embedded-wallet-service-sdk-reference#paperembeddedwalletsdk).
+The argument passed into the `PaperEmbeddedWalletSdk` constructor. See [PaperEmbeddedWalletSdk](https://docs.withpaper.com/reference/embedded-wallet-service-sdk-reference#paperembeddedwalletsdk).
