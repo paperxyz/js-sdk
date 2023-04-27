@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-wagmi
 
+## 2.1.0
+
+### Minor Changes
+
+- 9b0448e: Initial alpha release
+
 ## 2.0.0
 
 ### Patch Changes
