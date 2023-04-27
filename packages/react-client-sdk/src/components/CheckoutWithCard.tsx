@@ -12,7 +12,6 @@ import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
-import { usePaperSDKContext } from "../Provider";
 import { SpinnerWrapper } from "./common/SpinnerWrapper";
 const packageJson = require("../../package.json");
 
@@ -53,14 +52,12 @@ export const CheckoutWithCard = ({
   onPriceUpdate,
   locale,
 }: CheckoutWithCardProps): React.ReactElement => {
-  const { appName: appNameContext } = usePaperSDKContext();
   const [isCardDetailIframeLoading, setIsCardDetailIframeLoading] =
     useState<boolean>(true);
   const onCardDetailLoad = useCallback(() => {
     setIsCardDetailIframeLoading(false);
   }, []);
   const CheckoutWithCardIframeContainerRef = useRef<HTMLDivElement>(null);
-  const appNameToUse = appName || appNameContext;
 
   // Handle message events from the popup. Pass along the message to the iframe as well
   useEffect(() => {
@@ -69,7 +66,7 @@ export const CheckoutWithCard = ({
     }
     createCheckoutWithCardElement({
       sdkClientSecret,
-      appName: appNameToUse,
+      appName,
       elementOrId: CheckoutWithCardIframeContainerRef.current,
       locale,
       onError,
