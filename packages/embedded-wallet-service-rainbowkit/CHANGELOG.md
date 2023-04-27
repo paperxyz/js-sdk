@@ -1,5 +1,16 @@
 # @paperxyz/embedded-wallet-service-rainbowkit
 
+## 0.1.0
+
+### Minor Changes
+
+- 9b0448e: Initial alpha release
+
+### Patch Changes
+
+- Updated dependencies [9b0448e]
+  - @paperxyz/embedded-wallet-service-wagmi@2.1.0
+
 ## 0.0.2
 
 ### Patch Changes

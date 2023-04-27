@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/embedded-wallet-service-rainbowkit",
   "description": "RainbowKit wallet for Embedded Wallets by Paper",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
