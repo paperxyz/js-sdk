@@ -20,6 +20,7 @@ interface Props {
 }
 
 enum Features {
+  REVEAL_PRIVATE_KEY = "REVEAL_PRIVATE_KEY",
   GET_WALLET = "GET_WALLET",
   SIGN_MESSAGE = "SIGN_MESSAGE",
   SIGN_TYPED_DATA = "SIGN_TYPED_DATA",
@@ -39,6 +40,15 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
       ...(prevState || {}),
       ...result,
     }));
+  };
+
+  const revealPrivateKey = async () => {
+    try {
+      setLoading(Features.REVEAL_PRIVATE_KEY);
+      await wallet?.exportPrivateKey();
+    } finally {
+      setLoading(null);
+    }
   };
   const getAddress = async () => {
     setLoading(Features.GET_WALLET);
@@ -137,6 +147,13 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
         <Divider my={4} />
         <Stack spacing={4} divider={<Divider />}>
           <Stack>
+            <Button
+              onClick={revealPrivateKey}
+              colorScheme="blue"
+              isLoading={loading === Features.REVEAL_PRIVATE_KEY}
+            >
+              Reveal Private Key
+            </Button>
             <Button
               onClick={getAddress}
               colorScheme="blue"

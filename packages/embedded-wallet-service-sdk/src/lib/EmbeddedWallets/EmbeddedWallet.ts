@@ -11,19 +11,14 @@ import type {
 } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import { UserWalletStatus } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 
-import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 import { LocalStorage } from "../../utils/Storage/LocalStorage";
+import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 import { GaslessTransactionMaker } from "./GaslessTransactionMaker";
 import { EthersSigner } from "./Signer";
 
 export type WalletManagementTypes = {
-  createWallet: void;
-  setUpNewDevice: void;
   getUserStatus: void;
-};
-export type WalletManagementUiTypes = {
-  createWalletUi: void;
-  setUpNewDeviceUi: void;
+  exportPrivateKeyModal: void;
 };
 
 export type EmbeddedWalletInternalHelperType = { showUi: boolean };
@@ -31,9 +26,7 @@ export type EmbeddedWalletInternalHelperType = { showUi: boolean };
 export class EmbeddedWallet {
   protected clientId: string;
   protected chain: Chain;
-  protected walletManagerQuerier: EmbeddedWalletIframeCommunicator<
-    WalletManagementTypes & WalletManagementUiTypes
-  >;
+  protected walletManagerQuerier: EmbeddedWalletIframeCommunicator<WalletManagementTypes>;
   protected localStorage: LocalStorage;
 
   public gasless: GaslessTransactionMaker;
@@ -176,5 +169,13 @@ export class EmbeddedWallet {
       querier: this.walletManagerQuerier,
     });
     return signer;
+  }
+
+  async exportPrivateKey() {
+    await this.walletManagerQuerier.call<void>({
+      procedureName: "exportPrivateKeyModal",
+      params: undefined,
+      showIframe: true,
+    });
   }
 }
