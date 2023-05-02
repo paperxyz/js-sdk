@@ -10,11 +10,11 @@
     "dist/**/*"
   ],
   "keywords": [
-    "embedded wallets",
     "crypto",
     "wallet",
     "paper sdk",
-    "crypto wallet"
+    "crypto checkout",
+    "NFT on-ramp"
   ],
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
