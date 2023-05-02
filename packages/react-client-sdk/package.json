@@ -50,8 +50,6 @@
     "@emotion/css": "11.10.5",
     "@headlessui/react": "1.7.6",
     "@paperxyz/js-client-sdk": "^0.2.0",
-    "@paperxyz/sdk-common-utilities": "^0.0.3",
-    "ethers": "^5.7.2",
-    "wagmi": "0.7.15"
+    "@paperxyz/sdk-common-utilities": "^0.0.3"
   }
 }
