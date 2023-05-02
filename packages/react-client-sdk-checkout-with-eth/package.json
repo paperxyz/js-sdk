@@ -26,11 +26,11 @@
   },
   "author": "Paper <support@withpaper.com>",
   "scripts": {
-    "dev-ews": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
+    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint \"src/**/*.ts*\"",
     "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
-    "build-package-ews": "yarn build",
+    "build-package-checkout": "yarn build",
     "clean": "rm -rf .turbo node_modules dist",
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/react-client-sdk-checkout-with-eth"
   },
