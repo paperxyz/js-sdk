@@ -1,8 +1,3 @@
-<p align="center">
-    <br />
-    <a href="https://withpaper.com"><img src="./assets/paper-logo.svg" width="50" alt="Paper"/></a>
-    <br />
-</p>
 <h1 align="center">Paper React SDK Checkout With Eth</h1>
 <p align="center">
     <a href="https://www.npmjs.com/package/@paperxyz/react-client-sdk-checkout-with-eth"><img src="https://img.shields.io/github/package-json/v/paperxyz/react-client-sdk-checkout-with-eth?color=red&label=npm&logo=npm" alt="npm version"/></a>
