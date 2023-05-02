@@ -1,0 +1,57 @@
+{
+  "name": "@paperxyz/react-client-sdk-checkout-with-eth",
+  "description": "CheckoutwithEth React Client SDK",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "crypto",
+    "wallet",
+    "paper sdk",
+    "crypto checkout",
+    "NFT on-ramp"
+  ],
+  "bugs": {
+    "url": "https://github.com/paperxyz/js-sdk/issues"
+  },
+  "homepage": "https://github.com/paperxyz/js-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperxyz/js-sdk.git"
+  },
+  "author": "Paper <support@withpaper.com>",
+  "scripts": {
+    "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "build": "tsup src/index.ts --env.NODE_ENV production --env.SDK_VERSION $npm_package_version",
+    "build-package-checkout": "yarn build",
+    "clean": "rm -rf .turbo node_modules dist",
+    "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/react-client-sdk-checkout-with-eth"
+  },
+  "devDependencies": {
+    "@paperxyz/tsconfig": "*",
+    "@types/node": "^18.7.11",
+    "@types/react": "18.0.26",
+    "eslint-config-paperxyz": "*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@emotion/css": "11.10.5",
+    "@headlessui/react": "1.7.6",
+    "@paperxyz/js-client-sdk": "^0.2.0",
+    "@paperxyz/sdk-common-utilities": "^0.0.3",
+    "ethers": "^5.7.2",
+    "wagmi": "0.7.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
