@@ -34,6 +34,10 @@
     "clean": "rm -rf .turbo node_modules dist",
     "prepare": "cd ../../ && node ./scripts/postInstall && cd ./packages/react-client-sdk-checkout-with-eth"
   },
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
   "devDependencies": {
     "@paperxyz/tsconfig": "*",
     "@types/node": "^18.7.11",
