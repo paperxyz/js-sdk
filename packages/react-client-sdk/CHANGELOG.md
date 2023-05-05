@@ -1,5 +1,15 @@
 # @paperxyz/react-client-sdk
 
+## 1.0.0
+
+### Major Changes
+
+- 5186279: chore (react-client-sdk): Remove dependency on `wagmi` and `ethers` causing build errors
+
+  BREAKING: `CheckoutWithEth` and `PayWithCrypto` is no longer available
+
+  We have released an alternate package to grab if you want to keep using `CheckoutWithEth`. Install it via `npm i @paperxyz/react-client-sdk-checkout-with-eth`
+
 ## 0.9.3
 
 ### Patch Changes
