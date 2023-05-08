@@ -8,6 +8,7 @@ export enum AuthProvider {
   PAPER_EMAIL_OTP = "PaperEmailOTP",
   GOOGLE = "Google",
   TWITTER = "Twitter",
+  COGNITO = "Cognito",
   AUTH0 = "Auth0",
   CUSTOM_JWT = "CustomJWT",
 }
