@@ -1,5 +1,12 @@
 # @paperxyz/react-client-sdk
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [5077a7c]
+  - @paperxyz/sdk-common-utilities@0.0.4
+
 ## 1.0.0
 
 ### Major Changes

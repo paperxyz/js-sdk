@@ -1,5 +1,12 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [5077a7c]
+  - @paperxyz/sdk-common-utilities@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
