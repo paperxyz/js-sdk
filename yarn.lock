@@ -4534,6 +4534,13 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@fingerprintjs/fingerprintjs@^3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs/-/fingerprintjs-3.4.1.tgz#d13228a4cf520f271322113d2179c194cdc34283"
+  integrity sha512-i3TqlaIdF+4qDHP6OStMtLXCnvnoo2C156rNPm9/kIglUtnLAF45+sGkZZmVQB+58dDF0mNpaiqvKHNSR8J1Hg==
+  dependencies:
+    tslib "^2.4.1"
+
 "@floating-ui/core@^0.7.3":
   version "0.7.3"
   resolved "https://registry.npmjs.org/@floating-ui/core/-/core-0.7.3.tgz"
@@ -6726,6 +6733,18 @@
     "@ethersproject/providers" "^5.7.2"
     "@paperxyz/sdk-common-utilities" "*"
 
+"@paperxyz/react-client-sdk-checkout-with-eth@^0.0.0-wy-update-checkout-with-eth-package-20230505223136":
+  version "0.0.0-wy-update-checkout-with-eth-package-20230505223136"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-wy-update-checkout-with-eth-package-20230505223136.tgz#632244e8d19ec071fa4ca567f1ca0c2ebce5ea4f"
+  integrity sha512-potz43RQZcqGSvqQJeaLc4DvXDta+GsaV961RYgRH9+81OzEbfPYA26XaHFGTIJNR+cAAgg5TueOz9Tex/HLxg==
+  dependencies:
+    "@emotion/css" "11.10.5"
+    "@headlessui/react" "1.7.6"
+    "@paperxyz/js-client-sdk" "^0.2.0"
+    "@paperxyz/sdk-common-utilities" "^0.0.3"
+    ethers "^5.7.2"
+    wagmi "0.7.15"
+
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@pdf-lib/standard-fonts/-/standard-fonts-1.0.0.tgz"
@@ -8707,6 +8726,14 @@
     lodash-es "^4.17.21"
     loglevel "^1.8.1"
     pump "^3.0.0"
+
+"@trench/sdk@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@trench/sdk/-/sdk-0.1.0.tgz#4c0b3c6e77a8d8f6941c4cc328b1a372ca8044b1"
+  integrity sha512-workas2sXs8LA5fRd2trNVf9Nn7rib8aWW1wMRQCJpG/7EOadX0KTCT1rR6IYiXIzpeZOCLxhpCodVbD6skaTw==
+  dependencies:
+    "@fingerprintjs/fingerprintjs" "^3.4.1"
+    lodash "^4.17.21"
 
 "@tryghost/content-api@^1.11.7":
   version "1.11.7"
@@ -29243,7 +29270,7 @@ tslib@2.4.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
-tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0:
+tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.4.1, tslib@^2.5.0:
   version "2.5.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.5.0.tgz"
   integrity sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==
