@@ -10,7 +10,6 @@ export * from "./components/CheckoutWithCard";
 export * from "./components/CreateWallet";
 export * from "./components/LoginWithPaper";
 export * from "./components/PaperCheckout";
-export * from "./components/PayWithCard";
 export * from "./components/VerifyOwnershipWithPaper";
 export * from "./interfaces/CustomContract";
 export * from "./interfaces/PaymentSuccessResult";
