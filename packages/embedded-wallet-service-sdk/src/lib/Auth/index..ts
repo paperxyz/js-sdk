@@ -1,15 +1,16 @@
-import type {
+import {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
   AuthProvider,
-} from "../interfaces/Auth";
-import type {
+} from "../../interfaces/Auth";
+import {
   ClientIdWithQuerierType,
   LogoutReturnType,
   SendEmailOtpReturnType,
-} from "../interfaces/EmbeddedWallets/EmbeddedWallets";
-import { LocalStorage } from "../utils/Storage/LocalStorage";
-import type { EmbeddedWalletIframeCommunicator } from "../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
+} from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
+import { LocalStorage } from "../../utils/Storage/LocalStorage";
+import { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
+import { SelfHostedLogin } from "./SelfHostedLogin";
 
 export type AuthQuerierTypes = {
   loginWithJwtAuthCallback: {
@@ -34,12 +35,13 @@ export class Auth {
   protected onAuthSuccess: (
     authResults: AuthAndWalletRpcReturnType,
   ) => Promise<AuthLoginReturnType>;
+  protected selfHostedLogin: SelfHostedLogin;
 
   /**
    * Used to manage the user's auth states. This should not be instantiated directly.
    * Call {@link PaperEmbeddedWalletSdk.auth} instead.
    *
-   * Authentication settings can be managed via the [authentication settings dashboard](https://withpaper.com/dashboard/auth-settings)
+   * Authentication settings can be managed via the [authentication settings dashboard](https://withpaper.com/dashboard/embedded-wallets/auth-settings)
    * @param {string} params.clientId the clientId associated with the various authentication settings
    */
   constructor({
@@ -55,6 +57,11 @@ export class Auth {
     this.AuthQuerier = querier;
     this.localStorage = new LocalStorage({ clientId });
     this.onAuthSuccess = onAuthSuccess;
+    this.selfHostedLogin = new SelfHostedLogin({
+      postLogin: this.postLogin,
+      preLogin: this.preLogin,
+      querier: querier,
+    });
   }
 
   private async preLogin() {
@@ -121,17 +128,7 @@ export class Auth {
   async loginWithPaperModal(args?: {
     getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
   }): Promise<AuthLoginReturnType> {
-    await this.preLogin();
-    const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
-      procedureName: "loginWithPaperModal",
-      params: undefined,
-      showIframe: true,
-      injectRecoveryCode: {
-        isInjectRecoveryCode: true,
-        getRecoveryCode: args?.getRecoveryCode,
-      },
-    });
-    return this.postLogin(result);
+    return this.selfHostedLogin.loginWithPaperModal(args);
   }
 
   /**
@@ -177,23 +174,11 @@ export class Auth {
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
-  async loginWithPaperEmailOtp({
-    email,
-    recoveryCode,
-  }: {
+  async loginWithPaperEmailOtp(args: {
     email: string;
     recoveryCode?: string;
   }): Promise<AuthLoginReturnType> {
-    await this.preLogin();
-    const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
-      procedureName: "loginWithPaperModal",
-      params: { email, recoveryCode },
-      showIframe: true,
-      injectRecoveryCode: {
-        isInjectRecoveryCode: true,
-      },
-    });
-    return this.postLogin(result);
+    return this.selfHostedLogin.loginWithPaperEmailOtp(args);
   }
 
   /**
@@ -222,16 +207,10 @@ export class Auth {
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @returns {{ success: boolean, isNewUser: boolean }} Success: indicating if the email was successfully sent (Note the email could still end up in the user's spam folder). IsNewUser indicates if the user is a new user to your platform
    */
-  async sendPaperEmailLoginOtp({
-    email,
-  }: AuthQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
-    await this.preLogin();
-    const { isNewUser, isNewDevice } =
-      await this.AuthQuerier.call<SendEmailOtpReturnType>({
-        procedureName: "sendPaperEmailLoginOtp",
-        params: { email },
-      });
-    return { isNewUser, isNewDevice };
+  async sendPaperEmailLoginOtp(
+    args: AuthQuerierTypes["sendPaperEmailLoginOtp"],
+  ): Promise<SendEmailOtpReturnType> {
+    return this.selfHostedLogin.sendPaperEmailLoginOtp(args);
   }
 
   /**
@@ -245,19 +224,10 @@ export class Auth {
    * @param {string} props.recoveryCode The code that is first sent to the user when they sign up. Required if user is an existing user. i.e. !isNewUser from return params of {@link Auth.sendPaperEmailLoginOtp}
    * @returns {{user: InitializedUser}} An InitializedUser object containing the user's status, wallet, authDetails, and more
    */
-  async verifyPaperEmailLoginOtp({
-    email,
-    otp,
-    recoveryCode,
-  }: AuthQuerierTypes["verifyPaperEmailLoginOtp"]) {
-    const result = await this.AuthQuerier.call<AuthAndWalletRpcReturnType>({
-      procedureName: "verifyPaperEmailLoginOtp",
-      params: { email, otp, recoveryCode },
-      injectRecoveryCode: {
-        isInjectRecoveryCode: true,
-      },
-    });
-    return this.postLogin(result);
+  async verifyPaperEmailLoginOtp(
+    args: AuthQuerierTypes["verifyPaperEmailLoginOtp"],
+  ) {
+    return this.selfHostedLogin.verifyPaperEmailLoginOtp(args);
   }
 
   /**
