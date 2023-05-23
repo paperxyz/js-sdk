@@ -1,5 +1,13 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 0.0.5
+
+### Patch Changes
+
+- 6030f9c: Added backendless checkout with card to react client and js sdk
+- Updated dependencies [6030f9c]
+  - @paperxyz/sdk-common-utilities@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes
