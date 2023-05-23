@@ -7,24 +7,29 @@ import {
   CHECKOUT_WITH_CARD_IFRAME_URL,
   PAPER_APP_URL,
 } from "../constants/settings";
-import type { KycModal, ReviewResult } from "../interfaces/CheckoutWithCard";
+import type {
+  ICheckoutWithCardConfigs,
+  KycModal,
+  ReviewResult,
+} from "../interfaces/CheckoutWithCard";
 import type {
   PaperSDKError,
   PaperSDKErrorCode,
 } from "../interfaces/PaperSDKError";
 import type { PriceSummary } from "../interfaces/PriceSummary";
-import { openCenteredPopup } from "../utils/device";
 import { LinksManager } from "../utils/LinksManager";
+import { openCenteredPopup } from "../utils/device";
 import { postMessageToIframe } from "../utils/postMessageToIframe";
 import type { PaperPaymentElementConstructorArgs } from "./CreatePaymentElement";
 import { PaperPaymentElement } from "./CreatePaymentElement";
 import { Modal } from "./Modal";
 
 export interface CheckoutWithCardLinkArgs {
-  sdkClientSecret: string;
+  sdkClientSecret?: string;
   appName?: string;
   options?: ICustomizationOptions;
   locale?: Locale;
+  configs?: ICheckoutWithCardConfigs;
 
   /**
    * @deprecated: No longer used. Domain is set to "withpaper.com".
@@ -37,6 +42,7 @@ export function createCheckoutWithCardLink({
   appName,
   options = { ...DEFAULT_BRAND_OPTIONS },
   locale,
+  configs,
 }: CheckoutWithCardLinkArgs) {
   const CheckoutWithCardUrlBase = new URL(
     CHECKOUT_WITH_CARD_IFRAME_URL,
@@ -44,7 +50,7 @@ export function createCheckoutWithCardLink({
   );
 
   const checkoutWithCardLink = new LinksManager(CheckoutWithCardUrlBase);
-  checkoutWithCardLink.addClientSecret(sdkClientSecret);
+  checkoutWithCardLink.addClientSecret(sdkClientSecret ?? "");
   checkoutWithCardLink.addStylingOptions(options);
   checkoutWithCardLink.addLocale(locale);
   checkoutWithCardLink.addAppName(appName);
@@ -195,7 +201,17 @@ export function createCheckoutWithCardElement({
   onBeforeModalOpen,
   onPriceUpdate,
   useAltDomain = true,
+  configs,
 }: CheckoutWithCardElementArgs) {
+  let clientSecret = sdkClientSecret;
+  if (!clientSecret && configs) {
+    clientSecret = btoa(JSON.stringify(configs));
+  }
+  if (!clientSecret) {
+    const error = `Must have either sdkClientSecret or configs field set. Received neither`;
+    throw new Error(error);
+  }
+
   const checkoutWithCardId = "checkout-with-card-iframe";
   const checkoutWithCardMessageHandler = (iframe: HTMLIFrameElement) =>
     createCheckoutWithCardMessageHandler({
@@ -211,7 +227,7 @@ export function createCheckoutWithCardElement({
     });
 
   const checkoutWithCardUrl = createCheckoutWithCardLink({
-    sdkClientSecret,
+    sdkClientSecret: clientSecret,
     appName,
     locale,
     options,
