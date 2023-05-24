@@ -41,8 +41,8 @@ export class Auth {
   protected onAuthSuccess: (
     authResults: AuthAndWalletRpcReturnType,
   ) => Promise<AuthLoginReturnType>;
-  protected userManagedLogin: UserManagedLogin;
-  protected awsManagedLogin: AwsManagedLogin;
+  public userManagedLogin: UserManagedLogin;
+  public awsManagedLogin: AwsManagedLogin;
 
   /**
    * Used to manage the user's auth states. This should not be instantiated directly.
@@ -54,7 +54,7 @@ export class Auth {
   constructor({
     clientId,
     authOptions = {
-      type: AuthType.AWS_MANAGED,
+      type: AuthType.USER_MANAGED,
     } as const,
     querier,
     onAuthSuccess,
@@ -255,6 +255,7 @@ export class Auth {
     if (this.authOptions.type === AuthType.AWS_MANAGED) {
       return this.awsManagedLogin.sendPaperEmailLoginOtp({
         email,
+        authType: AuthType.AWS_MANAGED,
       });
     }
     return this.userManagedLogin.sendPaperEmailLoginOtp({

@@ -1,4 +1,3 @@
-import type { AuthQuerierTypes } from ".";
 import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
@@ -12,15 +11,22 @@ import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommuni
 
 type LoginQuerierTypes = {
   loginWithPaperModal:
+    | undefined
+    | { email: string; recoveryCode?: string }
     | { authType: AuthType }
-    | { authType: AuthType; email: string; recoveryCode?: string };
-  sendPaperEmailLoginOtp: { email: string };
-  verifyPaperEmailLoginOtp: {
-    isSelfHosted: boolean;
-    email: string;
-    otp: string;
-    recoveryCode?: string;
-  };
+    | { email: string };
+  sendPaperEmailLoginOtp: { email: string; authType?: AuthType };
+  verifyPaperEmailLoginOtp:
+    | {
+        email: string;
+        otp: string;
+        recoveryCode?: string;
+      }
+    | {
+        email: string;
+        otp: string;
+        authType: AuthType;
+      };
 };
 
 export abstract class AbstractLogin<
@@ -65,12 +71,13 @@ export abstract class AbstractLogin<
 
   async sendPaperEmailLoginOtp({
     email,
-  }: AuthQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
+    authType,
+  }: LoginQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
     await this.preLogin();
     const { isNewUser, isNewDevice } =
       await this.LoginQuerier.call<SendEmailOtpReturnType>({
         procedureName: "sendPaperEmailLoginOtp",
-        params: { email },
+        params: { email, authType },
       });
     return { isNewUser, isNewDevice };
   }

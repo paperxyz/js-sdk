@@ -2,9 +2,7 @@ import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
 } from "../../interfaces/Auth";
-import { AuthType } from "../../interfaces/Auth";
 import { AbstractLogin } from "./AbstractLogin";
-
 export class UserManagedLogin extends AbstractLogin<
   {
     getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
@@ -18,7 +16,7 @@ export class UserManagedLogin extends AbstractLogin<
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { authType: AuthType.USER_MANAGED },
+      params: undefined,
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -37,7 +35,7 @@ export class UserManagedLogin extends AbstractLogin<
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { email, recoveryCode, authType: AuthType.USER_MANAGED },
+      params: { email, recoveryCode },
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -56,7 +54,7 @@ export class UserManagedLogin extends AbstractLogin<
   }): Promise<AuthLoginReturnType> {
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "verifyPaperEmailLoginOtp",
-      params: { email, otp, recoveryCode, authType: AuthType.USER_MANAGED },
+      params: { email, otp, recoveryCode },
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
       },
