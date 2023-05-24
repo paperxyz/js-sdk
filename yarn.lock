@@ -6582,25 +6582,10 @@
     ethers "^5.7.2"
     wagmi "0.7.15"
 
-"@paperxyz/react-client-sdk@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-1.0.2.tgz#3f6b886e8f97aa67f12b128d6d1f8348786d450c"
-  integrity sha512-UjSJpRQFHJ+vGNI7fVULVmDBSBdBhHjSAMSZQV8dyS3bkqw3aJ/VHDjdxMPNofu3EMdFfDmDocw6rHxxCQ8roA==
-  dependencies:
-    "@emotion/css" "11.10.5"
-    "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "^0.2.0"
-    "@paperxyz/sdk-common-utilities" "^0.0.5"
-
 "@paperxyz/sdk-common-utilities@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.3.tgz#e37f202d7e0997231c037731ab0c01ea7f90f1c4"
   integrity sha512-piBm+Pss5JrT7cOO5Bn9i+Mu2KHy2EOtMfv+BjsHc/HkAxVqx5kz76hughve2UgOJP18aI4cEU2vSiz56cOLgQ==
-
-"@paperxyz/sdk-common-utilities@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.5.tgz#c94688fc82e7b78c64925d0c3f0622df62cbce06"
-  integrity sha512-Udx/CKGBKDicHqYKvcE5K+6B+scHOgx+s6eNNMAOLMnuawuzbvJbMmzIap9qyeUBIDCrKQaOpwnXxFctAu5WTA==
 
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
@@ -9095,7 +9080,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@18.0.9", "@types/react-dom@^18.0.0", "@types/react-dom@^18.0.9":
+"@types/react-dom@^18.0.0", "@types/react-dom@^18.0.9":
   version "18.0.9"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.9.tgz#ffee5e4bfc2a2f8774b15496474f8e7fe8d0b504"
   integrity sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==
