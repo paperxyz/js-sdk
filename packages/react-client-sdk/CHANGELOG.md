@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk
 
+## 1.0.3
+
+### Patch Changes
+
+- c20ac98: Bumping dependency version for paper packages
+
 ## 1.0.2
 
 ### Patch Changes
