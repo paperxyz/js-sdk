@@ -49,7 +49,7 @@
   "dependencies": {
     "@emotion/css": "11.10.5",
     "@headlessui/react": "1.7.6",
-    "@paperxyz/js-client-sdk": "^0.2.0",
+    "@paperxyz/js-client-sdk": "^0.2.1",
     "@paperxyz/sdk-common-utilities": "^0.0.5"
   }
 }
