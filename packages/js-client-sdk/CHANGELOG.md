@@ -1,5 +1,11 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.1
+
+### Patch Changes
+
+- 49c544e: Backendless flow for CheckoutWithCard
+
 ## 0.2.0
 
 ### Minor Changes

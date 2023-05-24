@@ -11,7 +11,7 @@
     },
     "build-package-ews-connectors": {
       "outputs": ["dist/**"],
-      "dependsOn": ["^build-package-ews-connectors"]
+      "dependsOn": ["^build-package-ews", "^build-package-ews-connectors"]
     },
     "build-package-checkout": {
       "outputs": ["dist/**"],

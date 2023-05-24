@@ -1,4 +1,5 @@
 import type {
+  ICheckoutWithCardConfigs,
   PaperSDKError,
   PriceSummary,
   ReviewResult,
@@ -10,14 +11,14 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePaperSDKContext } from "../Provider";
 import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
-import { usePaperSDKContext } from "../Provider";
 import { SpinnerWrapper } from "./common/SpinnerWrapper";
 const packageJson = require("../../package.json");
 
 interface CheckoutWithCardProps {
-  sdkClientSecret: string;
+  sdkClientSecret?: string;
   onPaymentSuccess: (result: PaymentSuccessResult) => void;
   appName?: string;
   options?: ICustomizationOptions;
@@ -25,6 +26,7 @@ interface CheckoutWithCardProps {
   onError?: (error: PaperSDKError) => void;
   onBeforeModalOpen?: (props: { url: string }) => void;
   onPriceUpdate?: (priceSummary: PriceSummary) => void;
+  configs?: ICheckoutWithCardConfigs;
 
   /**
    * @deprecated No longer used.
@@ -52,6 +54,7 @@ export const CheckoutWithCard = ({
   onBeforeModalOpen,
   onPriceUpdate,
   locale,
+  configs,
 }: CheckoutWithCardProps): React.ReactElement => {
   const { appName: appNameContext } = usePaperSDKContext();
   const [isCardDetailIframeLoading, setIsCardDetailIframeLoading] =
@@ -79,6 +82,7 @@ export const CheckoutWithCard = ({
       onBeforeModalOpen,
       onPriceUpdate,
       options,
+      configs,
     });
   }, [CheckoutWithCardIframeContainerRef.current]);
 

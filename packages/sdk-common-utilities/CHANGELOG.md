@@ -1,5 +1,17 @@
 # @paperxyz/sdk-common-utilities
 
+## 0.0.5
+
+### Patch Changes
+
+- 6030f9c: Added backendless checkout with card to react client and js sdk
+
+## 0.0.4
+
+### Patch Changes
+
+- 5077a7c: Adding several EVM chains support
+
 ## 0.0.3
 
 ### Patch Changes
