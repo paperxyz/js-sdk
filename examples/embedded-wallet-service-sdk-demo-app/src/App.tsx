@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Center,
   Flex,
   GridItem,
   Heading,
@@ -14,6 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
+  AuthType,
   GetUser,
   PaperEmbeddedWalletSdk,
   UserStatus,
@@ -21,13 +23,18 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { CodeSnippet } from "./CodeSnippet";
 import { Login } from "./Login";
+import { LoginManaged } from "./LoginManaged";
 import { WalletFeatures } from "./WalletFeatures";
 import { WalletInfo } from "./WalletInfo";
 import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [paper, setPaper] = useState<PaperEmbeddedWalletSdk>();
+  const [paperManaged, setPaperManaged] = useState<PaperEmbeddedWalletSdk>();
   const [userDetails, setUserDetails] = useState<GetUser>();
+
+  const query = new URLSearchParams(window.location.search);
+  const isManagedAuth = query.get("managed") === "true";
 
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
@@ -35,6 +42,14 @@ function App() {
       chain: "Goerli",
     });
     setPaper(paper);
+    const paperManaged = new PaperEmbeddedWalletSdk({
+      clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
+      chain: "Goerli",
+      auth: {
+        type: AuthType.AWS_MANAGED,
+      },
+    });
+    setPaperManaged(paperManaged);
   }, []);
 
   const fetchUserStatus = useCallback(async () => {
@@ -59,6 +74,37 @@ function App() {
     console.log("logout response", response);
     await fetchUserStatus();
   };
+
+  let BodyComponent: JSX.Element;
+  if (!userDetails) {
+    BodyComponent = (
+      <Center height="full">
+        <Spinner size="md" color="white" />
+      </Center>
+    );
+  } else if (userDetails.status === UserStatus.LOGGED_OUT && isManagedAuth) {
+    BodyComponent = (
+      <LoginManaged paper={paperManaged} onLoginSuccess={fetchUserStatus} />
+    );
+  } else if (userDetails.status === UserStatus.LOGGED_OUT) {
+    BodyComponent = <Login paper={paper} onLoginSuccess={fetchUserStatus} />;
+  } else {
+    BodyComponent = (
+      <Stack spacing={10}>
+        <WalletInfo
+          email={userDetails.authDetails.email}
+          walletAddress={userDetails.walletAddress}
+        />
+        <WalletFeatures
+          user={
+            userDetails.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED
+              ? userDetails
+              : undefined
+          }
+        />
+      </Stack>
+    );
+  }
 
   return (
     <SimpleGrid columns={2}>
@@ -113,32 +159,7 @@ function App() {
         height="100vh"
         overflowY="auto"
       >
-        {!userDetails ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="full"
-          >
-            <Spinner size="md" color="white" />
-          </Box>
-        ) : userDetails.status === UserStatus.LOGGED_OUT ? (
-          <Login paper={paper} onLoginSuccess={fetchUserStatus} />
-        ) : (
-          <Stack spacing={10}>
-            <WalletInfo
-              email={userDetails.authDetails.email}
-              walletAddress={userDetails.walletAddress}
-            />
-            <WalletFeatures
-              user={
-                userDetails.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED
-                  ? userDetails
-                  : undefined
-              }
-            />
-          </Stack>
-        )}
+        {BodyComponent}
         {!!userDetails && (
           <Card mt={10} w="100%" bg="white">
             <CardBody>
