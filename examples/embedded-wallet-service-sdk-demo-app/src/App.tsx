@@ -23,7 +23,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { CodeSnippet } from "./CodeSnippet";
 import { Login } from "./Login";
-import { LoginManaged } from "./LoginManaged";
 import { WalletFeatures } from "./WalletFeatures";
 import { WalletInfo } from "./WalletInfo";
 import { UserDetails } from "./snippets/UserDetails";
@@ -82,12 +81,13 @@ function App() {
         <Spinner size="md" color="white" />
       </Center>
     );
-  } else if (userDetails.status === UserStatus.LOGGED_OUT && isManagedAuth) {
-    BodyComponent = (
-      <LoginManaged paper={paperManaged} onLoginSuccess={fetchUserStatus} />
-    );
   } else if (userDetails.status === UserStatus.LOGGED_OUT) {
-    BodyComponent = <Login paper={paper} onLoginSuccess={fetchUserStatus} />;
+    BodyComponent = (
+      <Login
+        paper={isManagedAuth ? paperManaged : paper}
+        onLoginSuccess={fetchUserStatus}
+      />
+    );
   } else {
     BodyComponent = (
       <Stack spacing={10}>
