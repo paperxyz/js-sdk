@@ -1,18 +1,22 @@
-import {
+import type { AuthQuerierTypes } from ".";
+import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
+  AuthType,
 } from "../../interfaces/Auth";
-import {
+import type {
   ClientIdWithQuerierType,
   SendEmailOtpReturnType,
 } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
-import { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import { AuthQuerierTypes } from "./index.";
+import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
 
 type LoginQuerierTypes = {
-  loginWithPaperModal: void | { email: string; recoveryCode?: string };
+  loginWithPaperModal:
+    | { authType: AuthType }
+    | { authType: AuthType; email: string; recoveryCode?: string };
   sendPaperEmailLoginOtp: { email: string };
   verifyPaperEmailLoginOtp: {
+    isSelfHosted: boolean;
     email: string;
     otp: string;
     recoveryCode?: string;

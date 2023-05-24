@@ -28,7 +28,7 @@ export class PaperEmbeddedWalletSdk {
    * @param {Chain} initParams.chain sets the default chain that the EmbeddedWallet will live on.
    * @param {CustomizationOptionsType} initParams.styles sets the default style override for any modal that pops up asking for user's details when creating wallet or logging in.
    */
-  constructor({ clientId, chain, styles }: PaperConstructorType) {
+  constructor({ clientId, chain, styles, auth }: PaperConstructorType) {
     this.clientId = clientId;
     this.querier = new EmbeddedWalletIframeCommunicator({
       clientId,
@@ -42,6 +42,7 @@ export class PaperEmbeddedWalletSdk {
 
     this.auth = new Auth({
       clientId,
+      authOptions: auth,
       querier: this.querier,
       onAuthSuccess: async (authResult) => {
         await this.wallet.postWalletSetUp({

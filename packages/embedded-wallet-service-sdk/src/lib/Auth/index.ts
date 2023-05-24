@@ -1,16 +1,19 @@
-import {
+import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
+  AuthOptions,
   AuthProvider,
 } from "../../interfaces/Auth";
-import {
+import { AuthType } from "../../interfaces/Auth";
+import type {
   ClientIdWithQuerierType,
   LogoutReturnType,
   SendEmailOtpReturnType,
 } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import { LocalStorage } from "../../utils/Storage/LocalStorage";
-import { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import { SelfHostedLogin } from "./SelfHostedLogin";
+import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
+import { AwsManagedLogin } from "./AwsManagedLogin";
+import { UserManagedLogin } from "./UserManagedLogin";
 
 export type AuthQuerierTypes = {
   loginWithJwtAuthCallback: {
@@ -18,7 +21,9 @@ export type AuthQuerierTypes = {
     authProvider: AuthProvider;
     recoveryCode?: string;
   };
-  loginWithPaperModal: void | { email: string; recoveryCode?: string };
+  loginWithPaperModal:
+    | { useSelfHosted: boolean }
+    | { useSelfHosted: boolean; email: string; recoveryCode?: string };
   logout: void;
   sendPaperEmailLoginOtp: { email: string };
   verifyPaperEmailLoginOtp: {
@@ -29,13 +34,15 @@ export type AuthQuerierTypes = {
 };
 
 export class Auth {
+  protected authOptions: AuthOptions;
   protected clientId: string;
   protected AuthQuerier: EmbeddedWalletIframeCommunicator<AuthQuerierTypes>;
   protected localStorage: LocalStorage;
   protected onAuthSuccess: (
     authResults: AuthAndWalletRpcReturnType,
   ) => Promise<AuthLoginReturnType>;
-  protected selfHostedLogin: SelfHostedLogin;
+  protected userManagedLogin: UserManagedLogin;
+  protected awsManagedLogin: AwsManagedLogin;
 
   /**
    * Used to manage the user's auth states. This should not be instantiated directly.
@@ -46,20 +53,40 @@ export class Auth {
    */
   constructor({
     clientId,
+    authOptions = {
+      type: AuthType.AWS_MANAGED,
+    } as const,
     querier,
     onAuthSuccess,
   }: ClientIdWithQuerierType & {
+    authOptions?: Partial<AuthOptions>;
     onAuthSuccess: (
       authDetails: AuthAndWalletRpcReturnType,
     ) => Promise<AuthLoginReturnType>;
   }) {
     this.clientId = clientId;
+    this.authOptions = {
+      type: authOptions.type ?? AuthType.AWS_MANAGED,
+    };
     this.AuthQuerier = querier;
     this.localStorage = new LocalStorage({ clientId });
     this.onAuthSuccess = onAuthSuccess;
-    this.selfHostedLogin = new SelfHostedLogin({
-      postLogin: this.postLogin,
-      preLogin: this.preLogin,
+    this.userManagedLogin = new UserManagedLogin({
+      postLogin: async (result) => {
+        return this.postLogin(result);
+      },
+      preLogin: async () => {
+        await this.preLogin();
+      },
+      querier: querier,
+    });
+    this.awsManagedLogin = new AwsManagedLogin({
+      postLogin: async (result) => {
+        return this.postLogin(result);
+      },
+      preLogin: async () => {
+        await this.preLogin();
+      },
       querier: querier,
     });
   }
@@ -128,7 +155,11 @@ export class Auth {
   async loginWithPaperModal(args?: {
     getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
   }): Promise<AuthLoginReturnType> {
-    return this.selfHostedLogin.loginWithPaperModal(args);
+    await this.preLogin();
+    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+      return this.awsManagedLogin.loginWithPaperModal();
+    }
+    return this.userManagedLogin.loginWithPaperModal(args);
   }
 
   /**
@@ -174,11 +205,22 @@ export class Auth {
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
-  async loginWithPaperEmailOtp(args: {
+  async loginWithPaperEmailOtp({
+    email,
+    recoveryCode,
+  }: {
     email: string;
     recoveryCode?: string;
   }): Promise<AuthLoginReturnType> {
-    return this.selfHostedLogin.loginWithPaperEmailOtp(args);
+    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+      return this.awsManagedLogin.loginWithPaperEmailOtp({
+        email,
+      });
+    }
+    return this.userManagedLogin.loginWithPaperEmailOtp({
+      email,
+      recoveryCode,
+    });
   }
 
   /**
@@ -207,10 +249,17 @@ export class Auth {
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
    * @returns {{ success: boolean, isNewUser: boolean }} Success: indicating if the email was successfully sent (Note the email could still end up in the user's spam folder). IsNewUser indicates if the user is a new user to your platform
    */
-  async sendPaperEmailLoginOtp(
-    args: AuthQuerierTypes["sendPaperEmailLoginOtp"],
-  ): Promise<SendEmailOtpReturnType> {
-    return this.selfHostedLogin.sendPaperEmailLoginOtp(args);
+  async sendPaperEmailLoginOtp({
+    email,
+  }: AuthQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
+    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+      return this.awsManagedLogin.sendPaperEmailLoginOtp({
+        email,
+      });
+    }
+    return this.userManagedLogin.sendPaperEmailLoginOtp({
+      email,
+    });
   }
 
   /**
@@ -224,10 +273,22 @@ export class Auth {
    * @param {string} props.recoveryCode The code that is first sent to the user when they sign up. Required if user is an existing user. i.e. !isNewUser from return params of {@link Auth.sendPaperEmailLoginOtp}
    * @returns {{user: InitializedUser}} An InitializedUser object containing the user's status, wallet, authDetails, and more
    */
-  async verifyPaperEmailLoginOtp(
-    args: AuthQuerierTypes["verifyPaperEmailLoginOtp"],
-  ) {
-    return this.selfHostedLogin.verifyPaperEmailLoginOtp(args);
+  async verifyPaperEmailLoginOtp({
+    email,
+    otp,
+    recoveryCode,
+  }: AuthQuerierTypes["verifyPaperEmailLoginOtp"]) {
+    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+      return this.awsManagedLogin.verifyPaperEmailLoginOtp({
+        email,
+        otp,
+      });
+    }
+    return this.userManagedLogin.verifyPaperEmailLoginOtp({
+      email,
+      otp,
+      recoveryCode,
+    });
   }
 
   /**

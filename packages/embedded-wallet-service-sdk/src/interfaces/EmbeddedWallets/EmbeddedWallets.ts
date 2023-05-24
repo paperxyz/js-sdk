@@ -4,6 +4,7 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
+import type { AuthOptions } from "../Auth";
 
 // Class constructor types
 // types for class constructors still a little messy right now.
@@ -11,6 +12,7 @@ import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommuni
 export type ClientIdConstructorType = { clientId: string };
 export type PaperConstructorType = ClientIdConstructorType & {
   chain: Chain;
+  auth?: Partial<AuthOptions>;
   styles?: CustomizationOptionsType;
 };
 export type ClientIdWithQuerierType = ClientIdConstructorType & {

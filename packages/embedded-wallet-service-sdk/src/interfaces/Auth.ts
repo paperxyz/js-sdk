@@ -4,6 +4,15 @@ import type {
   SetUpWalletRpcReturnType,
 } from "./EmbeddedWallets/EmbeddedWallets";
 
+export enum AuthType {
+  USER_MANAGED = "USER_MANAGED",
+  AWS_MANAGED = "AWS_MANAGED",
+}
+
+export type AuthOptions = {
+  type: AuthType;
+};
+
 export enum AuthProvider {
   PAPER_EMAIL_OTP = "PaperEmailOTP",
   GOOGLE = "Google",
