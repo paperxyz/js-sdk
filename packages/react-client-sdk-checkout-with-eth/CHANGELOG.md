@@ -1,5 +1,13 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 0.0.6
+
+### Patch Changes
+
+- 3f8dffc: iframe now takes 100% height (w/ minHeight)
+- Updated dependencies [3f8dffc]
+  - @paperxyz/js-client-sdk@0.2.2
+
 ## 0.0.5
 
 ### Patch Changes

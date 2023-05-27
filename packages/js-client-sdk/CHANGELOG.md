@@ -1,5 +1,11 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.2
+
+### Patch Changes
+
+- 3f8dffc: iframe now takes 100% height (w/ minHeight)
+
 ## 0.2.1
 
 ### Patch Changes
