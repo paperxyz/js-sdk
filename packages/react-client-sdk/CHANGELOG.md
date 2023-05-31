@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- 48a09b8: fix: hide loading spinner if no callback from inner iframe takes too long
+
 ## 1.0.4
 
 ### Patch Changes
