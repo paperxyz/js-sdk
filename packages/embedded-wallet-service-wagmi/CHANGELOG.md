@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-wagmi
 
+## 2.2.0
+
+### Minor Changes
+
+- d06a47a: Expose the RPC endpoint for wagmi connector
+
 ## 2.1.0
 
 ### Minor Changes
