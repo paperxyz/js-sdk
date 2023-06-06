@@ -10,11 +10,12 @@ const ProviderDemo = () => {
     <PaperEmbeddedWalletProvider
       appName="Paper x RainbowKit Demo"
       walletOptions={{
-        clientId: "992d8417-9cd1-443c-bae3-f9eac1d64767",
+        clientId: "c1e1c50a-dde5-4411-83c6-7867ede4a3d5",
         chain: "Polygon",
         name: "Acme Inc.",
         iconUrl: "https://withpaper.com/icons/paper-embedded-wallet-black.png",
         iconBackground: "#fc03e3",
+        rpcEndpoint: "https://polygon.rpc.thirdweb.com",
       }}
       modalOptions={{
         theme: darkTheme({
