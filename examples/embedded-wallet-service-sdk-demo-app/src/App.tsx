@@ -56,6 +56,7 @@ function App() {
       return;
     }
 
+    console.log("grabbing paper user");
     const paperUser = await paper.getUser();
     console.log("paperUser", paperUser);
 
