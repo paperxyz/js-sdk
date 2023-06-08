@@ -1,3 +1,4 @@
+import type { Networkish } from "@ethersproject/providers";
 import type {
   InitializedUser,
   PaperConstructorType,
@@ -6,7 +7,7 @@ import {
   PaperEmbeddedWalletSdk,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
-import type { Signer, providers } from "ethers";
+import type { providers, Signer } from "ethers";
 import type { Address, Chain, ConnectorData } from "wagmi";
 import { Connector, UserRejectedRequestError } from "wagmi";
 import {
@@ -21,7 +22,9 @@ const IS_SERVER = typeof window === "undefined";
 
 export type PaperEmbeddedWalletWagmiConnectorProps = {
   chains?: Chain[];
-  options: PaperConstructorType;
+  options: {
+    rpcEndpoint?: Networkish;
+  } & PaperConstructorType;
 };
 
 /**
@@ -40,6 +43,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   #paperOptions: PaperConstructorType;
   #provider?: providers.Provider;
   #user: InitializedUser | null;
+  #rpcEndpoint?: Networkish;
 
   constructor(config: PaperEmbeddedWalletWagmiConnectorProps) {
     super(config);
@@ -52,6 +56,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
 
     this.#user = null;
     this.#paperOptions = config.options;
+    this.#rpcEndpoint = config.options.rpcEndpoint;
     this.chains = [getChain(this.#paperOptions.chain)];
 
     // Preload the SDK.
@@ -94,7 +99,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     if (!user) {
       throw new Error(`User is not logged in. Try calling "connect()" first.`);
     }
-    const signer = await user.wallet.getEthersJsSigner();
+    const signerOptions = this.#rpcEndpoint
+      ? {
+          rpcEndpoint: this.#rpcEndpoint,
+        }
+      : undefined;
+    const signer = await user.wallet.getEthersJsSigner(signerOptions);
     return signer;
   }
 

@@ -65,6 +65,15 @@ export const CheckoutWithCard = ({
   const CheckoutWithCardIframeContainerRef = useRef<HTMLDivElement>(null);
   const appNameToUse = appName || appNameContext;
 
+  // force hide spinner if iframe taking too long
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCardDetailIframeLoading(false);
+    }, 1000);
+    return () => {
+      clearTimeout(timer); // Clear the timer if the component unmounts before the delay
+    };
+  }, []);
   // Handle message events from the popup. Pass along the message to the iframe as well
   useEffect(() => {
     if (!CheckoutWithCardIframeContainerRef.current) {

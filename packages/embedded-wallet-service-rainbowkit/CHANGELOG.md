@@ -1,5 +1,16 @@
 # @paperxyz/embedded-wallet-service-rainbowkit
 
+## 0.2.0
+
+### Minor Changes
+
+- d06a47a: Expose rpcEndpoint to set the Signer's RPC URL
+
+### Patch Changes
+
+- Updated dependencies [d06a47a]
+  - @paperxyz/embedded-wallet-service-wagmi@2.2.0
+
 ## 0.1.0
 
 ### Minor Changes

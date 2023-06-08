@@ -1,5 +1,17 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.3
+
+### Patch Changes
+
+- aa0f749: fix: don't crash if configs or sdkClientSecret isn't passed to the checkout-with-card component
+
+## 0.2.2
+
+### Patch Changes
+
+- 3f8dffc: iframe now takes 100% height (w/ minHeight)
+
 ## 0.2.1
 
 ### Patch Changes

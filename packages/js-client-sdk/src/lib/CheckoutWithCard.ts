@@ -2,7 +2,10 @@ import type {
   ICustomizationOptions,
   Locale,
 } from "@paperxyz/sdk-common-utilities";
-import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
+import {
+  DEFAULT_BRAND_OPTIONS,
+  getPaperOriginUrl,
+} from "@paperxyz/sdk-common-utilities";
 import {
   CHECKOUT_WITH_CARD_IFRAME_URL,
   PAPER_APP_URL,
@@ -43,7 +46,7 @@ export function createCheckoutWithCardLink({
   options = { ...DEFAULT_BRAND_OPTIONS },
   locale,
   configs,
-}: CheckoutWithCardLinkArgs) {
+}: CheckoutWithCardLinkArgs): URL {
   const CheckoutWithCardUrlBase = new URL(
     CHECKOUT_WITH_CARD_IFRAME_URL,
     PAPER_APP_URL,
@@ -54,6 +57,13 @@ export function createCheckoutWithCardLink({
   checkoutWithCardLink.addStylingOptions(options);
   checkoutWithCardLink.addLocale(locale);
   checkoutWithCardLink.addAppName(appName);
+
+  if (!sdkClientSecret) {
+    const error = `Must have either sdkClientSecret or configs field set. Received neither`;
+    const destination = `/error?errorMessage=${error}`;
+    const domain = getPaperOriginUrl();
+    return new URL(destination, domain);
+  }
 
   return checkoutWithCardLink.getLink();
 }
@@ -206,10 +216,6 @@ export function createCheckoutWithCardElement({
   let clientSecret = sdkClientSecret;
   if (!clientSecret && configs) {
     clientSecret = btoa(JSON.stringify(configs));
-  }
-  if (!clientSecret) {
-    const error = `Must have either sdkClientSecret or configs field set. Received neither`;
-    throw new Error(error);
   }
 
   const checkoutWithCardId = "checkout-with-card-iframe";

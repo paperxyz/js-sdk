@@ -1,3 +1,4 @@
+import type { Networkish } from "@ethersproject/providers";
 import type { PaperConstructorType } from "@paperxyz/embedded-wallet-service-sdk";
 
 export type PaperEmbeddedWalletRainbowKitWalletProps = {
@@ -16,7 +17,15 @@ export type PaperEmbeddedWalletRainbowKitWalletProps = {
   iconUrl?: string;
 
   /**
+   * The background color to show when the icon has transparency.
+   *
    * @defaultValue `"#39D0FF"`
    */
   iconBackground?: string;
+
+  /**
+   * The RPC endpoint for the Signer.
+   * Uses a public RPC provider if not provided.
+   */
+  rpcEndpoint?: Networkish;
 } & PaperConstructorType;
