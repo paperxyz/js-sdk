@@ -12,6 +12,8 @@ export const ChainToPublicRpc: Record<Chain, string> = {
   ArbitrumGoerli: "https://arbitrum-goerli.rpc.thirdweb.com",
   Fantom: "https://fantom.rpc.thirdweb.com",
   FantomTestnet: "https://fantom-testnet.rpc.thirdweb.com",
+  Sepolia: "https://sepolia.rpc.thirdweb.com",
+  AvalancheFuji: "https://api.avax-test.network/ext/bc/C/rpc",
 };
 
 // General Embedded wallet types
@@ -28,6 +30,8 @@ export type Chain =
   | "ArbitrumOne"
   | "ArbitrumGoerli"
   | "Fantom"
-  | "FantomTestnet";
+  | "FantomTestnet"
+  | "Sepolia"
+  | "AvalancheFuji";
 
 export type SupportedChainName = Chain | "Rinkeby" | "Solana" | "SolanaDevnet";
