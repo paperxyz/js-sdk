@@ -2,7 +2,7 @@ import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
 } from "../../interfaces/Auth";
-import { AuthType } from "../../interfaces/Auth";
+import { RecoveryShareManagement } from "../../interfaces/Auth";
 import { AbstractLogin } from "./AbstractLogin";
 
 export class AwsManagedLogin extends AbstractLogin<
@@ -14,7 +14,7 @@ export class AwsManagedLogin extends AbstractLogin<
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { authType: AuthType.AWS_MANAGED },
+      params: { recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -30,7 +30,7 @@ export class AwsManagedLogin extends AbstractLogin<
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { email, authType: AuthType.AWS_MANAGED },
+      params: { email, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -47,7 +47,7 @@ export class AwsManagedLogin extends AbstractLogin<
   }): Promise<AuthLoginReturnType> {
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "verifyPaperEmailLoginOtp",
-      params: { email, otp, authType: AuthType.AWS_MANAGED },
+      params: { email, otp, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
       },

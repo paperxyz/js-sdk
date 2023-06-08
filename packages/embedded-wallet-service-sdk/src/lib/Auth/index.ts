@@ -4,7 +4,7 @@ import type {
   AuthOptions,
   AuthProvider,
 } from "../../interfaces/Auth";
-import { AuthType } from "../../interfaces/Auth";
+import { RecoveryShareManagement } from "../../interfaces/Auth";
 import type {
   ClientIdWithQuerierType,
   LogoutReturnType,
@@ -54,7 +54,7 @@ export class Auth {
   constructor({
     clientId,
     authOptions = {
-      type: AuthType.USER_MANAGED,
+      type: RecoveryShareManagement.USER_MANAGED,
     } as const,
     querier,
     onAuthSuccess,
@@ -66,7 +66,7 @@ export class Auth {
   }) {
     this.clientId = clientId;
     this.authOptions = {
-      type: authOptions.type ?? AuthType.AWS_MANAGED,
+      type: authOptions.type ?? RecoveryShareManagement.AWS_MANAGED,
     };
     this.AuthQuerier = querier;
     this.localStorage = new LocalStorage({ clientId });
@@ -156,7 +156,7 @@ export class Auth {
     getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
   }): Promise<AuthLoginReturnType> {
     await this.preLogin();
-    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+    if (this.authOptions.type === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.loginWithPaperModal();
     }
     return this.userManagedLogin.loginWithPaperModal(args);
@@ -212,7 +212,7 @@ export class Auth {
     email: string;
     recoveryCode?: string;
   }): Promise<AuthLoginReturnType> {
-    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+    if (this.authOptions.type === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.loginWithPaperEmailOtp({
         email,
       });
@@ -252,10 +252,10 @@ export class Auth {
   async sendPaperEmailLoginOtp({
     email,
   }: AuthQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
-    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+    if (this.authOptions.type === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.sendPaperEmailLoginOtp({
         email,
-        authType: AuthType.AWS_MANAGED,
+        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
       });
     }
     return this.userManagedLogin.sendPaperEmailLoginOtp({
@@ -279,7 +279,7 @@ export class Auth {
     otp,
     recoveryCode,
   }: AuthQuerierTypes["verifyPaperEmailLoginOtp"]) {
-    if (this.authOptions.type === AuthType.AWS_MANAGED) {
+    if (this.authOptions.type === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.verifyPaperEmailLoginOtp({
         email,
         otp,

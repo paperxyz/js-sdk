@@ -4,13 +4,13 @@ import type {
   SetUpWalletRpcReturnType,
 } from "./EmbeddedWallets/EmbeddedWallets";
 
-export enum AuthType {
+export enum RecoveryShareManagement {
   USER_MANAGED = "USER_MANAGED",
   AWS_MANAGED = "AWS_MANAGED",
 }
 
-export type AuthOptions = {
-  type: AuthType;
+export type AdvancedOptions = {
+  type: RecoveryShareManagement;
 };
 
 export enum AuthProvider {

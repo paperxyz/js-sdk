@@ -15,9 +15,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
-  AuthType,
   GetUser,
   PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import { useCallback, useEffect, useState } from "react";
@@ -44,8 +44,8 @@ function App() {
     const paperManaged = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
       chain: "Goerli",
-      auth: {
-        type: AuthType.AWS_MANAGED,
+      advanceOptions   : {
+        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
       },
     });
     setPaperManaged(paperManaged);
