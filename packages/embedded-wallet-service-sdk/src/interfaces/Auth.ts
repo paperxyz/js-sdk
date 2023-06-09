@@ -1,4 +1,4 @@
-import type {
+  import type {
   AuthDetails,
   InitializedUser,
   SetUpWalletRpcReturnType,
@@ -10,7 +10,7 @@ export enum RecoveryShareManagement {
 }
 
 export type AdvancedOptions = {
-  type: RecoveryShareManagement;
+  recoveryShareManagement: RecoveryShareManagement;
 };
 
 export enum AuthProvider {
