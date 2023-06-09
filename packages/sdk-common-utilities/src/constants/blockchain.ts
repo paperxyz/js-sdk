@@ -16,6 +16,24 @@ export const ChainToPublicRpc: Record<Chain, string> = {
   AvalancheFuji: "https://avalanche-fuji.rpc.thirdweb.com",
 };
 
+export const ChainIdToChain: Record<number, Chain> = {
+  1: "Ethereum",
+  5: "Goerli",
+  80001: "Mumbai",
+  137: "Polygon",
+  43114: "Avalanche",
+  10: "Optimism",
+  420: "OptimismGoerli",
+  56: "BSC",
+  97: "BSCTestnet",
+  42161: "ArbitrumOne",
+  421613: "ArbitrumGoerli",
+  250: "Fantom",
+  4002: "FantomTestnet",
+  11155111: "Sepolia",
+  43113: "AvalancheFuji",
+};
+
 // General Embedded wallet types
 export type Chain =
   | "Polygon"

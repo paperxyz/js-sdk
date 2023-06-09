@@ -14,9 +14,21 @@ import {
   avalanche,
   goerli,
   mainnet,
+  optimismGoerli,
   polygon,
   polygonMumbai,
+  sepolia,
+  optimism,
+  bsc,
+  bscTestnet,
+  arbitrumGoerli,
+  fantom,
+  fantomTestnet,
+  avalancheFuji,
+  arbitrum
 } from "wagmi/chains";
+import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/blockchain";
+import { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 
 const IS_SERVER = typeof window === "undefined";
 
@@ -181,6 +193,22 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     }
     return this.#user;
   }
+
+  override async switchChain(chainId: number): Promise<Chain> {
+    const user = await this.getUser();
+    if (!user) {
+      throw new Error(`User is not logged in. Try calling "connect()" first.`);
+    }
+
+    if (Object.keys(ChainIdToChain).includes(chainId.toString())) {
+      // @ts-ignore
+      const chainName:InternalChain = ChainIdToChain[chainId];
+      await user.wallet.setChain({chain:chainName})
+      return getChain(chainName);
+    } else {
+      throw new Error(`Switching to the following chain is not currently supported by Paper.`);
+    }
+  }
 }
 
 export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
@@ -195,6 +223,26 @@ export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
       return polygonMumbai;
     case "Avalanche":
       return avalanche;
+    case "Optimism":
+      return optimism;
+    case "OptimismGoerli":
+      return optimismGoerli;
+    case "BSC":
+      return bsc;
+    case "BSCTestnet":
+      return bscTestnet;
+    case "ArbitrumOne":
+      return arbitrum;
+    case "ArbitrumGoerli":
+      return arbitrumGoerli;
+    case "Fantom":
+      return fantom;
+    case "FantomTestnet":
+      return fantomTestnet;
+    case "Sepolia":
+      return sepolia
+    case "AvalancheFuji":
+      return avalancheFuji;
     default:
       throw new Error(
         "Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.",
