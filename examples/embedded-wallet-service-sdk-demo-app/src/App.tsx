@@ -44,7 +44,7 @@ function App() {
     const paperManaged = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
       chain: "Goerli",
-      advanceOptions   : {
+      advancedOptions   : {
         recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
       },
     });
