@@ -24,9 +24,9 @@ export const PaperEmbeddedWalletProvider = ({
   walletOptions,
   children,
 }: React.PropsWithChildren<PaperEmbeddedWalletProviderProps>): React.ReactElement => {
-  const chain = getChain(walletOptions.chain);
+  const selectedChains = walletOptions.chains.map(chain => getChain(chain));
   const { chains, provider, webSocketProvider } = configureChains(
-    [chain],
+    selectedChains,
     providers,
   );
 
