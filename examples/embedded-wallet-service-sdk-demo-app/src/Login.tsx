@@ -15,15 +15,15 @@ import { PaperEmbeddedWalletSdk, RecoveryShareManagement } from "@paperxyz/embed
 import { useState } from "react";
 interface Props {
   paper: PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED> | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED> | undefined;
+  isAwsManaged: boolean
   onLoginSuccess: () => void;
 }
 
-export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
+export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) => {
   const loginWithPaperModal = async () => {
     setIsLoading(true);
     try {
-      const result = await paper?.auth.loginWithPaperModal();
-      console.log(`loginWithPaper result: ${JSON.stringify(result, null, 2)}`);
+      await paper?.auth.loginWithPaperModal();
       onLoginSuccess();
     } catch (e) {
       // use cancelled login flow
@@ -93,7 +93,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode: sendEmailOtpResult?.isNewDevice
+        recoveryCode: !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice && !isAwsManaged
           ? recoveryCode || ""
           : undefined,
       });
@@ -101,6 +101,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
 
       onLoginSuccess();
     } catch (e) {
+      console.error("ERROR verifying otp", e)
       setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
     }
     setIsLoading(false);
@@ -174,7 +175,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
                         </FormErrorMessage>
                       )}
                   </FormControl>
-                  {sendEmailOtpResult.isNewDevice ? (
+                  {sendEmailOtpResult.isNewDevice && !sendEmailOtpResult.isNewUser && !isAwsManaged ? (
                     <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                       <Input
                         type="password"

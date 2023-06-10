@@ -33,7 +33,7 @@ function App() {
   const [userDetails, setUserDetails] = useState<GetUser>();
 
   const query = new URLSearchParams(window.location.search);
-  const isManagedAuth = query.get("managed") === "true";
+  const isAwsManaged = query.get("managed") === "true";
 
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
@@ -85,7 +85,8 @@ function App() {
   } else if (userDetails.status === UserStatus.LOGGED_OUT) {
     BodyComponent = (
       <Login
-        paper={isManagedAuth ? paperManaged : paper}
+        paper={isAwsManaged ? paperManaged : paper}
+        isAwsManaged={isAwsManaged}
         onLoginSuccess={fetchUserStatus}
       />
     );
