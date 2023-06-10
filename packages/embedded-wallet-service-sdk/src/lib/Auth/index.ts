@@ -21,20 +21,12 @@ export type AuthQuerierTypes = {
     authProvider: AuthProvider;
     recoveryCode?: string;
   };
-  loginWithPaperModal:
-    | { useSelfHosted: boolean }
-    | { useSelfHosted: boolean; email: string; recoveryCode?: string };
   logout: void;
   sendPaperEmailLoginOtp: { email: string };
-  verifyPaperEmailLoginOtp: {
-    email: string;
-    otp: string;
-    recoveryCode?: string;
-  };
 };
 
-export class Auth {
-  protected advancedOptions: AdvancedOptions;
+export class Auth <T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> {
+  protected advancedOptions: AdvancedOptions<T>;
   protected clientId: string;
   protected AuthQuerier: EmbeddedWalletIframeCommunicator<AuthQuerierTypes>;
   protected localStorage: LocalStorage;
@@ -53,20 +45,18 @@ export class Auth {
    */
   constructor({
     clientId,
-    advancedOptions = {
-      recoveryShareManagement: RecoveryShareManagement.USER_MANAGED,
-    } as const,
+    advancedOptions ,
     querier,
     onAuthSuccess,
   }: ClientIdWithQuerierType & {
-    advancedOptions?: Partial<AdvancedOptions>;
+    advancedOptions?: Partial<AdvancedOptions<T>>;
     onAuthSuccess: (
       authDetails: AuthAndWalletRpcReturnType,
     ) => Promise<AuthLoginReturnType>;
   }) {
     this.clientId = clientId;
     this.advancedOptions = {
-      recoveryShareManagement : advancedOptions.recoveryShareManagement ?? RecoveryShareManagement.AWS_MANAGED,
+      recoveryShareManagement : advancedOptions?.recoveryShareManagement ?? RecoveryShareManagement.AWS_MANAGED,
     };
     this.AuthQuerier = querier;
     this.localStorage = new LocalStorage({ clientId });
@@ -150,16 +140,16 @@ export class Auth {
    *   console.error(e)
    * }
    *
+   * @param {(userWalletId: string) => Promise<string | undefined>} args.getRecoveryCode Only present when using RecoveryShareManagement.USER_MANAGED recovery share management. A function that returns the recovery code for a given userWalletId. 
+   * 
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
-  async loginWithPaperModal(args?: {
-    getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
-  }): Promise<AuthLoginReturnType> {
+  async loginWithPaperModal(args?: T extends RecoveryShareManagement.AWS_MANAGED? void : Parameters<UserManagedLogin["loginWithPaperModal"]>[0]): Promise<AuthLoginReturnType> {
     await this.preLogin();
     if (this.advancedOptions.recoveryShareManagement === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.loginWithPaperModal();
     }
-    return this.userManagedLogin.loginWithPaperModal(args);
+    return this.userManagedLogin.loginWithPaperModal(args as Parameters<UserManagedLogin["loginWithPaperModal"]>[0]);
   }
 
   /**
@@ -203,24 +193,16 @@ export class Auth {
    *  }
    *
    * @param {string} props.email We will send the email an OTP that needs to be entered in order for them to be logged in.
+   * @param {string} props.recoveryCode Only present when using RecoveryShareManagement.USER_MANAGED recovery share management. Specifies the recoveryCode for the given email. This will set recoveryCode as the code for the user if they are new, or user recoveryCode for the user if they are an existing user
    * @returns {{user: InitializedUser}} An InitializedUser object. See {@link PaperEmbeddedWalletSdk.getUser} for more
    */
-  async loginWithPaperEmailOtp({
-    email,
-    recoveryCode,
-  }: {
-    email: string;
-    recoveryCode?: string;
-  }): Promise<AuthLoginReturnType> {
+  async loginWithPaperEmailOtp(args: T extends RecoveryShareManagement.AWS_MANAGED? Parameters<AwsManagedLogin["loginWithPaperEmailOtp"]>[0] : Parameters<UserManagedLogin["loginWithPaperEmailOtp"]>[0]): Promise<AuthLoginReturnType> {
     if (this.advancedOptions.recoveryShareManagement === RecoveryShareManagement.AWS_MANAGED) {
       return this.awsManagedLogin.loginWithPaperEmailOtp({
-        email,
+        email: args.email,
       });
     }
-    return this.userManagedLogin.loginWithPaperEmailOtp({
-      email,
-      recoveryCode,
-    });
+    return this.userManagedLogin.loginWithPaperEmailOtp(args);
   }
 
   /**
@@ -274,22 +256,11 @@ export class Auth {
    * @param {string} props.recoveryCode The code that is first sent to the user when they sign up. Required if user is an existing user. i.e. !isNewUser from return params of {@link Auth.sendPaperEmailLoginOtp}
    * @returns {{user: InitializedUser}} An InitializedUser object containing the user's status, wallet, authDetails, and more
    */
-  async verifyPaperEmailLoginOtp({
-    email,
-    otp,
-    recoveryCode,
-  }: AuthQuerierTypes["verifyPaperEmailLoginOtp"]) {
+  async verifyPaperEmailLoginOtp(args: T extends RecoveryShareManagement.AWS_MANAGED? Parameters<AwsManagedLogin["verifyPaperEmailLoginOtp"]>[0] : Parameters<UserManagedLogin["verifyPaperEmailLoginOtp"]>[0]) {
     if (this.advancedOptions.recoveryShareManagement === RecoveryShareManagement.AWS_MANAGED) {
-      return this.awsManagedLogin.verifyPaperEmailLoginOtp({
-        email,
-        otp,
-      });
+      return this.awsManagedLogin.verifyPaperEmailLoginOtp(args);
     }
-    return this.userManagedLogin.verifyPaperEmailLoginOtp({
-      email,
-      otp,
-      recoveryCode,
-    });
+    return this.userManagedLogin.verifyPaperEmailLoginOtp(args);
   }
 
   /**

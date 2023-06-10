@@ -11,10 +11,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PaperEmbeddedWalletSdk } from "@paperxyz/embedded-wallet-service-sdk";
+import { PaperEmbeddedWalletSdk, RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
 interface Props {
-  paper: PaperEmbeddedWalletSdk | undefined;
+  paper: PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED> | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED> | undefined;
   onLoginSuccess: () => void;
 }
 

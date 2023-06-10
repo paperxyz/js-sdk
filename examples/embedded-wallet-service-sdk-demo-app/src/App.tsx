@@ -29,7 +29,7 @@ import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [paper, setPaper] = useState<PaperEmbeddedWalletSdk>();
-  const [paperManaged, setPaperManaged] = useState<PaperEmbeddedWalletSdk>();
+  const [paperManaged, setPaperManaged] = useState<PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED>>();
   const [userDetails, setUserDetails] = useState<GetUser>();
 
   const query = new URLSearchParams(window.location.search);
