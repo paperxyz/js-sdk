@@ -4,10 +4,10 @@ import type {
   PaperConstructorType,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import {
-  PaperEmbeddedWalletSdk,
+  PaperEmbeddedWalletSdk, RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
-import type { providers, Signer } from "ethers";
+import type { Signer, providers } from "ethers";
 import type { Address, Chain, ConnectorData } from "wagmi";
 import { Connector, UserRejectedRequestError } from "wagmi";
 import {
@@ -20,27 +20,27 @@ import {
 
 const IS_SERVER = typeof window === "undefined";
 
-export type PaperEmbeddedWalletWagmiConnectorProps = {
+export type PaperEmbeddedWalletWagmiConnectorProps<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> = {
   chains?: Chain[];
   options: {
     rpcEndpoint?: Networkish;
-  } & PaperConstructorType;
+  } & PaperConstructorType<T>;
 };
 
 /**
  * @returns A Wagmi-compatible connector.
  */
-export class PaperEmbeddedWalletWagmiConnector extends Connector<
+export class PaperEmbeddedWalletWagmiConnector<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> extends Connector<
   providers.Provider,
-  PaperConstructorType
+  PaperConstructorType<T>
 > {
   readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
   readonly name = "Paper Embedded Wallet";
   override readonly chains: Chain[];
 
-  #sdk?: PaperEmbeddedWalletSdk;
-  #paperOptions: PaperConstructorType;
+  #sdk?: PaperEmbeddedWalletSdk<T>;
+  #paperOptions: PaperConstructorType<T>;
   #provider?: providers.Provider;
   #user: InitializedUser | null;
   #rpcEndpoint?: Networkish;
@@ -65,9 +65,9 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     }
   }
 
-  protected getSdk(): PaperEmbeddedWalletSdk {
+  protected getSdk(): PaperEmbeddedWalletSdk<T> {
     if (!this.#sdk) {
-      this.#sdk = new PaperEmbeddedWalletSdk(this.#paperOptions);
+      this.#sdk = new PaperEmbeddedWalletSdk<T>(this.#paperOptions);
     }
     return this.#sdk;
   }
@@ -183,7 +183,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 }
 
-export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
+export const getChain = (chain: PaperConstructorType<RecoveryShareManagement.USER_MANAGED>["chain"]): Chain => {
   switch (chain) {
     case "Ethereum":
       return mainnet;
