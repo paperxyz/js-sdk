@@ -8,10 +8,10 @@ export type RequiredModalOptions = Omit<
   "chains" | "children"
 >;
 
-export interface PaperEmbeddedWalletProviderProps {
+export interface PaperEmbeddedWalletProviderProps<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED > {
   appName: string;
   providers?: ChainProviderFn[];
   otherWallets?: Wallet[];
   modalOptions?: RequiredModalOptions;
-  walletOptions: PaperEmbeddedWalletRainbowKitWalletProps;
+  walletOptions: PaperEmbeddedWalletRainbowKitWalletProps<T>;
 }
