@@ -1,3 +1,4 @@
+import { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 import type { Wallet } from "@rainbow-me/rainbowkit";
 import type { RainbowKitProviderProps } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider";
 import type { ChainProviderFn } from "wagmi";

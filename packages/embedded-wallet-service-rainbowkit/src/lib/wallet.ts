@@ -1,3 +1,4 @@
+import { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 import {
   getChain,
   PaperEmbeddedWalletWagmiConnector,
