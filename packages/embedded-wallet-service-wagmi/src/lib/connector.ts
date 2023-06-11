@@ -4,7 +4,8 @@ import type {
   PaperConstructorType,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import {
-  PaperEmbeddedWalletSdk, RecoveryShareManagement,
+  PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import type { Signer, providers } from "ethers";
@@ -20,7 +21,9 @@ import {
 
 const IS_SERVER = typeof window === "undefined";
 
-export type PaperEmbeddedWalletWagmiConnectorProps<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> = {
+export type PaperEmbeddedWalletWagmiConnectorProps<
+  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
+> = {
   chains?: Chain[];
   options: {
     rpcEndpoint?: Networkish;
@@ -30,10 +33,9 @@ export type PaperEmbeddedWalletWagmiConnectorProps<T extends RecoveryShareManage
 /**
  * @returns A Wagmi-compatible connector.
  */
-export class PaperEmbeddedWalletWagmiConnector<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> extends Connector<
-  providers.Provider,
-  PaperConstructorType<T>
-> {
+export class PaperEmbeddedWalletWagmiConnector<
+  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
+> extends Connector<providers.Provider, PaperConstructorType<T>> {
   readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
   readonly name = "Paper Embedded Wallet";
@@ -183,7 +185,9 @@ export class PaperEmbeddedWalletWagmiConnector<T extends RecoveryShareManagement
   }
 }
 
-export const getChain = (chain: PaperConstructorType<RecoveryShareManagement.USER_MANAGED>["chain"]): Chain => {
+export const getChain = (
+  chain: PaperConstructorType<RecoveryShareManagement.USER_MANAGED>["chain"],
+): Chain => {
   switch (chain) {
     case "Ethereum":
       return mainnet;
