@@ -1,4 +1,4 @@
-import { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
+import type { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 import {
   getChain,
   PaperEmbeddedWalletWagmiConnector,
@@ -18,7 +18,9 @@ const EMAIL_ICON_URL_BLACK_BG =
 /**
  * @returns A RainbowKit-compatible Wallet.
  */
-export const PaperEmbeddedWalletRainbowKitWallet = <T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED>(
+export const PaperEmbeddedWalletRainbowKitWallet = <
+  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
+>(
   config: PaperEmbeddedWalletRainbowKitWalletProps<T>,
 ): Wallet => ({
   id: "paper-embedded-wallet",
