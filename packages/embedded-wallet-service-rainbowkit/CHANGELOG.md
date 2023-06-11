@@ -1,5 +1,16 @@
 # @paperxyz/embedded-wallet-service-rainbowkit
 
+## 0.2.1
+
+### Patch Changes
+
+- 416996e: chore(embedded-wallet-service-wagmi): update typings in both embedded-wallet-service-rainbowkit and embedded-wallet-service-wagmi to reflect type change in embedded-wallet-service-sdk
+  chore(embedded-wallet-service-rainbowkit): update typings in both `embedded-wallet-service-rainbowkit` and `embedded-wallet-service-wagmi` packages to reflect type change in `embedded-wallet-service-sdk`
+- Updated dependencies [416996e]
+- Updated dependencies [416996e]
+  - @paperxyz/embedded-wallet-service-wagmi@3.0.0
+  - @paperxyz/embedded-wallet-service-sdk@1.1.0
+
 ## 0.2.0
 
 ### Minor Changes
