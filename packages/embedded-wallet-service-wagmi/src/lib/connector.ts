@@ -2,10 +2,10 @@ import type { Networkish } from "@ethersproject/providers";
 import type {
   InitializedUser,
   PaperConstructorType,
+  RecoveryShareManagement,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import {
   PaperEmbeddedWalletSdk,
-  RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import type { Signer, providers } from "ethers";
@@ -83,7 +83,7 @@ export class PaperEmbeddedWalletWagmiConnector<
     return account.startsWith("0x") ? (account as Address) : `0x${account}`;
   }
 
-  async getProvider(config?: {
+  async getProvider(_config?: {
     chainId?: number;
   }): Promise<providers.Provider> {
     if (!this.#provider) {
@@ -119,7 +119,7 @@ export class PaperEmbeddedWalletWagmiConnector<
     }
   }
 
-  protected onDisconnect(error: Error): void {
+  protected onDisconnect(_error: Error): void {
     this?.emit("disconnect");
   }
 
@@ -144,13 +144,15 @@ export class PaperEmbeddedWalletWagmiConnector<
     provider.on("chainChanged", this.onChainChanged);
     provider.on("disconnect", this.onDisconnect);
 
+    const id = await this.getChainId();
+    const account = await this.getAccount();
     return {
       provider,
       chain: {
-        id: await this.getChainId(),
+        id,
         unsupported: false,
       },
-      account: await this.getAccount(),
+      account,
     };
   }
 
