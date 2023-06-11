@@ -16,6 +16,7 @@ next-env.d.ts
 # production
 build
 dist
+.aws-sam/
 
 # misc
 .DS_Store

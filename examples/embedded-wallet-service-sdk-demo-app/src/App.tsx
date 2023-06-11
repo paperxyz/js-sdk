@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Center,
   Flex,
   GridItem,
   Heading,
@@ -16,6 +17,7 @@ import {
 import {
   GetUser,
   PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import { useCallback, useEffect, useState } from "react";
@@ -27,7 +29,11 @@ import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [paper, setPaper] = useState<PaperEmbeddedWalletSdk>();
+  const [paperManaged, setPaperManaged] = useState<PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED>>();
   const [userDetails, setUserDetails] = useState<GetUser>();
+
+  const query = new URLSearchParams(window.location.search);
+  const isAwsManaged = query.get("managed") === "true";
 
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
@@ -35,6 +41,14 @@ function App() {
       chain: "Goerli",
     });
     setPaper(paper);
+    const paperManaged = new PaperEmbeddedWalletSdk({
+      clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
+      chain: "Goerli",
+      advancedOptions   : {
+        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
+      },
+    });
+    setPaperManaged(paperManaged);
   }, []);
 
   const fetchUserStatus = useCallback(async () => {
@@ -42,6 +56,7 @@ function App() {
       return;
     }
 
+    console.log("grabbing paper user");
     const paperUser = await paper.getUser();
     console.log("paperUser", paperUser);
 
@@ -59,6 +74,39 @@ function App() {
     console.log("logout response", response);
     await fetchUserStatus();
   };
+
+  let BodyComponent: JSX.Element;
+  if (!userDetails) {
+    BodyComponent = (
+      <Center height="full">
+        <Spinner size="md" color="white" />
+      </Center>
+    );
+  } else if (userDetails.status === UserStatus.LOGGED_OUT) {
+    BodyComponent = (
+      <Login
+        paper={isAwsManaged ? paperManaged : paper}
+        isAwsManaged={isAwsManaged}
+        onLoginSuccess={fetchUserStatus}
+      />
+    );
+  } else {
+    BodyComponent = (
+      <Stack spacing={10}>
+        <WalletInfo
+          email={userDetails.authDetails.email}
+          walletAddress={userDetails.walletAddress}
+        />
+        <WalletFeatures
+          user={
+            userDetails.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED
+              ? userDetails
+              : undefined
+          }
+        />
+      </Stack>
+    );
+  }
 
   return (
     <SimpleGrid columns={2}>
@@ -113,32 +161,7 @@ function App() {
         height="100vh"
         overflowY="auto"
       >
-        {!userDetails ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="full"
-          >
-            <Spinner size="md" color="white" />
-          </Box>
-        ) : userDetails.status === UserStatus.LOGGED_OUT ? (
-          <Login paper={paper} onLoginSuccess={fetchUserStatus} />
-        ) : (
-          <Stack spacing={10}>
-            <WalletInfo
-              email={userDetails.authDetails.email}
-              walletAddress={userDetails.walletAddress}
-            />
-            <WalletFeatures
-              user={
-                userDetails.status === UserStatus.LOGGED_IN_WALLET_INITIALIZED
-                  ? userDetails
-                  : undefined
-              }
-            />
-          </Stack>
-        )}
+        {BodyComponent}
         {!!userDetails && (
           <Card mt={10} w="100%" bg="white">
             <CardBody>

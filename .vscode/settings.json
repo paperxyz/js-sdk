@@ -11,9 +11,7 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": [
-    "manypkg",
-    "paperxyz"
-  ],
+  "prettier.prettierPath": "./node_modules/prettier",
+  "cSpell.words": ["manypkg", "paperxyz"],
   "dotenv.enableAutocloaking": false
 }

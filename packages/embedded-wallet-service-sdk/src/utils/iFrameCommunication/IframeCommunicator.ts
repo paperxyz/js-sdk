@@ -62,6 +62,7 @@ export class IframeCommunicator<T extends { [key: string]: any }> {
         };
         Object.assign(iframe.style, mergedIframeStyles);
         iframe.setAttribute("id", iframeId);
+        iframe.setAttribute("fetchpriority", "high");
         container.appendChild(iframe);
       }
       iframe.src = hrefLink.href;

@@ -1,7 +1,7 @@
 import type { Networkish } from "@ethersproject/providers";
-import type { PaperConstructorType } from "@paperxyz/embedded-wallet-service-sdk";
+import type { PaperConstructorType, RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 
-export type PaperEmbeddedWalletRainbowKitWalletProps = {
+export type PaperEmbeddedWalletRainbowKitWalletProps<T extends RecoveryShareManagement> = {
   /**
    * The name shown on the RainbowKit modal.
    *
@@ -28,4 +28,4 @@ export type PaperEmbeddedWalletRainbowKitWalletProps = {
    * Uses a public RPC provider if not provided.
    */
   rpcEndpoint?: Networkish;
-} & PaperConstructorType;
+} & PaperConstructorType<T>;
