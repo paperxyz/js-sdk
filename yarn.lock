@@ -10003,17 +10003,6 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
 
-"@paperxyz/embedded-wallet-service-sdk@0.0.0-wy-playground-20230609220845":
-  version "0.0.0-wy-playground-20230609220845"
-  resolved "https://registry.yarnpkg.com/@paperxyz/embedded-wallet-service-sdk/-/embedded-wallet-service-sdk-0.0.0-wy-playground-20230609220845.tgz#10f4013ddef930dc9eee3ead72fa8ac53e38726d"
-  integrity sha512-TMxq/L+LnD8kjkrNyT+210jtXrVePRnSs+wCEZ6A6ZnOCvNu1tbIsGX22foM7OTWkSuKTifpgs3KWFGMMhn08g==
-  dependencies:
-    "@ethersproject/abstract-signer" "^5.7.0"
-    "@ethersproject/bytes" "^5.7.0"
-    "@ethersproject/properties" "^5.7.0"
-    "@ethersproject/providers" "^5.7.2"
-    "@paperxyz/sdk-common-utilities" "^0.0.5"
-
 "@paperxyz/react-client-sdk-checkout-with-eth@^0.0.0-wy-update-checkout-with-eth-package-20230505223136":
   version "0.0.0-wy-update-checkout-with-eth-package-20230505223136"
   resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-wy-update-checkout-with-eth-package-20230505223136.tgz#632244e8d19ec071fa4ca567f1ca0c2ebce5ea4f"
@@ -10589,7 +10578,7 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@rainbow-me/rainbowkit@^0.12.7", "@rainbow-me/rainbowkit@^0.12.8":
+"@rainbow-me/rainbowkit@^0.12.7":
   version "0.12.14"
   resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.12.14.tgz#7fd737e480fde08749e9e0e0b25c5de92f879ead"
   integrity sha512-G7/uYl6TrDS7eiQauc5GEWQ09wCV91hs7xZqj3Af1wsLmbnJM2paUEMs0NI4rbvw0yiMkfoNYMZ2Wfl7NQLKaA==
