@@ -26,7 +26,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = (
   iconBackground: config.iconBackground ?? "#39D0FF",
   createConnector: () => {
     const connector = new PaperEmbeddedWalletWagmiConnector({
-      chains: [getChain(config.chain)],
+      chains: config.chains.map(getChain),
       options: config,
     });
     return { connector };

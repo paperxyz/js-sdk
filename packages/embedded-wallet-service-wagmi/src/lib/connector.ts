@@ -69,7 +69,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     this.#user = null;
     this.#paperOptions = config.options;
     this.#rpcEndpoint = config.options.rpcEndpoint;
-    this.chains = [getChain(this.#paperOptions.chain)];
+    this.chains = this.#paperOptions.chains.map(getChain);
 
     // Preload the SDK.
     if (typeof window !== "undefined") {
@@ -165,7 +165,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 
   getChainId(): Promise<number> {
-    return Promise.resolve(getChain(this.#paperOptions.chain).id);
+    if (!this.#paperOptions.chains.length) {
+      // @ts-ignore
+      return Promise.resolve(getChain(this.#paperOptions.chains[0]).id);
+    } else {
+      throw new Error("No chains provided. Please provide at least one chain.")
+    }
   }
 
   async isAuthorized() {
@@ -211,7 +216,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 }
 
-export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
+export const getChain = (chain: InternalChain): Chain => {
   switch (chain) {
     case "Ethereum":
       return mainnet;
@@ -245,7 +250,7 @@ export const getChain = (chain: PaperConstructorType["chain"]): Chain => {
       return avalancheFuji;
     default:
       throw new Error(
-        "Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.",
+        `Unsupported chain: ${chain}. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
       );
   }
 };
