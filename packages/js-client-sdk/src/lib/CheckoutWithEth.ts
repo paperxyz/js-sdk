@@ -68,7 +68,7 @@ export async function checkAndSendEth({
 
   // send the transaction
   try {
-    console.log("sending funds");
+    console.log("sending funds...", data);
     const result = await payingWalletSigner.sendTransaction({
       chainId: data.chainId,
       data: data.blob,
