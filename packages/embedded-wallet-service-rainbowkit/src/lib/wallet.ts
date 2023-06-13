@@ -4,6 +4,7 @@ import {
 } from "@paperxyz/embedded-wallet-service-wagmi";
 import type { Wallet } from "@rainbow-me/rainbowkit";
 import type { PaperEmbeddedWalletRainbowKitWalletProps } from "../interfaces/wallet";
+import { Chain } from "wagmi";
 
 /**
  * A default dark mode email icon.
@@ -19,6 +20,7 @@ const EMAIL_ICON_URL_BLACK_BG =
  */
 export const PaperEmbeddedWalletRainbowKitWallet = (
   config: PaperEmbeddedWalletRainbowKitWalletProps,
+  supportedChains: Chain[]
 ): Wallet => ({
   id: "paper-embedded-wallet",
   name: config.name ?? "Email",
@@ -26,7 +28,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = (
   iconBackground: config.iconBackground ?? "#39D0FF",
   createConnector: () => {
     const connector = new PaperEmbeddedWalletWagmiConnector({
-      chains: config.chains.map(getChain),
+      chains: supportedChains,
       options: config,
     });
     return { connector };

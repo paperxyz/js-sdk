@@ -15,6 +15,7 @@ import { WagmiConfig, configureChains, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import type { PaperEmbeddedWalletProviderProps } from "../interfaces/provider";
 import { PaperEmbeddedWalletRainbowKitWallet } from "./wallet";
+import { Chain } from "@paperxyz/sdk-common-utilities";
 
 export const PaperEmbeddedWalletProvider = ({
   appName,
@@ -23,8 +24,9 @@ export const PaperEmbeddedWalletProvider = ({
   modalOptions,
   walletOptions,
   children,
+  supportedChains
 }: React.PropsWithChildren<PaperEmbeddedWalletProviderProps>): React.ReactElement => {
-  const selectedChains = walletOptions.chains.map(chain => getChain(chain));
+  const selectedChains = supportedChains.map((chain:Chain) => getChain(chain));
   const { chains, provider, webSocketProvider } = configureChains(
     selectedChains,
     providers,
@@ -40,7 +42,7 @@ export const PaperEmbeddedWalletProvider = ({
   const connectors = connectorsForWallets([
     {
       groupName: "Log In With Email",
-      wallets: [PaperEmbeddedWalletRainbowKitWallet(walletOptions)],
+      wallets: [PaperEmbeddedWalletRainbowKitWallet(walletOptions, selectedChains)],
     },
     {
       groupName: "Log In With Wallet",

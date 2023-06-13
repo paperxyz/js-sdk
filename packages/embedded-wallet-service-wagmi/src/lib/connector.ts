@@ -69,7 +69,20 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
     this.#user = null;
     this.#paperOptions = config.options;
     this.#rpcEndpoint = config.options.rpcEndpoint;
-    this.chains = this.#paperOptions.chains.map(getChain);
+
+    if (config.chains?.length) {
+      this.chains = config.chains;
+
+      // if the chains array doesnt include the default chain, add it.
+
+      const wagmiChain: Chain = getChain(this.#paperOptions.chain);
+
+      if (!this.chains.includes(wagmiChain)) {
+        this.chains.push(wagmiChain);
+      }
+    } else {
+      this.chains = [getChain(this.#paperOptions.chain)];
+    }
 
     // Preload the SDK.
     if (typeof window !== "undefined") {
@@ -165,11 +178,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
   }
 
   getChainId(): Promise<number> {
-    if (!this.#paperOptions.chains.length) {
-      // @ts-ignore
-      return Promise.resolve(getChain(this.#paperOptions.chains[0]).id);
+    // getChaidId is called in the connect method. By default we will always connect to the 
+    // mandatory chain provided in the paperOptions argument.
+    if (this.#paperOptions.chain) {
+      return Promise.resolve(getChain(this.#paperOptions.chain).id);
     } else {
-      throw new Error("No chains provided. Please provide at least one chain.")
+      throw new Error("No default chain provided. Please provide at least one chain in the paperOptions argumnet.");
     }
   }
 
@@ -205,11 +219,12 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
       throw new Error(`User is not logged in. Try calling "connect()" first.`);
     }
 
-    if (Object.keys(ChainIdToChain).includes(chainId.toString())) {
-      // @ts-ignore
-      const chainName:InternalChain = ChainIdToChain[chainId];
-      await user.wallet.setChain({chain:chainName})
-      return getChain(chainName);
+    const chainName = ChainIdToChain[chainId];
+    if (chainName) {
+      await user.wallet.setChain({chain:chainName});
+      const newChain = getChain(chainName);
+      this.onChainChanged(chainId);
+      return newChain;
     } else {
       throw new Error(`Switching to the following chain is not currently supported by Paper.`);
     }
