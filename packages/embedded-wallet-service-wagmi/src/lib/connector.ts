@@ -29,7 +29,7 @@ import {
   arbitrum
 } from "wagmi/chains";
 import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/blockchain";
-import { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
+import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 
 const IS_SERVER = typeof window === "undefined";
 
@@ -226,7 +226,7 @@ export class PaperEmbeddedWalletWagmiConnector<
       await user.wallet.setChain({chain:chainName});
       this.onChainChanged(chainId);
       this.onAccountsChanged([user.walletAddress.startsWith("0x") ? (user.walletAddress as Address) : `0x${user.walletAddress}`]);
-      return getChain(chainName);;
+      return getChain(chainName);
     } else {
       throw new Error(`Switching to the following chain is not currently supported by Paper.`);
     }
@@ -267,7 +267,7 @@ export const getChain = (chain: InternalChain): Chain => {
       return avalancheFuji;
     default:
       throw new Error(
-        `Unsupported chain: ${chain}. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
+        `Unsupported chain${chain ? `: ${chain}` : null}. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
       );
   }
 };
