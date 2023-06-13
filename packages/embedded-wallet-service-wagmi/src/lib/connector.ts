@@ -225,7 +225,7 @@ export class PaperEmbeddedWalletWagmiConnector<
     if (chainName) {
       await user.wallet.setChain({chain:chainName});
       this.onChainChanged(chainId);
-      this.onAccountsChanged([user.walletAddress]);
+      this.onAccountsChanged([user.walletAddress.startsWith("0x") ? (user.walletAddress as Address) : `0x${user.walletAddress}`]);
       return getChain(chainName);;
     } else {
       throw new Error(`Switching to the following chain is not currently supported by Paper.`);
