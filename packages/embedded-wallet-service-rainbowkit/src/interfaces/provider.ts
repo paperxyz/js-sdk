@@ -18,5 +18,5 @@ export interface PaperEmbeddedWalletProviderProps<
   otherWallets?: Wallet[];
   modalOptions?: RequiredModalOptions;
   walletOptions: PaperEmbeddedWalletRainbowKitWalletProps<T>;
-  supportedChains: Chain[];
+  supportedChains?: Chain[];
 }

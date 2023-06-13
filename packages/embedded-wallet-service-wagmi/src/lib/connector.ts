@@ -26,7 +26,7 @@ import {
   fantom,
   fantomTestnet,
   avalancheFuji,
-  arbitrum
+  arbitrum,
 } from "wagmi/chains";
 import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/blockchain";
 import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
@@ -180,12 +180,14 @@ export class PaperEmbeddedWalletWagmiConnector<
   }
 
   getChainId(): Promise<number> {
-    // getChaidId is called in the connect method. By default we will always connect to the 
+    // getChaidId is called in the connect method. By default we will always connect to the
     // mandatory chain provided in the paperOptions argument.
     if (this.#paperOptions.chain) {
       return Promise.resolve(getChain(this.#paperOptions.chain).id);
     } else {
-      throw new Error("No default chain provided. Please provide at least one chain in the paperOptions argumnet.");
+      throw new Error(
+        "No default chain provided. Please provide at least one chain in the paperOptions argument. For example, paperOptions: {chain: 'Polygon'} ",
+      );
     }
   }
 
@@ -223,12 +225,18 @@ export class PaperEmbeddedWalletWagmiConnector<
 
     const chainName = ChainIdToChain[chainId];
     if (chainName) {
-      await user.wallet.setChain({chain:chainName});
+      await user.wallet.setChain({ chain: chainName });
       this.onChainChanged(chainId);
-      this.onAccountsChanged([user.walletAddress.startsWith("0x") ? (user.walletAddress as Address) : `0x${user.walletAddress}`]);
+      this.onAccountsChanged([
+        user.walletAddress.startsWith("0x")
+          ? (user.walletAddress as Address)
+          : `0x${user.walletAddress}`,
+      ]);
       return getChain(chainName);
     } else {
-      throw new Error(`Switching to the following chain is not currently supported by Paper.`);
+      throw new Error(
+        `Switching to the following chain with id: ${chainId} is not currently supported by Paper.`,
+      );
     }
   }
 }
@@ -262,12 +270,14 @@ export const getChain = (chain: InternalChain): Chain => {
     case "FantomTestnet":
       return fantomTestnet;
     case "Sepolia":
-      return sepolia
+      return sepolia;
     case "AvalancheFuji":
       return avalancheFuji;
     default:
       throw new Error(
-        `Unsupported chain${chain ? `: ${chain}` : null}. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
+        `Unsupported chain${
+          chain ? `: ${chain}` : null
+        }. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
       );
   }
 };

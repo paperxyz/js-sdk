@@ -15,7 +15,7 @@ const ProviderDemo = () => {
         name: "Acme Inc.",
         iconUrl: "https://withpaper.com/icons/paper-embedded-wallet-black.png",
         iconBackground: "#fc03e3",
-        rpcEndpoint: "https://polygon.rpc.thirdweb.com"
+        rpcEndpoint: "https://polygon.rpc.thirdweb.com",
       }}
       supportedChains={["Polygon", "Ethereum"]}
       modalOptions={{
