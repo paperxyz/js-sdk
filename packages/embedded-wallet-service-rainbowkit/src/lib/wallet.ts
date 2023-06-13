@@ -1,5 +1,5 @@
+import type { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
 import {
-  getChain,
   PaperEmbeddedWalletWagmiConnector,
 } from "@paperxyz/embedded-wallet-service-wagmi";
 import type { Wallet } from "@rainbow-me/rainbowkit";
@@ -18,8 +18,10 @@ const EMAIL_ICON_URL_BLACK_BG =
 /**
  * @returns A RainbowKit-compatible Wallet.
  */
-export const PaperEmbeddedWalletRainbowKitWallet = (
-  config: PaperEmbeddedWalletRainbowKitWalletProps,
+export const PaperEmbeddedWalletRainbowKitWallet = <
+  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
+>(
+  config: PaperEmbeddedWalletRainbowKitWalletProps<T>,
   supportedChains: Chain[]
 ): Wallet => ({
   id: "paper-embedded-wallet",
@@ -27,7 +29,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = (
   iconUrl: config.iconUrl ?? EMAIL_ICON_URL_BLACK_BG,
   iconBackground: config.iconBackground ?? "#39D0FF",
   createConnector: () => {
-    const connector = new PaperEmbeddedWalletWagmiConnector({
+    const connector = new PaperEmbeddedWalletWagmiConnector<T>({
       chains: supportedChains,
       options: config,
     });
