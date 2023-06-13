@@ -74,9 +74,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
       this.chains = config.chains;
 
       // if the chains array doesnt include the default chain, add it.
-
       const wagmiChain: Chain = getChain(this.#paperOptions.chain);
-
       if (!this.chains.includes(wagmiChain)) {
         this.chains.push(wagmiChain);
       }
@@ -224,6 +222,7 @@ export class PaperEmbeddedWalletWagmiConnector extends Connector<
       await user.wallet.setChain({chain:chainName});
       const newChain = getChain(chainName);
       this.onChainChanged(chainId);
+      this.onAccountsChanged([user.walletAddress]);
       return newChain;
     } else {
       throw new Error(`Switching to the following chain is not currently supported by Paper.`);
