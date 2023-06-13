@@ -224,10 +224,9 @@ export class PaperEmbeddedWalletWagmiConnector<
     const chainName = ChainIdToChain[chainId];
     if (chainName) {
       await user.wallet.setChain({chain:chainName});
-      const newChain = getChain(chainName);
       this.onChainChanged(chainId);
       this.onAccountsChanged([user.walletAddress]);
-      return newChain;
+      return getChain(chainName);;
     } else {
       throw new Error(`Switching to the following chain is not currently supported by Paper.`);
     }
