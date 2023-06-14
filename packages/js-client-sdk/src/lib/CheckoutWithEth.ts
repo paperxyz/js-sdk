@@ -8,7 +8,10 @@ import type {
   ICustomizationOptions,
   Locale,
 } from "@paperxyz/sdk-common-utilities";
-import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
+import {
+  DEFAULT_BRAND_OPTIONS,
+  getPaperOriginUrl,
+} from "@paperxyz/sdk-common-utilities";
 import type { PaperSDKError } from "../interfaces/PaperSDKError";
 import { PayWithCryptoErrorCode } from "../interfaces/PaperSDKError";
 import { LinksManager } from "../utils/LinksManager";
@@ -184,6 +187,34 @@ export function createCheckoutWithEthMessageHandler({
   };
 }
 
+export interface ICheckoutWithEthConfigs {
+  contractId: string;
+  walletAddress: string;
+  email?: string;
+  quantity?: number;
+  metadata?: Record<string, any>;
+  mintMethod?: {
+    name: string;
+    args: Record<string, any>[];
+    payment: { value: string; currency: string };
+  };
+  contractArgs?: Record<string, any>;
+
+  // payment customizations
+  feeBearer?: "BUYER" | "SELLER";
+  capturePaymentLater?: boolean;
+  fiatCurrency?: string;
+
+  // stripe receipt
+  title?: string;
+
+  // email
+  sendEmailOnTransferSucceeded?: boolean;
+  postPurchaseMessageMarkdown?: string;
+  postPurchaseButtonText?: string;
+  successCallbackUrl?: string;
+}
+
 export interface CheckoutWithEthLinkArgs {
   sdkClientSecret: string;
   appName?: string;
@@ -197,6 +228,7 @@ export interface CheckoutWithEthLinkArgs {
 
   locale?: Locale;
   options?: ICustomizationOptions;
+  configs?: ICheckoutWithEthConfigs;
 }
 
 export async function createCheckoutWithEthLink({
@@ -209,6 +241,7 @@ export async function createCheckoutWithEthLink({
   options = {
     ...DEFAULT_BRAND_OPTIONS,
   },
+  configs,
 }: CheckoutWithEthLinkArgs) {
   const checkoutWithEthUrlBase = new URL(
     CHECKOUT_WITH_ETH_IFRAME_URL,
@@ -216,8 +249,19 @@ export async function createCheckoutWithEthLink({
   );
   const address = await payingWalletSigner.getAddress();
 
+  let clientSecret = sdkClientSecret;
+  if (!clientSecret && configs) {
+    clientSecret = btoa(JSON.stringify(configs));
+  }
+  if (!sdkClientSecret) {
+    const error = `Must have either sdkClientSecret or configs field set. Received neither`;
+    const destination = `/error?errorMessage=${error}`;
+    const domain = getPaperOriginUrl();
+    return new URL(destination, domain);
+  }
+
   const checkoutWithEthLink = new LinksManager(checkoutWithEthUrlBase);
-  checkoutWithEthLink.addClientSecret(sdkClientSecret);
+  checkoutWithEthLink.addClientSecret(clientSecret);
   checkoutWithEthLink.addRecipientWalletAddress(address);
   checkoutWithEthLink.addPayerWalletAddress(address);
   checkoutWithEthLink.addReceivingWalletType(receivingWalletType);

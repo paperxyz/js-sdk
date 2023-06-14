@@ -11,6 +11,7 @@ export function useCheckoutWithEthLink({
   options,
   receivingWalletType,
   showConnectWalletOptions,
+  configs,
 }: Omit<CheckoutWithEthLinkArgs, "payingWalletSigner"> & {
   payingWalletSigner: ethers.Signer | undefined | null;
 }) {
@@ -29,6 +30,7 @@ export function useCheckoutWithEthLink({
       options,
       receivingWalletType,
       showConnectWalletOptions,
+      configs,
     })
       .then((url) => {
         setCheckoutWithEthUrl(url);

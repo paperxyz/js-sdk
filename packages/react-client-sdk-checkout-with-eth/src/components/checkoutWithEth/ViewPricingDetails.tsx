@@ -55,6 +55,7 @@ export const ViewPricingDetails = ({
   sdkClientSecret,
   appName,
   options: _options,
+  configs,
 }: ViewPricingDetailsProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
@@ -87,6 +88,7 @@ export const ViewPricingDetails = ({
     options,
     receivingWalletType,
     showConnectWalletOptions,
+    configs,
   });
 
   const onLoad = useCallback(() => {
