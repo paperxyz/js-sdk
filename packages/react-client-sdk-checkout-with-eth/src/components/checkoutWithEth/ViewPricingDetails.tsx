@@ -90,10 +90,11 @@ export const ViewPricingDetails = ({
     showConnectWalletOptions,
     configs,
   });
-
+  console.log("HERE");
   const onLoad = useCallback(() => {
     setIsIframeLoading(false);
   }, []);
+
   useEffect(() => {
     if (!iframeRef.current || !signer) {
       return;
@@ -146,7 +147,7 @@ export const ViewPricingDetails = ({
           // try switching network first if needed or supported
           try {
             if (chainId !== data.chainId && switchNetworkAsync) {
-              console.log("switching signer network");
+              console.log(`switching signer network to chainId: ${chainId}`);
               await switchNetworkAsync(data.chainId);
             } else if (chainId !== data.chainId) {
               throw {

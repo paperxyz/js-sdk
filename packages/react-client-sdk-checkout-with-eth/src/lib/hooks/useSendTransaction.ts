@@ -16,6 +16,7 @@ export const useSendTransaction = ({ signer }: { signer?: ethers.Signer }) => {
         console.log("no argument for transaction, returning");
         return;
       }
+
       if (signer) {
         setIsSendingTransaction(true);
         try {
