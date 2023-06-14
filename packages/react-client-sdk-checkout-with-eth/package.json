@@ -4,7 +4,6 @@
   "version": "0.0.6",
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "type": "module",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
@@ -54,7 +53,7 @@
     "@paperxyz/js-client-sdk": "^0.2.2",
     "@paperxyz/sdk-common-utilities": "^0.0.5",
     "ethers": "^5.7.2",
-    "wagmi": "^0.12.9"
+    "wagmi": "0.7.15"
   },
   "publishConfig": {
     "access": "public"

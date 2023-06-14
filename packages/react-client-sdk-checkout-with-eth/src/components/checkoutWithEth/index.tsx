@@ -2,7 +2,13 @@ import { Transition } from "@headlessui/react";
 import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
 import { createClient as createClientCore } from "@wagmi/core";
 import React, { useEffect, useMemo, useState } from "react";
-import { WagmiConfig, configureChains, createClient, useSigner } from "wagmi";
+import {
+  WagmiConfig,
+  chain,
+  configureChains,
+  createClient,
+  useSigner,
+} from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -163,7 +169,10 @@ export const CheckoutWithEth = (
       }),
     );
   }
-  const { chains, provider } = configureChains([wagmiChains], providers);
+  const { chains, provider } = configureChains(
+    [chain.mainnet, chain.goerli],
+    providers,
+  );
   const client = useMemo(
     () =>
       createClient({
@@ -172,6 +181,7 @@ export const CheckoutWithEth = (
           new MetaMaskConnector({
             chains,
             options: {
+              shimChainChangedDisconnect: true,
               shimDisconnect: true,
               UNSTABLE_shimOnConnectSelectAccount: true,
             },
@@ -179,8 +189,7 @@ export const CheckoutWithEth = (
           new WalletConnectConnector({
             chains,
             options: {
-              projectId: "bbd798e400017978f92537e40486510b",
-              showQrModal: true,
+              qrcode: true,
             },
           }),
           new CoinbaseWalletConnector({
@@ -200,6 +209,7 @@ export const CheckoutWithEth = (
       new MetaMaskConnector({
         chains,
         options: {
+          shimChainChangedDisconnect: true,
           shimDisconnect: true,
           UNSTABLE_shimOnConnectSelectAccount: true,
         },
@@ -207,8 +217,7 @@ export const CheckoutWithEth = (
       new WalletConnectConnector({
         chains,
         options: {
-          projectId: "bbd798e400017978f92537e40486510b",
-          showQrModal: true,
+          qrcode: true,
         },
       }),
       new CoinbaseWalletConnector({
