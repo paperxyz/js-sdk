@@ -216,7 +216,7 @@ export interface ICheckoutWithEthConfigs {
 }
 
 export interface CheckoutWithEthLinkArgs {
-  sdkClientSecret: string;
+  sdkClientSecret?: string;
   appName?: string;
   payingWalletSigner: ethers.Signer;
   receivingWalletType?:
@@ -261,7 +261,7 @@ export async function createCheckoutWithEthLink({
   }
 
   const checkoutWithEthLink = new LinksManager(checkoutWithEthUrlBase);
-  checkoutWithEthLink.addClientSecret(clientSecret);
+  checkoutWithEthLink.addClientSecret(clientSecret ?? "");
   checkoutWithEthLink.addRecipientWalletAddress(address);
   checkoutWithEthLink.addPayerWalletAddress(address);
   checkoutWithEthLink.addReceivingWalletType(receivingWalletType);
