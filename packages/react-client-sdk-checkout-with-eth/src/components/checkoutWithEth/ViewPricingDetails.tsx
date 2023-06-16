@@ -9,13 +9,7 @@ import {
 } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useCheckoutWithEthLink } from "../../lib/hooks/useCheckoutWithEthLink";
 import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
@@ -37,13 +31,13 @@ export type ViewPricingDetailsProps = Omit<
     Omit<CheckoutWithEthMessageHandlerArgs, "iframe">,
     "payingWalletSigner"
   > & {
-    setIsTryingToChangeWallet: React.Dispatch<React.SetStateAction<boolean>>;
+    onChangeWallet: () => void;
     payingWalletSigner?: ethers.Signer;
     appName?: string;
   };
 
 export const ViewPricingDetails = ({
-  setIsTryingToChangeWallet,
+  onChangeWallet,
   onSuccess,
   onError,
   suppressErrorToast = false,
@@ -213,7 +207,7 @@ export const ViewPricingDetails = ({
           break;
         }
         case "goBackToChoosingWallet":
-          setIsTryingToChangeWallet(true);
+          onChangeWallet();
           break;
         case "checkout-with-eth-sizing": {
           if (iframeRef.current) {
