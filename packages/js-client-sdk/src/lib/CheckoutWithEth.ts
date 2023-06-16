@@ -248,7 +248,6 @@ export async function createCheckoutWithEthLink({
     PAPER_APP_URL,
   );
   const address = await payingWalletSigner.getAddress();
-
   let clientSecret = sdkClientSecret;
   if (!clientSecret && configs) {
     clientSecret = btoa(JSON.stringify(configs));

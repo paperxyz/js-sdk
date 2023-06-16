@@ -80,6 +80,7 @@ export const ViewPricingDetails = ({
       fontFamily: string;
     };
   }, [_options]);
+
   const { checkoutWithEthUrl } = useCheckoutWithEthLink({
     payingWalletSigner: signer,
     sdkClientSecret,
@@ -90,7 +91,7 @@ export const ViewPricingDetails = ({
     showConnectWalletOptions,
     configs,
   });
-  console.log("HERE");
+
   const onLoad = useCallback(() => {
     setIsIframeLoading(false);
   }, []);
