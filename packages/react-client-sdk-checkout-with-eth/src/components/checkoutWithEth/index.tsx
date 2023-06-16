@@ -40,6 +40,7 @@ type CheckoutWithEthProps = {
 
 export const CheckoutWithEthInternal = ({
   sdkClientSecret,
+  configs,
   payingWalletSigner,
   setUpUserPayingWalletSigner,
   receivingWalletType,
@@ -82,7 +83,6 @@ export const CheckoutWithEthInternal = ({
     isJsonRpcSignerPresent,
     isTryingToChangeWallet,
   ]);
-
   return (
     <div
       className={transitionContainer}
@@ -134,6 +134,7 @@ export const CheckoutWithEthInternal = ({
             {...commonTransitionProps}
           >
             <ViewPricingDetails
+              configs={configs}
               sdkClientSecret={sdkClientSecret}
               payingWalletSigner={actualSigner || undefined}
               receivingWalletType={receivingWalletType}

@@ -22,6 +22,8 @@ export function useCheckoutWithEthLink({
     if (!payingWalletSigner) {
       return;
     }
+
+    console.log("Before");
     createCheckoutWithEthLink({
       payingWalletSigner,
       sdkClientSecret,

@@ -192,7 +192,6 @@ export interface ICheckoutWithEthConfigs {
   walletAddress: string;
   email?: string;
   quantity?: number;
-  metadata?: Record<string, any>;
   mintMethod?: {
     name: string;
     args: Record<string, any>[];
@@ -201,7 +200,6 @@ export interface ICheckoutWithEthConfigs {
   contractArgs?: Record<string, any>;
 
   // payment customizations
-  feeBearer?: "BUYER" | "SELLER";
   capturePaymentLater?: boolean;
   fiatCurrency?: string;
 
@@ -252,7 +250,7 @@ export async function createCheckoutWithEthLink({
   if (!clientSecret && configs) {
     clientSecret = btoa(JSON.stringify(configs));
   }
-  if (!sdkClientSecret) {
+  if (!clientSecret) {
     const error = `Must have either sdkClientSecret or configs field set. Received neither`;
     const destination = `/error?errorMessage=${error}`;
     const domain = getPaperOriginUrl();
