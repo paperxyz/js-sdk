@@ -49,9 +49,10 @@ export const CheckoutWithEthInternal = ({
   options,
   onError,
   // This is fired when the transaction is sent to chain, the transaction might still fail there for whatever reason.
-  onSuccess,
+  onPaymentSuccess,
   onWalletConnected,
   onPageChange,
+  onPriceUpdate,
   locale,
 }: CheckoutWithEthProps): React.ReactElement => {
   const { data: _signer } = useSigner();
@@ -128,11 +129,12 @@ export const CheckoutWithEthInternal = ({
                   receivingWalletType={receivingWalletType}
                   setUpUserPayingWalletSigner={setUpUserPayingWalletSigner}
                   onError={onError}
-                  onSuccess={(transactionResponse) => {
-                    if (onSuccess) {
-                      onSuccess(transactionResponse);
+                  onPaymentSuccess={(transactionResponse) => {
+                    if (onPaymentSuccess) {
+                      onPaymentSuccess(transactionResponse);
                     }
                   }}
+                  onPriceUpdate={onPriceUpdate}
                   showConnectWalletOptions={showConnectWalletOptions}
                   suppressErrorToast={suppressErrorToast}
                   options={options}

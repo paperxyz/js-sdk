@@ -51,7 +51,6 @@ export function createCheckoutWithCardLink({
     CHECKOUT_WITH_CARD_IFRAME_URL,
     PAPER_APP_URL,
   );
-
   let clientSecret = sdkClientSecret;
   if (!clientSecret && configs) {
     clientSecret = btoa(JSON.stringify(configs));
@@ -64,7 +63,7 @@ export function createCheckoutWithCardLink({
   }
 
   const checkoutWithCardLink = new LinksManager(CheckoutWithCardUrlBase);
-  checkoutWithCardLink.addClientSecret(sdkClientSecret ?? "");
+  checkoutWithCardLink.addClientSecret(clientSecret ?? "");
   checkoutWithCardLink.addStylingOptions(options);
   checkoutWithCardLink.addLocale(locale);
   checkoutWithCardLink.addAppName(appName);
@@ -74,7 +73,7 @@ export function createCheckoutWithCardLink({
 
 export interface CheckoutWithCardMessageHandlerArgs {
   iframe: HTMLIFrameElement;
-  onPaymentSuccess?: ({ id }: { id: string }) => void;
+  onPaymentSuccess?: ({ transactionId }: { transactionId?: string }) => void;
   onReview?: (result: ReviewResult) => void;
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;
@@ -112,7 +111,7 @@ export function createCheckoutWithCardMessageHandler({
 
       case "paymentSuccess":
         if (onPaymentSuccess) {
-          onPaymentSuccess({ id: data.id });
+          onPaymentSuccess({ transactionId: data.id });
         }
 
         if (data.postToIframe) {
@@ -176,14 +175,7 @@ export function createCheckoutWithCardMessageHandler({
         break;
 
       case "onPriceUpdate": {
-        const { quantity, unitPrice, networkFees, serviceFees, total } = data;
-        onPriceUpdate?.({
-          quantity,
-          unitPrice,
-          networkFees,
-          serviceFees,
-          total,
-        });
+        onPriceUpdate?.(data);
         break;
       }
 
@@ -237,6 +229,7 @@ export function createCheckoutWithCardElement({
     locale,
     options,
     useAltDomain,
+    configs,
   });
 
   const paymentElement = new PaperPaymentElement({

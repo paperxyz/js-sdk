@@ -7,21 +7,21 @@ export interface IErrorObject {
   description: string;
 }
 
-export function handlePayWithCryptoError(
+export const handlePayWithCryptoError = async (
   error: Error | IErrorObject,
-  onError?: (code: PaperSDKError) => void,
+  onError?: (code: PaperSDKError) => Promise<void> | void,
   postToParent?: (errorObject: Omit<IErrorObject, "isErrorObject">) => void,
-) {
+) => {
   if ("isErrorObject" in error) {
     if (onError) {
-      onError({ code: error.title, error: new Error(error.title) });
+      await onError({ code: error.title, error: new Error(error.title) });
     }
     if (postToParent) {
       postToParent({ ...error });
     }
   } else if (!("message" in error)) {
     if (onError) {
-      onError({
+      await onError({
         code: PayWithCryptoErrorCode.ErrorSendingTransaction,
         error: new Error(JSON.stringify(error)),
       });
@@ -38,7 +38,10 @@ export function handlePayWithCryptoError(
       error.message.includes("denied transaction")
     ) {
       if (onError) {
-        onError({ code: PayWithCryptoErrorCode.TransactionCancelled, error });
+        await onError({
+          code: PayWithCryptoErrorCode.TransactionCancelled,
+          error,
+        });
       }
       if (postToParent) {
         postToParent({
@@ -48,7 +51,7 @@ export function handlePayWithCryptoError(
       }
     } else if (error.message.includes("insufficient funds")) {
       if (onError) {
-        onError({
+        await onError({
           code: PayWithCryptoErrorCode.InsufficientBalance,
           error,
         });
@@ -62,7 +65,7 @@ export function handlePayWithCryptoError(
       }
     } else if (error.message.includes("Error switching chain")) {
       if (onError) {
-        onError({
+        await onError({
           code: PayWithCryptoErrorCode.ChainSwitchUnderway,
           error,
         });
@@ -75,7 +78,7 @@ export function handlePayWithCryptoError(
       }
     } else {
       if (onError) {
-        onError({
+        await onError({
           code: PayWithCryptoErrorCode.ErrorSendingTransaction,
           error,
         });
@@ -88,4 +91,4 @@ export function handlePayWithCryptoError(
       }
     }
   }
-}
+};

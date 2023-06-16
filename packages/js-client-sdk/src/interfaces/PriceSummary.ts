@@ -4,6 +4,7 @@ export interface PriceSummary {
   networkFees: PriceDetail;
   serviceFees: PriceDetail;
   total: PriceDetail;
+  cryptoToFiatConversionRate: number;
 }
 
 export interface PriceDetail {

@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import type {
   CheckoutWithEthLinkArgs,
   CheckoutWithEthMessageHandlerArgs,
+  PriceSummary,
 } from "@paperxyz/js-client-sdk";
 import {
   PAY_WITH_ETH_ERROR,
@@ -31,14 +32,14 @@ export type ViewPricingDetailsProps = Omit<
     Omit<CheckoutWithEthMessageHandlerArgs, "iframe">,
     "payingWalletSigner"
   > & {
-    onChangeWallet: () => void;
     payingWalletSigner?: ethers.Signer;
     appName?: string;
   };
 
 export const ViewPricingDetails = ({
   onChangeWallet,
-  onSuccess,
+  onPaymentSuccess,
+  onPriceUpdate,
   onError,
   suppressErrorToast = false,
   showConnectWalletOptions = true,
@@ -50,7 +51,7 @@ export const ViewPricingDetails = ({
   appName,
   options: _options,
   configs,
-}: ViewPricingDetailsProps) => {
+}: ViewPricingDetailsProps & { onChangeWallet: () => void }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
   const appNameToUse = appName;
@@ -101,6 +102,10 @@ export const ViewPricingDetails = ({
       // This allows us to have the ability to have wallet connection handled by the SDK
       const { data } = event;
       switch (data.eventType) {
+        case "onPriceUpdate": {
+          onPriceUpdate?.(data as PriceSummary);
+          return;
+        }
         case "payWithEth": {
           if (data.error) {
             handlePayWithCryptoError(
@@ -184,8 +189,8 @@ export const ViewPricingDetails = ({
             const { response, receipt } = result;
 
             if (iframeRef.current && receipt) {
-              if (onSuccess && receipt) {
-                onSuccess({
+              if (onPaymentSuccess && receipt) {
+                onPaymentSuccess({
                   transactionResponse: response,
                   transactionId: data.transactionId,
                 });
