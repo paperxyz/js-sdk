@@ -23,7 +23,6 @@ export function useCheckoutWithEthLink({
       return;
     }
 
-    console.log("Before");
     createCheckoutWithEthLink({
       payingWalletSigner,
       sdkClientSecret,

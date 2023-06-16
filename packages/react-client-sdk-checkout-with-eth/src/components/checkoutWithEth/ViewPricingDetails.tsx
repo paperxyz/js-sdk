@@ -182,16 +182,21 @@ export const ViewPricingDetails = ({
               },
               mode: "recklesslyUnprepared",
             });
-            if (onSuccess && result) {
-              onSuccess({
-                transactionResponse: result,
-                transactionId: data.transactionId,
-              });
+            if (!result) {
+              throw new Error(`Unable to send transaction.`);
             }
-            if (iframeRef.current && result) {
-              postMessageToIframe(iframeRef.current, "paymentSuccess", {
+            const { response, receipt } = result;
+
+            if (iframeRef.current && receipt) {
+              if (onSuccess && receipt) {
+                onSuccess({
+                  transactionResponse: response,
+                  transactionId: data.transactionId,
+                });
+              }
+              postMessageToIframe(iframeRef.current, "paymentSentToChain", {
                 suppressErrorToast,
-                transactionHash: result.hash,
+                transactionHash: receipt.transactionHash,
               });
             }
           } catch (error) {

@@ -83,6 +83,7 @@ export const CheckoutWithEthInternal = ({
     isJsonRpcSignerPresent,
     isTryingToChangeWallet,
   ]);
+
   return (
     <div
       className={transitionContainer}
@@ -170,10 +171,8 @@ export const CheckoutWithEth = (
       }),
     );
   }
-  const { chains, provider } = configureChains(
-    [chain.mainnet, chain.goerli],
-    providers,
-  );
+
+  const { chains, provider } = configureChains(Object.values(chain), providers);
   const client = useMemo(
     () =>
       createClient({
