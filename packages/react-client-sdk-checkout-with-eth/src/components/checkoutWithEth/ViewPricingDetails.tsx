@@ -63,6 +63,7 @@ export const ViewPricingDetails = ({
   const { sendTransactionAsync } = useSendTransaction({
     signer,
   });
+
   const options = useMemo(() => {
     return (_options || {
       ...DEFAULT_BRAND_OPTIONS,
@@ -116,6 +117,7 @@ export const ViewPricingDetails = ({
             );
             return;
           }
+
           // Allows Dev's to inject any chain switching for their custom signer here.
           if (signer && setUpUserPayingWalletSigner) {
             try {

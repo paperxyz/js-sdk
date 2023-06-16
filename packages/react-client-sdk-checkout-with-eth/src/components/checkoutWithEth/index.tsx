@@ -170,8 +170,6 @@ export const CheckoutWithEth = (
     );
   }
 
-  console.log({ providers });
-
   const { chains, provider } = configureChains(Object.values(chain), providers);
   const client = useMemo(
     () =>
