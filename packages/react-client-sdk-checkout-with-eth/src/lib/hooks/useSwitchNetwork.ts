@@ -9,7 +9,7 @@ import {
 } from "wagmi";
 
 export const useSwitchNetwork = ({
-  signer,
+  signer: signer,
 }: {
   signer?: ethers.Signer;
 }): {

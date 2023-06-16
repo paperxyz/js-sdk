@@ -17,7 +17,6 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
 import { WalletType } from "../../interfaces/WalletTypes";
-
 import {
   commonTransitionProps,
   transitionContainer,
@@ -78,10 +77,6 @@ export const CheckoutWithEthInternal = ({
     }
   }, [showConnectWalletOptions, isJsonRpcSignerPresent]);
 
-  console.log({
-    showConnectWalletOptions,
-    isJsonRpcSignerPresent,
-  });
   return (
     <div
       className={transitionContainer}
@@ -158,7 +153,14 @@ export const CheckoutWithEthInternal = ({
 export const CheckoutWithEth = (
   props: CheckoutWithEthProps,
 ): React.ReactElement => {
-  let providers = [publicProvider()];
+  let providers = [
+    publicProvider(),
+    ...Object.values(chain).map((_chain) =>
+      jsonRpcProvider({
+        rpc: (_c) => ({ http: _chain.rpcUrls[0] ?? "" }),
+      }),
+    ),
+  ];
   if (props.rpcUrls) {
     // Use the RPC URLs provided by the developer instead of a public, rate-limited one.
     providers = props.rpcUrls.map((http) =>
@@ -167,6 +169,8 @@ export const CheckoutWithEth = (
       }),
     );
   }
+
+  console.log({ providers });
 
   const { chains, provider } = configureChains(Object.values(chain), providers);
   const client = useMemo(

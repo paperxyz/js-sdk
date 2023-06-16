@@ -26,4 +26,6 @@ const loader = css`
   width: 4rem;
   height: 4rem;
   animation: ${Spin} 1s linear infinite;
+  max-width: 20px;
+  max-height: 20px;
 `;
