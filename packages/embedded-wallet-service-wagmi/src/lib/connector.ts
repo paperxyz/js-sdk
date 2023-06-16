@@ -179,7 +179,7 @@ export class PaperEmbeddedWalletWagmiConnector<
     };
   }
 
-  getChainId(): Promise<number> {
+  async getChainId(): Promise<number> {
     // getChaidId is called in the connect method. By default we will always connect to the
     // mandatory chain provided in the paperOptions argument.
     if (this.#paperOptions.chain) {
@@ -227,11 +227,10 @@ export class PaperEmbeddedWalletWagmiConnector<
     if (chainName) {
       await user.wallet.setChain({ chain: chainName });
       this.onChainChanged(chainId);
-      this.onAccountsChanged([
-        user.walletAddress.startsWith("0x")
-          ? (user.walletAddress as Address)
-          : `0x${user.walletAddress}`,
-      ]);
+      if (!user.walletAddress.startsWith("0x")) {
+        throw "Invalid wallet address. Wallet address must start with 0x.";
+      }
+      this.onAccountsChanged([user.walletAddress as Address]);
       return getChain(chainName);
     } else {
       throw new Error(
