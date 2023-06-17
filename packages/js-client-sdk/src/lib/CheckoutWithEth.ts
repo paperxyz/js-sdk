@@ -43,10 +43,10 @@ export async function checkAndSendEth({
   suppressErrorToast: boolean;
   iframe: HTMLIFrameElement;
   onPaymentSuccess?: ({
-    transactionResponse,
+    onChainTxResponse,
     transactionId,
   }: {
-    transactionResponse: ethers.providers.TransactionResponse;
+    onChainTxResponse: ethers.providers.TransactionResponse;
     transactionId: string;
   }) => Promise<void> | void;
   onError?: (error: PaperSDKError) => Promise<void> | void;
@@ -81,7 +81,7 @@ export async function checkAndSendEth({
     });
     if (onPaymentSuccess && result) {
       await onPaymentSuccess({
-        transactionResponse: result,
+        onChainTxResponse: result,
         transactionId: data.transactionId,
       });
     }
@@ -105,10 +105,10 @@ export async function checkAndSendEth({
 export interface CheckoutWithEthMessageHandlerArgs {
   iframe: HTMLIFrameElement;
   onPaymentSuccess?: ({
-    transactionResponse,
+    onChainTxResponse,
     transactionId,
   }: {
-    transactionResponse: ethers.providers.TransactionResponse;
+    onChainTxResponse: ethers.providers.TransactionResponse;
     transactionId: string;
   }) => Promise<void> | void;
   onPriceUpdate?: (props: PriceSummary) => void;
@@ -180,14 +180,14 @@ export function createCheckoutWithEthMessageHandler({
           suppressErrorToast,
           onError,
           onPaymentSuccess: async ({
-            transactionResponse,
+            onChainTxResponse,
             transactionId,
           }: {
-            transactionResponse: ethers.providers.TransactionResponse;
+            onChainTxResponse: ethers.providers.TransactionResponse;
             transactionId: string;
           }) => {
             await onPaymentSuccess?.({
-              transactionResponse,
+              onChainTxResponse,
               transactionId,
             });
           },

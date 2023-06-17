@@ -191,7 +191,7 @@ export const ViewPricingDetails = ({
             if (iframeRef.current && receipt) {
               if (onPaymentSuccess && receipt) {
                 onPaymentSuccess({
-                  transactionResponse: response,
+                  onChainTxResponse: response,
                   transactionId: data.transactionId,
                 });
               }

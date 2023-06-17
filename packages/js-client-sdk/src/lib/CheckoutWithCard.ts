@@ -73,7 +73,7 @@ export function createCheckoutWithCardLink({
 
 export interface CheckoutWithCardMessageHandlerArgs {
   iframe: HTMLIFrameElement;
-  onPaymentSuccess?: ({ transactionId }: { transactionId?: string }) => void;
+  onPaymentSuccess?: ({ transactionId }: { transactionId: string }) => void;
   onReview?: (result: ReviewResult) => void;
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;

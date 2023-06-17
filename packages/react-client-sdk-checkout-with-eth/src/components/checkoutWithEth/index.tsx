@@ -129,9 +129,9 @@ export const CheckoutWithEthInternal = ({
                   receivingWalletType={receivingWalletType}
                   setUpUserPayingWalletSigner={setUpUserPayingWalletSigner}
                   onError={onError}
-                  onPaymentSuccess={(transactionResponse) => {
+                  onPaymentSuccess={(onChainTxResponse) => {
                     if (onPaymentSuccess) {
-                      onPaymentSuccess(transactionResponse);
+                      onPaymentSuccess(onChainTxResponse);
                     }
                   }}
                   onPriceUpdate={onPriceUpdate}
