@@ -14,5 +14,6 @@ module.exports = {
     "@typescript-eslint/restrict-template-expressions": "warn",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
   },
 };
