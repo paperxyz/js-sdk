@@ -1,9 +1,9 @@
 import type { ethers } from "ethers";
 import { useCallback } from "react";
 
+import type { Chain } from "wagmi";
 import {
   allChains,
-  Chain,
   SwitchChainNotSupportedError,
   useSwitchNetwork as useSwitchNetworkWagmi,
 } from "wagmi";
