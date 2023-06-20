@@ -73,7 +73,11 @@ export function createCheckoutWithCardLink({
 
 export interface CheckoutWithCardMessageHandlerArgs {
   iframe: HTMLIFrameElement;
-  onPaymentSuccess?: ({ transactionId }: { transactionId: string }) => void;
+  onPaymentSuccess?: (props: {
+    transactionId: string;
+    /** @deprecated */
+    id: string;
+  }) => void;
   onReview?: (result: ReviewResult) => void;
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;
@@ -111,7 +115,7 @@ export function createCheckoutWithCardMessageHandler({
 
       case "paymentSuccess":
         if (onPaymentSuccess) {
-          onPaymentSuccess({ transactionId: data.id });
+          onPaymentSuccess({ transactionId: data.id, id: data.id });
         }
 
         if (data.postToIframe) {
