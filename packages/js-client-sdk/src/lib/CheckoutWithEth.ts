@@ -42,13 +42,7 @@ export async function checkAndSendEth({
   };
   suppressErrorToast: boolean;
   iframe: HTMLIFrameElement;
-  onPaymentSuccess?: ({
-    onChainTxResponse,
-    transactionId,
-  }: {
-    onChainTxResponse: ethers.providers.TransactionResponse;
-    transactionId: string;
-  }) => Promise<void> | void;
+  onPaymentSuccess?: CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"];
   onError?: (error: PaperSDKError) => Promise<void> | void;
 }) {
   try {
@@ -79,9 +73,11 @@ export async function checkAndSendEth({
       to: data.paymentAddress,
       value: data.value,
     });
+    const receipt = await result.wait();
     if (onPaymentSuccess && result) {
       await onPaymentSuccess({
         onChainTxResponse: result,
+        onChainTxReceipt: receipt,
         transactionId: data.transactionId,
       });
     }
@@ -107,8 +103,10 @@ export interface CheckoutWithEthMessageHandlerArgs {
   onPaymentSuccess?: ({
     onChainTxResponse,
     transactionId,
+    onChainTxReceipt,
   }: {
     onChainTxResponse: ethers.providers.TransactionResponse;
+    onChainTxReceipt: ethers.providers.TransactionReceipt;
     transactionId: string;
   }) => Promise<void> | void;
   onPriceUpdate?: (props: PriceSummary) => void;
@@ -181,13 +179,12 @@ export function createCheckoutWithEthMessageHandler({
           onError,
           onPaymentSuccess: async ({
             onChainTxResponse,
+            onChainTxReceipt,
             transactionId,
-          }: {
-            onChainTxResponse: ethers.providers.TransactionResponse;
-            transactionId: string;
           }) => {
             await onPaymentSuccess?.({
               onChainTxResponse,
+              onChainTxReceipt,
               transactionId,
             });
           },

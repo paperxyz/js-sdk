@@ -192,6 +192,7 @@ export const ViewPricingDetails = ({
               if (onPaymentSuccess && receipt) {
                 onPaymentSuccess({
                   onChainTxResponse: response,
+                  onChainTxReceipt: receipt,
                   transactionId: data.transactionId,
                 });
               }
