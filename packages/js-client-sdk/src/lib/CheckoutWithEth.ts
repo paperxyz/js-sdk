@@ -304,10 +304,9 @@ export async function createCheckoutWithEthElement({
   onPaymentSuccess: _onPaymentSuccess,
   onSuccess,
 }: CheckoutWithEthElementArgs): Promise<HTMLIFrameElement> {
-  const onPaymentSuccess:
-    | CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"]
-    | CheckoutWithEthMessageHandlerArgs["onSuccess"] =
-    _onPaymentSuccess ?? onSuccess;
+  const onPaymentSuccess =
+    _onPaymentSuccess ??
+    (onSuccess as CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"]);
   const checkoutWithEthId = "checkout-with-eth-iframe";
 
   const checkoutWithEthMessageHandler = (iframe: HTMLIFrameElement) =>
@@ -316,7 +315,6 @@ export async function createCheckoutWithEthElement({
       onError,
       payingWalletSigner,
       suppressErrorToast,
-      // @ts-ignore
       onPaymentSuccess,
     });
 
