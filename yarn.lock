@@ -10003,6 +10003,23 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
 
+"@paperxyz/react-client-sdk-checkout-with-eth@^0.0.0-gerry-backendless-20230620222950":
+  version "0.0.0-wy-update-checkout-with-eth-package-20230505223136"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-wy-update-checkout-with-eth-package-20230505223136.tgz#632244e8d19ec071fa4ca567f1ca0c2ebce5ea4f"
+  integrity sha512-potz43RQZcqGSvqQJeaLc4DvXDta+GsaV961RYgRH9+81OzEbfPYA26XaHFGTIJNR+cAAgg5TueOz9Tex/HLxg==
+  dependencies:
+    "@emotion/css" "11.10.5"
+    "@headlessui/react" "1.7.6"
+    "@paperxyz/js-client-sdk" "^0.2.0"
+    "@paperxyz/sdk-common-utilities" "^0.0.3"
+    ethers "^5.7.2"
+    wagmi "0.7.15"
+
+"@paperxyz/sdk-common-utilities@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.3.tgz#e37f202d7e0997231c037731ab0c01ea7f90f1c4"
+  integrity sha512-piBm+Pss5JrT7cOO5Bn9i+Mu2KHy2EOtMfv+BjsHc/HkAxVqx5kz76hughve2UgOJP18aI4cEU2vSiz56cOLgQ==
+
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pdf-lib/standard-fonts/-/standard-fonts-1.0.0.tgz#8ba691c4421f71662ed07c9a0294b44528af2d7f"
