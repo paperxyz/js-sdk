@@ -10,11 +10,12 @@ import type { AdvancedOptions, RecoveryShareManagement } from "../Auth";
 // types for class constructors still a little messy right now.
 // Open to PRs from whoever sees this and knows of a cleaner way to handle things
 export type ClientIdConstructorType = { clientId: string };
-export type PaperConstructorType<T extends RecoveryShareManagement> = ClientIdConstructorType & {
-  chain: Chain;
-  advancedOptions?: Partial<AdvancedOptions<T>>;
-  styles?: CustomizationOptionsType;
-};
+export type PaperConstructorType<T extends RecoveryShareManagement> =
+  ClientIdConstructorType & {
+    chain: Chain;
+    advancedOptions?: Partial<AdvancedOptions<T>>;
+    styles?: CustomizationOptionsType;
+  };
 export type ClientIdWithQuerierType = ClientIdConstructorType & {
   querier: EmbeddedWalletIframeCommunicator<any>;
 };
@@ -26,6 +27,7 @@ export type ClientIdWithQuerierAndChainType = ClientIdWithQuerierType & {
 export type AuthDetails = {
   email?: string;
   userWalletId: string;
+  recoveryShareManagement: RecoveryShareManagement;
   recoveryCode?: string;
 };
 
