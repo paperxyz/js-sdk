@@ -10003,22 +10003,25 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
 
-"@paperxyz/react-client-sdk-checkout-with-eth@^0.0.0-gerry-backendless-20230620222950":
-  version "0.0.0-wy-update-checkout-with-eth-package-20230505223136"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-wy-update-checkout-with-eth-package-20230505223136.tgz#632244e8d19ec071fa4ca567f1ca0c2ebce5ea4f"
-  integrity sha512-potz43RQZcqGSvqQJeaLc4DvXDta+GsaV961RYgRH9+81OzEbfPYA26XaHFGTIJNR+cAAgg5TueOz9Tex/HLxg==
+"@paperxyz/js-client-sdk@0.0.0-gerry-backendless-20230620222950":
+  version "0.0.0-gerry-backendless-20230620222950"
+  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.0-gerry-backendless-20230620222950.tgz#94a026cc38e1cd5e273a840cb02c2d367c203a62"
+  integrity sha512-pv7rSAKGdWnFAKU7goRqMrqbQxILLAjNyZuIvWO2wTAAQkKzjTICfBuKmJEocrBx4qZEnQzYUdxFqPxNyq05Qg==
+  dependencies:
+    "@paperxyz/sdk-common-utilities" "*"
+    ethers "^5.7.2"
+
+"@paperxyz/react-client-sdk-checkout-with-eth@0.0.0-gerry-backendless-20230620222950":
+  version "0.0.0-gerry-backendless-20230620222950"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-gerry-backendless-20230620222950.tgz#2f672af84a5c52bab96796e30a77a4ddd382c1e6"
+  integrity sha512-sx+omy0LBOMbaoBMFWAwQkUxbcT2UD1tOQ1w7B4xJvsVYWuw4kLu/7T0oFTvUvmxNOqOI7BfZ1uwrh08hlRHlA==
   dependencies:
     "@emotion/css" "11.10.5"
     "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "^0.2.0"
-    "@paperxyz/sdk-common-utilities" "^0.0.3"
+    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230620222950"
+    "@paperxyz/sdk-common-utilities" "^0.0.5"
     ethers "^5.7.2"
     wagmi "0.7.15"
-
-"@paperxyz/sdk-common-utilities@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.3.tgz#e37f202d7e0997231c037731ab0c01ea7f90f1c4"
-  integrity sha512-piBm+Pss5JrT7cOO5Bn9i+Mu2KHy2EOtMfv+BjsHc/HkAxVqx5kz76hughve2UgOJP18aI4cEU2vSiz56cOLgQ==
 
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
