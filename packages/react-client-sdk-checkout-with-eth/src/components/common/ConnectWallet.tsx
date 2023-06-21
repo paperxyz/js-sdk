@@ -42,10 +42,10 @@ export function WalletIcon({
   }
 }
 
-export const ConnectWallet = ({
+export const ConnectWallet: React.FC<ConnectWalletProps> = ({
   onWalletConnected,
   onWalletConnectFail,
-}: ConnectWalletProps): React.ReactElement => {
+}) => {
   const { connectWallet, connectors, isConnecting, pendingConnector } =
     useConnectWallet();
 

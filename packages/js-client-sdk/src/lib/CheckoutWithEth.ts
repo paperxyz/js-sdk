@@ -30,8 +30,8 @@ export async function checkAndSendEth({
   suppressErrorToast,
   onError,
   onPaymentSuccess,
+  onSuccess,
 }: {
-  payingWalletSigner: ethers.Signer;
   data: {
     chainId: number;
     chainName: string;
@@ -40,12 +40,13 @@ export async function checkAndSendEth({
     value: string;
     transactionId: string;
   };
-  suppressErrorToast: boolean;
-  iframe: HTMLIFrameElement;
-  onPaymentSuccess?:
-    | CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"]
-    | CheckoutWithEthMessageHandlerArgs["onSuccess"];
-  onError?: (error: PaperSDKError) => Promise<void> | void;
+  payingWalletSigner: CheckoutWithEthMessageHandlerArgs["payingWalletSigner"];
+  suppressErrorToast: CheckoutWithEthMessageHandlerArgs["suppressErrorToast"];
+  iframe: CheckoutWithEthMessageHandlerArgs["iframe"];
+  onError: CheckoutWithEthMessageHandlerArgs["onError"];
+  onPaymentSuccess: CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"];
+  /** @deprecated */
+  onSuccess: CheckoutWithEthMessageHandlerArgs["onSuccess"];
 }) {
   try {
     const chainId = await payingWalletSigner.getChainId();
@@ -76,10 +77,13 @@ export async function checkAndSendEth({
       value: data.value,
     });
     const receipt = await result.wait();
-    if (onPaymentSuccess && result) {
-      await onPaymentSuccess({
-        onChainTxResponse: result,
+    if (result) {
+      await onPaymentSuccess?.({
         onChainTxReceipt: receipt,
+        transactionId: data.transactionId,
+      });
+      await onSuccess?.({
+        onChainTxResponse: result,
         transactionId: data.transactionId,
       });
     }
@@ -125,6 +129,7 @@ export function createCheckoutWithEthMessageHandler({
   iframe,
   onError,
   onPaymentSuccess,
+  onSuccess,
   onPriceUpdate,
   payingWalletSigner,
   suppressErrorToast = false,
@@ -180,6 +185,7 @@ export function createCheckoutWithEthMessageHandler({
           suppressErrorToast,
           onError,
           onPaymentSuccess,
+          onSuccess,
         });
         break;
       }
@@ -301,12 +307,9 @@ export async function createCheckoutWithEthElement({
   locale,
   options,
   elementOrId,
-  onPaymentSuccess: _onPaymentSuccess,
+  onPaymentSuccess,
   onSuccess,
 }: CheckoutWithEthElementArgs): Promise<HTMLIFrameElement> {
-  const onPaymentSuccess =
-    _onPaymentSuccess ??
-    (onSuccess as CheckoutWithEthMessageHandlerArgs["onPaymentSuccess"]);
   const checkoutWithEthId = "checkout-with-eth-iframe";
 
   const checkoutWithEthMessageHandler = (iframe: HTMLIFrameElement) =>
@@ -316,6 +319,7 @@ export async function createCheckoutWithEthElement({
       payingWalletSigner,
       suppressErrorToast,
       onPaymentSuccess,
+      onSuccess,
     });
 
   const checkoutWithEthUrl = await createCheckoutWithEthLink({
