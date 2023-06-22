@@ -10003,34 +10003,34 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
 
-"@paperxyz/js-client-sdk@0.0.0-gerry-backendless-20230622005836":
-  version "0.0.0-gerry-backendless-20230622005836"
-  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.0-gerry-backendless-20230622005836.tgz#8487bcc0e0eb6b9b8177b3f625e991106c67e401"
-  integrity sha512-f4VNct5NMJCjKLOaxMxeSMzIOLK0v5z7nD4vELSMDoLnNedF3G6tthSXfV7BWX2HT7goR5LA1IMWS0vTEWlB3A==
+"@paperxyz/js-client-sdk@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#06f31385ce757980b4bbfe6fc747dba9471915bc"
+  integrity sha512-9yCo0EyR67fmc1j4IoQaYtzc6XCj8PqpWVtfmTIOcX35zF9mTEdS9zduwaHrQvlvFx3ln9G2U5IRuGfMQZ2AOQ==
   dependencies:
     "@paperxyz/sdk-common-utilities" "*"
     ethers "^5.7.2"
 
-"@paperxyz/react-client-sdk-checkout-with-eth@0.0.0-gerry-backendless-20230622005836":
-  version "0.0.0-gerry-backendless-20230622005836"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-gerry-backendless-20230622005836.tgz#30b2c58a5767545b658396e3917cae5bef4262fd"
-  integrity sha512-3d3XKAL2OnqFyi9fACKWKqQ/Yc3TuiVX+utbqLCVXFlWEXD2Es72P71Vv6DdYhhCeP2KVL3/ZcRO4UTSstQ0Og==
+"@paperxyz/react-client-sdk-checkout-with-eth@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-gerry-backendless-20230621193448.tgz#d1b9ea02d4938addb559cbbb22b4f8a4d70a7181"
+  integrity sha512-4pDLooClDZBq6HL3PqB/qyYJcAEWCBBRjJLafOWB3rn0sBNAJH34J57gLGy9ihx7+23aOZMMKaT4v5M5eYxDWw==
   dependencies:
     "@emotion/css" "11.10.5"
     "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230622005836"
+    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
     "@paperxyz/sdk-common-utilities" "^0.0.5"
     ethers "^5.7.2"
     wagmi "0.7.15"
 
-"@paperxyz/react-client-sdk@0.0.0-gerry-backendless-20230622005836":
-  version "0.0.0-gerry-backendless-20230622005836"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.0.0-gerry-backendless-20230622005836.tgz#798aaeff889c07ba0ab22755e0cdde217c6ed12e"
-  integrity sha512-gV+V44LP75OwkB/aH68/1g7vQJjJAikU8OGa/BSLGBD2/rFXjLOW14qTo1AkGuD8v8KtClsqmbjjnoKabHkpTw==
+"@paperxyz/react-client-sdk@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#3b8b21f6c456ecdd039679710a8953202a039b58"
+  integrity sha512-+RMW891qZuyD6CHoNwzr3dY3j6Em1MrSL8KLS3ERqzc8I3eTf1Bhp++ReMdD5qWiavvgJtxj9cgP+nQo/wjCOg==
   dependencies:
     "@emotion/css" "11.10.5"
     "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230622005836"
+    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
     "@paperxyz/sdk-common-utilities" "^0.0.5"
 
 "@pdf-lib/standard-fonts@^1.0.0":
