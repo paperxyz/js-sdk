@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 0.1.1
+
+### Patch Changes
+
+- 7cde845: Bumped js-client-sdk version dependency in react-client-sdk-checkout-with-eth
+
 ## 0.1.0
 
 ### Minor Changes
