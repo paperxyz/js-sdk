@@ -16,12 +16,14 @@ export const useSendTransaction = ({ signer }: { signer?: ethers.Signer }) => {
         console.log("no argument for transaction, returning");
         return;
       }
+
       if (signer) {
         setIsSendingTransaction(true);
         try {
           const response = await signer?.sendTransaction(args?.request || {});
+          const receipt = await response.wait();
           setIsSendingTransaction(false);
-          return response;
+          return { response, receipt };
         } catch (e) {
           setIsSendingTransaction(false);
           throw e;
@@ -37,8 +39,9 @@ export const useSendTransaction = ({ signer }: { signer?: ethers.Signer }) => {
           chainId: args.chainId,
         });
         const response = await provider.getTransaction(responsePartial.hash);
+        const receipt = await response.wait();
         setIsSendingTransaction(false);
-        return response;
+        return { response, receipt };
       }
     },
     [signer],

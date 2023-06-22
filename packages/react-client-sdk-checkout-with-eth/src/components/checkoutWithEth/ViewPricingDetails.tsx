@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import type {
   CheckoutWithEthLinkArgs,
   CheckoutWithEthMessageHandlerArgs,
+  PriceSummary,
 } from "@paperxyz/js-client-sdk";
 import {
   PAY_WITH_ETH_ERROR,
@@ -9,13 +10,7 @@ import {
 } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useCheckoutWithEthLink } from "../../lib/hooks/useCheckoutWithEthLink";
 import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
@@ -37,14 +32,14 @@ export type ViewPricingDetailsProps = Omit<
     Omit<CheckoutWithEthMessageHandlerArgs, "iframe">,
     "payingWalletSigner"
   > & {
-    setIsTryingToChangeWallet: React.Dispatch<React.SetStateAction<boolean>>;
     payingWalletSigner?: ethers.Signer;
     appName?: string;
   };
 
 export const ViewPricingDetails = ({
-  setIsTryingToChangeWallet,
-  onSuccess,
+  onChangeWallet,
+  onPaymentSuccess,
+  onPriceUpdate,
   onError,
   suppressErrorToast = false,
   showConnectWalletOptions = true,
@@ -55,7 +50,8 @@ export const ViewPricingDetails = ({
   sdkClientSecret,
   appName,
   options: _options,
-}: ViewPricingDetailsProps) => {
+  configs,
+}: ViewPricingDetailsProps & { onChangeWallet: () => void }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
   const appNameToUse = appName;
@@ -68,6 +64,7 @@ export const ViewPricingDetails = ({
   const { sendTransactionAsync } = useSendTransaction({
     signer,
   });
+
   const options = useMemo(() => {
     return (_options || {
       ...DEFAULT_BRAND_OPTIONS,
@@ -79,6 +76,7 @@ export const ViewPricingDetails = ({
       fontFamily: string;
     };
   }, [_options]);
+
   const { checkoutWithEthUrl } = useCheckoutWithEthLink({
     payingWalletSigner: signer,
     sdkClientSecret,
@@ -87,11 +85,13 @@ export const ViewPricingDetails = ({
     options,
     receivingWalletType,
     showConnectWalletOptions,
+    configs,
   });
 
   const onLoad = useCallback(() => {
     setIsIframeLoading(false);
   }, []);
+
   useEffect(() => {
     if (!iframeRef.current || !signer) {
       return;
@@ -102,6 +102,10 @@ export const ViewPricingDetails = ({
       // This allows us to have the ability to have wallet connection handled by the SDK
       const { data } = event;
       switch (data.eventType) {
+        case "onPriceUpdate": {
+          onPriceUpdate?.(data as PriceSummary);
+          return;
+        }
         case "payWithEth": {
           if (data.error) {
             handlePayWithCryptoError(
@@ -118,6 +122,7 @@ export const ViewPricingDetails = ({
             );
             return;
           }
+
           // Allows Dev's to inject any chain switching for their custom signer here.
           if (signer && setUpUserPayingWalletSigner) {
             try {
@@ -144,7 +149,7 @@ export const ViewPricingDetails = ({
           // try switching network first if needed or supported
           try {
             if (chainId !== data.chainId && switchNetworkAsync) {
-              console.log("switching signer network");
+              console.log(`switching signer network to chainId: ${chainId}`);
               await switchNetworkAsync(data.chainId);
             } else if (chainId !== data.chainId) {
               throw {
@@ -178,16 +183,23 @@ export const ViewPricingDetails = ({
               },
               mode: "recklesslyUnprepared",
             });
-            if (onSuccess && result) {
-              onSuccess({
-                transactionResponse: result,
-                transactionId: data.transactionId,
-              });
+            if (!result) {
+              throw new Error(`Unable to send transaction.`);
             }
-            if (iframeRef.current && result) {
-              postMessageToIframe(iframeRef.current, "paymentSuccess", {
+            const { response, receipt } = result;
+
+            if (iframeRef.current && receipt) {
+              if (onPaymentSuccess && receipt) {
+                onPaymentSuccess({
+                  // @ts-ignore
+                  onChainTxResponse: response,
+                  onChainTxReceipt: receipt,
+                  transactionId: data.transactionId,
+                });
+              }
+              postMessageToIframe(iframeRef.current, "paymentSentToChain", {
                 suppressErrorToast,
-                transactionHash: result.hash,
+                transactionHash: receipt.transactionHash,
               });
             }
           } catch (error) {
@@ -204,7 +216,7 @@ export const ViewPricingDetails = ({
           break;
         }
         case "goBackToChoosingWallet":
-          setIsTryingToChangeWallet(true);
+          onChangeWallet();
           break;
         case "checkout-with-eth-sizing": {
           if (iframeRef.current) {

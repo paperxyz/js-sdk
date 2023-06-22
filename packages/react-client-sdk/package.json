@@ -23,7 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
-  "author": "Paper <team@withpaper.com>",
+  "author": "Paper <support@withpaper.com>",
   "keywords": [],
   "scripts": {
     "build": "tsup-node src/index.ts --env.NODE_ENV production --env.ESM_ONLY true ",

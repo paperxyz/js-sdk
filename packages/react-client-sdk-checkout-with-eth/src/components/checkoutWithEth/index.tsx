@@ -7,6 +7,7 @@ import {
   chain,
   configureChains,
   createClient,
+  useDisconnect,
   useSigner,
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
@@ -16,7 +17,6 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 import type { onWalletConnectedType } from "../../interfaces/WalletTypes";
 import { WalletType } from "../../interfaces/WalletTypes";
-
 import {
   commonTransitionProps,
   transitionContainer,
@@ -36,26 +36,34 @@ type CheckoutWithEthProps = {
   onWalletConnected?: onWalletConnectedType;
   onPageChange?: (currentPage: CheckoutWithEthPage) => void;
   rpcUrls?: string[];
-} & Omit<ViewPricingDetailsProps, "setIsTryingToChangeWallet">;
+} & Omit<ViewPricingDetailsProps, "setShowConnectWalletOptions">;
 
 export const CheckoutWithEthInternal = ({
   sdkClientSecret,
+  configs,
   payingWalletSigner,
   setUpUserPayingWalletSigner,
   receivingWalletType,
   suppressErrorToast,
-  showConnectWalletOptions = true,
+  showConnectWalletOptions: _showConnectWalletOptions = true,
   options,
   onError,
-  // This is fired when the transaction is sent to chain, the transaction might still fail there for whatever reason.
   onSuccess,
+  // This is fired when the transaction is sent to chain, the transaction might still fail there for whatever reason.
+  onPaymentSuccess: _onPaymentSuccess,
   onWalletConnected,
   onPageChange,
+  onPriceUpdate,
   locale,
 }: CheckoutWithEthProps): React.ReactElement => {
+  const onPaymentSuccess = _onPaymentSuccess ?? onSuccess;
+
   const { data: _signer } = useSigner();
+  const { disconnect } = useDisconnect();
+
+  const [showConnectWalletOptions, setShowConnectWalletOptions] =
+    useState(true);
   const [isClientSide, setIsClientSide] = useState(false);
-  const [isTryingToChangeWallet, setIsTryingToChangeWallet] = useState(false);
   const actualSigner = payingWalletSigner || _signer;
   const isJsonRpcSignerPresent = !!actualSigner;
 
@@ -65,94 +73,81 @@ export const CheckoutWithEthInternal = ({
 
   useEffect(() => {
     if (onPageChange) {
-      if (
-        (isJsonRpcSignerPresent && !isTryingToChangeWallet) ||
-        !showConnectWalletOptions
-      ) {
+      if (isJsonRpcSignerPresent || !showConnectWalletOptions) {
         onPageChange(CheckoutWithEthPage.PaymentDetails);
-      } else if (
-        showConnectWalletOptions &&
-        (!isJsonRpcSignerPresent || isTryingToChangeWallet)
-      ) {
+      } else if (showConnectWalletOptions && !isJsonRpcSignerPresent) {
         onPageChange(CheckoutWithEthPage.ConnectWallet);
       }
     }
-  }, [
-    showConnectWalletOptions,
-    isJsonRpcSignerPresent,
-    isTryingToChangeWallet,
-  ]);
+  }, [showConnectWalletOptions, isJsonRpcSignerPresent]);
 
   return (
     <div
       className={transitionContainer}
       data-paper-sdk-version={`@paperxyz/react-client-sdk@${packageJson.version}`}
     >
-      {isClientSide && (
-        <>
-          {showConnectWalletOptions && (
-            <Transition
-              show={!isJsonRpcSignerPresent || isTryingToChangeWallet}
-              {...commonTransitionProps}
-            >
-              <ConnectWallet
-                onWalletConnected={({ userAddress, chainId }) => {
-                  setIsTryingToChangeWallet(false);
-                  if (onWalletConnected) {
-                    onWalletConnected({ userAddress, chainId });
-                  }
-                }}
-                onWalletConnectFail={({
-                  walletType,
-                  currentUserWalletType,
-                  error,
-                }) => {
-                  // coinbase will fail if we try to go back and connect again. because we never disconnected.
-                  // we'll get the error of "user already connected". We simply ignore it here.
-                  if (
-                    walletType === WalletType.CoinbaseWallet &&
-                    currentUserWalletType === walletType
-                  ) {
-                    setIsTryingToChangeWallet(false);
-                    return;
-                  }
-                  if (onError) {
-                    onError({
-                      code: PayWithCryptoErrorCode.ErrorConnectingToWallet,
-                      error,
-                    });
-                  }
-                }}
-              />
-            </Transition>
-          )}
-          <Transition
-            show={
-              (isJsonRpcSignerPresent && !isTryingToChangeWallet) ||
-              !showConnectWalletOptions
-            }
-            {...commonTransitionProps}
-          >
-            <ViewPricingDetails
-              sdkClientSecret={sdkClientSecret}
-              payingWalletSigner={actualSigner || undefined}
-              receivingWalletType={receivingWalletType}
-              setUpUserPayingWalletSigner={setUpUserPayingWalletSigner}
-              onError={onError}
-              onSuccess={(transactionResponse) => {
-                if (onSuccess) {
-                  onSuccess(transactionResponse);
-                }
-              }}
-              showConnectWalletOptions={showConnectWalletOptions}
-              suppressErrorToast={suppressErrorToast}
-              options={options}
-              setIsTryingToChangeWallet={setIsTryingToChangeWallet}
-              locale={locale}
-            />
-          </Transition>
-        </>
-      )}
+      {isClientSide &&
+        (() => {
+          if (showConnectWalletOptions && !isJsonRpcSignerPresent) {
+            return (
+              <Transition show={true} {...commonTransitionProps}>
+                <ConnectWallet
+                  onWalletConnected={({ userAddress, chainId }) => {
+                    setShowConnectWalletOptions(false);
+                    if (onWalletConnected) {
+                      onWalletConnected({ userAddress, chainId });
+                    }
+                  }}
+                  onWalletConnectFail={({
+                    walletType,
+                    currentUserWalletType,
+                    error,
+                  }) => {
+                    // coinbase will fail if we try to go back and connect again. because we never disconnected.
+                    // we'll get the error of "user already connected". We simply ignore it here.
+                    if (
+                      walletType === WalletType.CoinbaseWallet &&
+                      currentUserWalletType === walletType
+                    ) {
+                      setShowConnectWalletOptions(false);
+                      return;
+                    }
+                    if (onError) {
+                      onError({
+                        code: PayWithCryptoErrorCode.ErrorConnectingToWallet,
+                        error,
+                      });
+                    }
+                  }}
+                />
+              </Transition>
+            );
+          } else {
+            return (
+              <Transition show={true} {...commonTransitionProps}>
+                <ViewPricingDetails
+                  configs={configs}
+                  sdkClientSecret={sdkClientSecret}
+                  payingWalletSigner={actualSigner || undefined}
+                  receivingWalletType={receivingWalletType}
+                  setUpUserPayingWalletSigner={setUpUserPayingWalletSigner}
+                  onError={onError}
+                  // @ts-ignore
+                  onPaymentSuccess={onPaymentSuccess}
+                  onPriceUpdate={onPriceUpdate}
+                  showConnectWalletOptions={showConnectWalletOptions}
+                  suppressErrorToast={suppressErrorToast}
+                  options={options}
+                  onChangeWallet={() => {
+                    setShowConnectWalletOptions(true);
+                    disconnect();
+                  }}
+                  locale={locale}
+                />
+              </Transition>
+            );
+          }
+        })()}
     </div>
   );
 };
@@ -160,7 +155,14 @@ export const CheckoutWithEthInternal = ({
 export const CheckoutWithEth = (
   props: CheckoutWithEthProps,
 ): React.ReactElement => {
-  let providers = [publicProvider()];
+  let providers = [
+    publicProvider(),
+    ...Object.values(chain).map((_chain) =>
+      jsonRpcProvider({
+        rpc: (_c) => ({ http: _chain.rpcUrls[0] ?? "" }),
+      }),
+    ),
+  ];
   if (props.rpcUrls) {
     // Use the RPC URLs provided by the developer instead of a public, rate-limited one.
     providers = props.rpcUrls.map((http) =>
@@ -169,10 +171,8 @@ export const CheckoutWithEth = (
       }),
     );
   }
-  const { chains, provider } = configureChains(
-    [chain.mainnet, chain.goerli],
-    providers,
-  );
+
+  const { chains, provider } = configureChains(Object.values(chain), providers);
   const client = useMemo(
     () =>
       createClient({
