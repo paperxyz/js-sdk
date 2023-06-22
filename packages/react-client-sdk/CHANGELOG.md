@@ -1,5 +1,13 @@
 # @paperxyz/react-client-sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- 44c7aed: Made CheckoutWithEth backendless and standardized the callback interfaces between the CheckoutWithEth and CheckoutWithCard sdks
+- Updated dependencies [44c7aed]
+  - @paperxyz/js-client-sdk@0.2.4
+
 ## 1.1.0
 
 ### Minor Changes
