@@ -45,7 +45,7 @@ export interface ICheckoutWithCardConfigs {
   quantity?: number;
   mintMethod?: {
     name: string;
-    args: Record<string, any>[];
+    args: Record<string, any>;
     payment: { value: string; currency: string };
   };
   contractArgs?: Record<string, any>;
