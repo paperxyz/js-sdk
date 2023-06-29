@@ -1,7 +1,6 @@
 import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
-  RecoveryShareManagement,
 } from "../../interfaces/Auth";
 import type {
   ClientIdWithQuerierType,
@@ -13,9 +12,8 @@ type LoginQuerierTypes = {
   loginWithPaperModal:
     | undefined
     | { email: string; recoveryCode?: string }
-    | { recoveryShareManagement: RecoveryShareManagement }
     | { email: string };
-  sendPaperEmailLoginOtp: { email: string; recoveryShareManagement?: RecoveryShareManagement };
+  sendPaperEmailLoginOtp: { email: string };
   verifyPaperEmailLoginOtp:
     | {
         email: string;
@@ -25,7 +23,6 @@ type LoginQuerierTypes = {
     | {
         email: string;
         otp: string;
-        recoveryShareManagement: RecoveryShareManagement;
       };
 };
 
@@ -71,13 +68,12 @@ export abstract class AbstractLogin<
 
   async sendPaperEmailLoginOtp({
     email,
-    recoveryShareManagement,
   }: LoginQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
     await this.preLogin();
     const { isNewUser, isNewDevice } =
       await this.LoginQuerier.call<SendEmailOtpReturnType>({
         procedureName: "sendPaperEmailLoginOtp",
-        params: { email, recoveryShareManagement },
+        params: { email },
       });
     return { isNewUser, isNewDevice };
   }

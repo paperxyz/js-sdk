@@ -4,15 +4,13 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import type { AdvancedOptions, RecoveryShareManagement } from "../Auth";
 
 // Class constructor types
 // types for class constructors still a little messy right now.
 // Open to PRs from whoever sees this and knows of a cleaner way to handle things
 export type ClientIdConstructorType = { clientId: string };
-export type PaperConstructorType<T extends RecoveryShareManagement> = ClientIdConstructorType & {
+export type PaperConstructorType = ClientIdConstructorType & {
   chain: Chain;
-  advancedOptions?: Partial<AdvancedOptions<T>>;
   styles?: CustomizationOptionsType;
 };
 export type ClientIdWithQuerierType = ClientIdConstructorType & {

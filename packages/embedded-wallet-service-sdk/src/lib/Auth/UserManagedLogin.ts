@@ -3,7 +3,7 @@ import type {
   AuthLoginReturnType,
 } from "../../interfaces/Auth";
 import { AbstractLogin } from "./AbstractLogin";
-export class UserManagedLogin extends AbstractLogin<
+export class BaseLogin extends AbstractLogin<
   {
     getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
   },
