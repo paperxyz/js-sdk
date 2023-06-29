@@ -10003,6 +10003,39 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
 
+<<<<<<< HEAD
+=======
+"@paperxyz/js-client-sdk@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#06f31385ce757980b4bbfe6fc747dba9471915bc"
+  integrity sha512-9yCo0EyR67fmc1j4IoQaYtzc6XCj8PqpWVtfmTIOcX35zF9mTEdS9zduwaHrQvlvFx3ln9G2U5IRuGfMQZ2AOQ==
+  dependencies:
+    "@paperxyz/sdk-common-utilities" "*"
+    ethers "^5.7.2"
+
+"@paperxyz/react-client-sdk-checkout-with-eth@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-gerry-backendless-20230621193448.tgz#d1b9ea02d4938addb559cbbb22b4f8a4d70a7181"
+  integrity sha512-4pDLooClDZBq6HL3PqB/qyYJcAEWCBBRjJLafOWB3rn0sBNAJH34J57gLGy9ihx7+23aOZMMKaT4v5M5eYxDWw==
+  dependencies:
+    "@emotion/css" "11.10.5"
+    "@headlessui/react" "1.7.6"
+    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
+    "@paperxyz/sdk-common-utilities" "^0.0.5"
+    ethers "^5.7.2"
+    wagmi "0.7.15"
+
+"@paperxyz/react-client-sdk@0.0.0-gerry-backendless-20230621193448":
+  version "0.0.0-gerry-backendless-20230621193448"
+  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#3b8b21f6c456ecdd039679710a8953202a039b58"
+  integrity sha512-+RMW891qZuyD6CHoNwzr3dY3j6Em1MrSL8KLS3ERqzc8I3eTf1Bhp++ReMdD5qWiavvgJtxj9cgP+nQo/wjCOg==
+  dependencies:
+    "@emotion/css" "11.10.5"
+    "@headlessui/react" "1.7.6"
+    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
+    "@paperxyz/sdk-common-utilities" "^0.0.5"
+
+>>>>>>> 30172ea73d5de9c55f12d3c4b9e8c9e0bc6d8f0f
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pdf-lib/standard-fonts/-/standard-fonts-1.0.0.tgz#8ba691c4421f71662ed07c9a0294b44528af2d7f"
@@ -11829,7 +11862,11 @@
     react-qr-code "^2.0.11"
     tiny-invariant "^1.2.0"
 
+<<<<<<< HEAD
 "@thirdweb-dev/sdk-new@npm:@thirdweb-dev/sdk@3.10.22", "@thirdweb-dev/sdk@^3.9.5":
+=======
+"@thirdweb-dev/sdk-new@npm:@thirdweb-dev/sdk@3.10.22":
+>>>>>>> 30172ea73d5de9c55f12d3c4b9e8c9e0bc6d8f0f
   version "3.10.22"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-3.10.22.tgz#21cc7d2ff83b9a7941b993b3023f63b1ce684b81"
   integrity sha512-XWZw9cLJMEwA4FwmLwPeXhw0TeIuCdOpWGFOq9qZ2fJqP+pVMNaPGeXtAuK74oFa9enFmRPjWd8FHHJ+wrhvHA==
@@ -11852,7 +11889,11 @@
     yaml "^2.1.1"
     zod "^3.20.2"
 
+<<<<<<< HEAD
 "@thirdweb-dev/sdk@3.10.17":
+=======
+"@thirdweb-dev/sdk@3.10.17", "@thirdweb-dev/sdk@^3.9.5":
+>>>>>>> 30172ea73d5de9c55f12d3c4b9e8c9e0bc6d8f0f
   version "3.10.17"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-3.10.17.tgz#9176c8dea83d45aca79241d62603f784ddc5eddf"
   integrity sha512-DRWl+SJ7x918zhvsngFGLR3Eg+jZI0FPlntyIy55VDT4LHmb0Ix1zaO0eT/5yfKu8ZPsSZOKd2ArLopncRpJnA==
@@ -29595,9 +29636,15 @@ react-google-recaptcha@^2.1.0:
     react-async-script "^1.1.1"
 
 react-icons@^4.9.0:
+<<<<<<< HEAD
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.10.1.tgz#3f3b5eec1f63c1796f6a26174a1091ca6437a500"
   integrity sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==
+=======
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.9.0.tgz#ba44f436a053393adb1bdcafbc5c158b7b70d2a3"
+  integrity sha512-ijUnFr//ycebOqujtqtV9PFS7JjhWg0QU6ykURVHuL4cbofvRCf3f6GMn9+fBktEFQOIVZnuAYLZdiyadRQRFg==
+>>>>>>> 30172ea73d5de9c55f12d3c4b9e8c9e0bc6d8f0f
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.4:
   version "16.13.1"

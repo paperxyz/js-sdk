@@ -1,5 +1,17 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.5
+
+### Patch Changes
+
+- a0f15f6: fix: ICheckoutWithCard mintMethod.args is now an object type (previously array)
+
+## 0.2.4
+
+### Patch Changes
+
+- 44c7aed: Made CheckoutWithEth backendless and standardized the callback interfaces between the CheckoutWithEth and CheckoutWithCard sdks
+
 ## 0.2.3
 
 ### Patch Changes

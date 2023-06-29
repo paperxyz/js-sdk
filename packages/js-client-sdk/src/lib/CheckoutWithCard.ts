@@ -51,26 +51,33 @@ export function createCheckoutWithCardLink({
     CHECKOUT_WITH_CARD_IFRAME_URL,
     PAPER_APP_URL,
   );
-
-  const checkoutWithCardLink = new LinksManager(CheckoutWithCardUrlBase);
-  checkoutWithCardLink.addClientSecret(sdkClientSecret ?? "");
-  checkoutWithCardLink.addStylingOptions(options);
-  checkoutWithCardLink.addLocale(locale);
-  checkoutWithCardLink.addAppName(appName);
-
-  if (!sdkClientSecret) {
+  let clientSecret = sdkClientSecret;
+  if (!clientSecret && configs) {
+    clientSecret = btoa(JSON.stringify(configs));
+  }
+  if (!clientSecret) {
     const error = `Must have either sdkClientSecret or configs field set. Received neither`;
     const destination = `/error?errorMessage=${error}`;
     const domain = getPaperOriginUrl();
     return new URL(destination, domain);
   }
 
+  const checkoutWithCardLink = new LinksManager(CheckoutWithCardUrlBase);
+  checkoutWithCardLink.addClientSecret(clientSecret ?? "");
+  checkoutWithCardLink.addStylingOptions(options);
+  checkoutWithCardLink.addLocale(locale);
+  checkoutWithCardLink.addAppName(appName);
+
   return checkoutWithCardLink.getLink();
 }
 
 export interface CheckoutWithCardMessageHandlerArgs {
   iframe: HTMLIFrameElement;
-  onPaymentSuccess?: ({ id }: { id: string }) => void;
+  onPaymentSuccess?: (props: {
+    transactionId: string;
+    /** @deprecated */
+    id: string;
+  }) => void;
   onReview?: (result: ReviewResult) => void;
   onError?: (error: PaperSDKError) => void;
   onOpenKycModal?: (props: KycModal) => void;
@@ -108,7 +115,7 @@ export function createCheckoutWithCardMessageHandler({
 
       case "paymentSuccess":
         if (onPaymentSuccess) {
-          onPaymentSuccess({ id: data.id });
+          onPaymentSuccess({ transactionId: data.id, id: data.id });
         }
 
         if (data.postToIframe) {
@@ -172,14 +179,7 @@ export function createCheckoutWithCardMessageHandler({
         break;
 
       case "onPriceUpdate": {
-        const { quantity, unitPrice, networkFees, serviceFees, total } = data;
-        onPriceUpdate?.({
-          quantity,
-          unitPrice,
-          networkFees,
-          serviceFees,
-          total,
-        });
+        onPriceUpdate?.(data);
         break;
       }
 
@@ -213,11 +213,6 @@ export function createCheckoutWithCardElement({
   useAltDomain = true,
   configs,
 }: CheckoutWithCardElementArgs) {
-  let clientSecret = sdkClientSecret;
-  if (!clientSecret && configs) {
-    clientSecret = btoa(JSON.stringify(configs));
-  }
-
   const checkoutWithCardId = "checkout-with-card-iframe";
   const checkoutWithCardMessageHandler = (iframe: HTMLIFrameElement) =>
     createCheckoutWithCardMessageHandler({
@@ -233,11 +228,12 @@ export function createCheckoutWithCardElement({
     });
 
   const checkoutWithCardUrl = createCheckoutWithCardLink({
-    sdkClientSecret: clientSecret,
+    sdkClientSecret,
     appName,
     locale,
     options,
     useAltDomain,
+    configs,
   });
 
   const paymentElement = new PaperPaymentElement({

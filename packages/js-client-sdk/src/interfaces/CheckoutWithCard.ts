@@ -43,16 +43,14 @@ export interface ICheckoutWithCardConfigs {
   walletAddress: string;
   email?: string;
   quantity?: number;
-  metadata?: Record<string, any>;
   mintMethod?: {
     name: string;
-    args: Record<string, any>[];
+    args: Record<string, any>;
     payment: { value: string; currency: string };
   };
   contractArgs?: Record<string, any>;
 
   // payment customizations
-  feeBearer?: "BUYER" | "SELLER";
   capturePaymentLater?: boolean;
   fiatCurrency?: string;
 

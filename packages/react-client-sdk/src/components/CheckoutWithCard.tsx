@@ -12,14 +12,13 @@ import type {
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { usePaperSDKContext } from "../Provider";
-import type { PaymentSuccessResult } from "../interfaces/PaymentSuccessResult";
 import { iframeContainer } from "../lib/utils/styles";
 import { SpinnerWrapper } from "./common/SpinnerWrapper";
 const packageJson = require("../../package.json");
 
 interface CheckoutWithCardProps {
   sdkClientSecret?: string;
-  onPaymentSuccess: (result: PaymentSuccessResult) => void;
+  onPaymentSuccess: (result: { transactionId: string }) => void;
   appName?: string;
   options?: ICustomizationOptions;
   onReview?: (result: ReviewResult) => void;
