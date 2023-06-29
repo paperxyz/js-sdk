@@ -3,10 +3,10 @@ import { useCallback } from "react";
 
 import type { Chain } from "wagmi";
 import {
-  allChains,
   SwitchChainNotSupportedError,
   useSwitchNetwork as useSwitchNetworkWagmi,
 } from "wagmi";
+import { WagmiChains } from "../../components/checkoutWithEth";
 
 export const useSwitchNetwork = ({
   signer: signer,
@@ -22,7 +22,7 @@ export const useSwitchNetwork = ({
       if (_switchNetworkAsync) {
         return await _switchNetworkAsync?.(chainId);
       } else if (signer) {
-        const chainToSwitchTo = allChains.find((x) => x.id === chainId);
+        const chainToSwitchTo = WagmiChains.find((x) => x.id === chainId);
         if (!chainToSwitchTo) {
           throw SwitchChainNotSupportedError;
         }

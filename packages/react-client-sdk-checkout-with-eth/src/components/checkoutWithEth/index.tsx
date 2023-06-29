@@ -135,7 +135,7 @@ type CheckoutWithEthProps = {
   rpcUrls?: string[];
 } & Omit<ViewPricingDetailsProps, "setShowConnectWalletOptions">;
 
-const wagmiChains = [
+export const WagmiChains = [
   arbitrum,
   arbitrumGoerli,
   arbitrumNova,
@@ -353,7 +353,7 @@ export const CheckoutWithEth = (
 ): React.ReactElement => {
   let providers = [
     publicProvider(),
-    ...wagmiChains.map((_chain) =>
+     ...WagmiChains.map((_chain) =>
       jsonRpcProvider({
         rpc: () => ({ http: _chain.rpcUrls.public.http[0] ?? "" }),
       }),
@@ -369,7 +369,7 @@ export const CheckoutWithEth = (
     );
   }
 
-  const { chains, provider } = configureChains(wagmiChains, providers);
+   const { chains, provider } = configureChains(WagmiChains, providers);
   const client = useMemo(
     () =>
       createClient({
