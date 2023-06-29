@@ -1,21 +1,20 @@
 {
   "name": "@paperxyz/react-client-sdk-checkout-with-eth",
-  "description": "CheckoutwithEth React Client SDK",
   "version": "0.1.1",
+  "description": "CheckoutwithEth React Client SDK",
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "files": [
-    "dist/**/*"
+    "dist/**"
   ],
-  "keywords": [
-    "crypto",
-    "wallet",
-    "paper sdk",
-    "crypto checkout",
-    "NFT on-ramp"
-  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "bugs": {
     "url": "https://github.com/paperxyz/js-sdk/issues"
   },
@@ -25,6 +24,13 @@
     "url": "git+https://github.com/paperxyz/js-sdk.git"
   },
   "author": "Paper <support@withpaper.com>",
+  "keywords": [
+    "crypto",
+    "wallet",
+    "paper sdk",
+    "crypto checkout",
+    "NFT on-ramp"
+  ],
   "scripts": {
     "dev-checkout": "tsup src/index.ts --env.NODE_ENV development --env.SDK_VERSION $npm_package_version --watch",
     "lint:fix": "yarn lint --fix",
@@ -53,7 +59,7 @@
     "@paperxyz/js-client-sdk": "*",
     "@paperxyz/sdk-common-utilities": "*",
     "ethers": "^5.7.2",
-    "wagmi": "0.7.15"
+    "wagmi": "^0.12.9"
   },
   "publishConfig": {
     "access": "public"
