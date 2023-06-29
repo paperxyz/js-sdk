@@ -17,7 +17,6 @@ import {
 import {
   GetUser,
   PaperEmbeddedWalletSdk,
-  RecoveryShareManagement,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import { useCallback, useEffect, useState } from "react";
@@ -29,11 +28,7 @@ import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [paper, setPaper] = useState<PaperEmbeddedWalletSdk>();
-  const [paperManaged, setPaperManaged] = useState<PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED>>();
   const [userDetails, setUserDetails] = useState<GetUser>();
-
-  const query = new URLSearchParams(window.location.search);
-  const isAwsManaged = query.get("managed") === "true";
 
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
@@ -41,14 +36,6 @@ function App() {
       chain: "Goerli",
     });
     setPaper(paper);
-    const paperManaged = new PaperEmbeddedWalletSdk({
-      clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
-      chain: "Goerli",
-      advancedOptions   : {
-        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
-      },
-    });
-    setPaperManaged(paperManaged);
   }, []);
 
   const fetchUserStatus = useCallback(async () => {
@@ -83,13 +70,7 @@ function App() {
       </Center>
     );
   } else if (userDetails.status === UserStatus.LOGGED_OUT) {
-    BodyComponent = (
-      <Login
-        paper={isAwsManaged ? paperManaged : paper}
-        isAwsManaged={isAwsManaged}
-        onLoginSuccess={fetchUserStatus}
-      />
-    );
+    BodyComponent = <Login paper={paper} onLoginSuccess={fetchUserStatus} />;
   } else {
     BodyComponent = (
       <Stack spacing={10}>

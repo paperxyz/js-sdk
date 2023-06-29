@@ -11,15 +11,14 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PaperEmbeddedWalletSdk, RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
+import { PaperEmbeddedWalletSdk } from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
 interface Props {
-  paper: PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED> | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED> | undefined;
-  isAwsManaged: boolean
+  paper: PaperEmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
 }
 
-export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) => {
+export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   const loginWithPaperModal = async () => {
     setIsLoading(true);
     try {
@@ -93,15 +92,16 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode: !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice && !isAwsManaged
-          ? recoveryCode || ""
-          : undefined,
+        recoveryCode:
+          !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice
+            ? recoveryCode || ""
+            : undefined,
       });
       console.log("verifyPaperEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
-      console.error("ERROR verifying otp", e)
+      console.error("ERROR verifying otp", e);
       setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
     }
     setIsLoading(false);
@@ -175,7 +175,8 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
                         </FormErrorMessage>
                       )}
                   </FormControl>
-                  {sendEmailOtpResult.isNewDevice && !sendEmailOtpResult.isNewUser && !isAwsManaged ? (
+                  {sendEmailOtpResult.isNewDevice &&
+                  !sendEmailOtpResult.isNewUser ? (
                     <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                       <Input
                         type="password"
