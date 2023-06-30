@@ -124,6 +124,8 @@ import { ViewPricingDetails } from "./ViewPricingDetails";
 
 const packageJson = require("../../../package.json");
 
+const WalletConnectProjectId = `3048db4129e5ca6eb7c628d87d233db4`;
+
 export enum CheckoutWithEthPage {
   ConnectWallet,
   PaymentDetails,
@@ -385,7 +387,7 @@ export const CheckoutWithEth = (
           new WalletConnectConnector({
             chains,
             options: {
-              projectId: `c33a8bd99947000acab7a7fdf13c3b80`,
+              projectId: WalletConnectProjectId,
               showQrModal: true,
             },
           }),
@@ -413,7 +415,7 @@ export const CheckoutWithEth = (
       new WalletConnectConnector({
         chains,
         options: {
-          projectId: `c33a8bd99947000acab7a7fdf13c3b80`,
+          projectId: WalletConnectProjectId,
           showQrModal: true,
         },
       }),
