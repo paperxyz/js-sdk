@@ -5,8 +5,8 @@ import type {
   PriceSummary,
 } from "@paperxyz/js-client-sdk";
 import {
-  PAY_WITH_ETH_ERROR,
   PayWithCryptoErrorCode,
+  PAY_WITH_ETH_ERROR,
 } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
@@ -146,11 +146,18 @@ export const ViewPricingDetails = ({
             }
           }
 
-          // try switching network first if needed or supported
+          // Prompt to switch the network.
           try {
             if (chainId !== data.chainId && switchNetworkAsync) {
               console.log(`switching signer network to chainId: ${chainId}`);
               await switchNetworkAsync(data.chainId);
+
+              // There is a known issue with the underlying state of the provider
+              // still referencing the old chain that will cause the sendTransaction call
+              // to fail.
+              // Return here to stop execution.
+              // The iframe will reload connected on the correct chain.
+              return;
             } else if (chainId !== data.chainId) {
               throw {
                 isErrorObject: true,
@@ -159,7 +166,7 @@ export const ViewPricingDetails = ({
               };
             }
           } catch (error) {
-            console.log("error switching network");
+            console.log("Error switching network.");
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
@@ -171,9 +178,8 @@ export const ViewPricingDetails = ({
             return;
           }
 
-          // send the transaction
+          // Prompt to send funds.
           try {
-            console.log("sending funds...", data);
             const result = await sendTransactionAsync?.({
               chainId: data.chainId,
               request: {
@@ -203,7 +209,7 @@ export const ViewPricingDetails = ({
               });
             }
           } catch (error) {
-            console.log("error sending funds", error);
+            console.log("Error sending funds:", error);
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
