@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 1.0.1
+
+### Patch Changes
+
+- 159c283: fix: Stop execution after switching chains to avoid sendTransaction error.
+
 ## 1.0.0
 
 ### Major Changes
