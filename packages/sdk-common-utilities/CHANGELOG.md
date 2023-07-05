@@ -1,5 +1,12 @@
 # @paperxyz/sdk-common-utilities
 
+## 0.1.0
+
+### Minor Changes
+
+- cec4455: Added support for sepolia and switching between networks in PaperEmbeddedWalletProvider
+- cec4455: Added support for sepolia and switching between networks in PaperEmbeddedWalletProvider
+
 ## 0.0.5
 
 ### Patch Changes
