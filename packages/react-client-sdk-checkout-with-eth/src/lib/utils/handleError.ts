@@ -12,7 +12,6 @@ export function handlePayWithCryptoError(
   onError?: (code: PaperSDKError) => void,
   postToParent?: (errorObject: Omit<IErrorObject, "isErrorObject">) => void,
 ) {
-  console.log({ error: JSON.stringify(error, null, 2) });
   if (!error) {
     const error = new Error("Something went wrong, contact support.");
     onError?.({ code: PayWithCryptoErrorCode.ErrorSendingTransaction, error });
