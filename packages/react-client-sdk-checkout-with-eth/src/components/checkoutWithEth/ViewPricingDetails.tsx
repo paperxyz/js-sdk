@@ -5,8 +5,8 @@ import type {
   PriceSummary,
 } from "@paperxyz/js-client-sdk";
 import {
-  PayWithCryptoErrorCode,
   PAY_WITH_ETH_ERROR,
+  PayWithCryptoErrorCode,
 } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
@@ -151,6 +151,9 @@ export const ViewPricingDetails = ({
             if (chainId !== data.chainId && switchNetworkAsync) {
               console.log(`switching signer network to chainId: ${chainId}`);
               await switchNetworkAsync(data.chainId);
+              console.log(
+                `Either switched network or sent message telling user to change networks`,
+              );
 
               // There is a known issue with the underlying state of the provider
               // still referencing the old chain that will cause the sendTransaction call
@@ -166,7 +169,7 @@ export const ViewPricingDetails = ({
               };
             }
           } catch (error) {
-            console.log("Error switching network.");
+            console.log("Error switching network.", error);
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
