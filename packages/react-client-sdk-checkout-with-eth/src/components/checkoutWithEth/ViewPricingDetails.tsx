@@ -142,6 +142,9 @@ export const ViewPricingDetails = ({
                   }
                 },
               );
+              console.log(
+                `Either switched network or sent message telling user to change networks`,
+              );
               return;
             }
           }
