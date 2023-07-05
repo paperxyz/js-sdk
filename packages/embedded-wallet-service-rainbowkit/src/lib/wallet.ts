@@ -1,10 +1,8 @@
 import type { RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
-import {
-  getChain,
-  PaperEmbeddedWalletWagmiConnector,
-} from "@paperxyz/embedded-wallet-service-wagmi";
+import { PaperEmbeddedWalletWagmiConnector } from "@paperxyz/embedded-wallet-service-wagmi";
 import type { Wallet } from "@rainbow-me/rainbowkit";
 import type { PaperEmbeddedWalletRainbowKitWalletProps } from "../interfaces/wallet";
+import type { Chain } from "wagmi";
 
 /**
  * A default dark mode email icon.
@@ -22,6 +20,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = <
   T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
 >(
   config: PaperEmbeddedWalletRainbowKitWalletProps<T>,
+  supportedChains?: Chain[],
 ): Wallet => ({
   id: "paper-embedded-wallet",
   name: config.name ?? "Email",
@@ -29,7 +28,7 @@ export const PaperEmbeddedWalletRainbowKitWallet = <
   iconBackground: config.iconBackground ?? "#39D0FF",
   createConnector: () => {
     const connector = new PaperEmbeddedWalletWagmiConnector<T>({
-      chains: [getChain(config.chain)],
+      chains: supportedChains,
       options: config,
     });
     return { connector };

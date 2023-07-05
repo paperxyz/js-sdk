@@ -1,9 +1,9 @@
 export const ChainToPublicRpc: Record<Chain, string> = {
-  Ethereum: "https://rpc.ankr.com/eth",
-  Goerli: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-  Mumbai: "https://rpc-mumbai.maticvigil.com",
-  Polygon: "https://rpc-mainnet.maticvigil.com",
-  Avalanche: "https://api.avax.network/ext/bc/C/rpc",
+  Ethereum: "https://ethereum.rpc.thirdweb.com",
+  Goerli: "https://goerli.rpc.thirdweb.com",
+  Mumbai: "https://mumbai.rpc.thirdweb.com",
+  Polygon: "https://polygon.rpc.thirdweb.com",
+  Avalanche: "https://avalanche.rpc.thirdweb.com",
   Optimism: "https://optimism.rpc.thirdweb.com",
   OptimismGoerli: "https://optimism-goerli.rpc.thirdweb.com",
   BSC: "https://binance.rpc.thirdweb.com",
@@ -12,6 +12,26 @@ export const ChainToPublicRpc: Record<Chain, string> = {
   ArbitrumGoerli: "https://arbitrum-goerli.rpc.thirdweb.com",
   Fantom: "https://fantom.rpc.thirdweb.com",
   FantomTestnet: "https://fantom-testnet.rpc.thirdweb.com",
+  Sepolia: "https://sepolia.rpc.thirdweb.com",
+  AvalancheFuji: "https://avalanche-fuji.rpc.thirdweb.com",
+};
+
+export const ChainIdToChain: Record<number, Chain> = {
+  1: "Ethereum",
+  5: "Goerli",
+  80001: "Mumbai",
+  137: "Polygon",
+  43114: "Avalanche",
+  10: "Optimism",
+  420: "OptimismGoerli",
+  56: "BSC",
+  97: "BSCTestnet",
+  42161: "ArbitrumOne",
+  421613: "ArbitrumGoerli",
+  250: "Fantom",
+  4002: "FantomTestnet",
+  11155111: "Sepolia",
+  43113: "AvalancheFuji",
 };
 
 // General Embedded wallet types
@@ -28,6 +48,8 @@ export type Chain =
   | "ArbitrumOne"
   | "ArbitrumGoerli"
   | "Fantom"
-  | "FantomTestnet";
+  | "FantomTestnet"
+  | "Sepolia"
+  | "AvalancheFuji";
 
 export type SupportedChainName = Chain | "Rinkeby" | "Solana" | "SolanaDevnet";

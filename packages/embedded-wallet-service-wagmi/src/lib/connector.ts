@@ -8,16 +8,28 @@ import {
   PaperEmbeddedWalletSdk,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
+import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 import type { Signer, providers } from "ethers";
 import type { Address, Chain, ConnectorData } from "wagmi";
 import { Connector, UserRejectedRequestError } from "wagmi";
 import {
+  arbitrum,
+  arbitrumGoerli,
   avalanche,
+  avalancheFuji,
+  bsc,
+  bscTestnet,
+  fantom,
+  fantomTestnet,
   goerli,
   mainnet,
+  optimism,
+  optimismGoerli,
   polygon,
   polygonMumbai,
+  sepolia,
 } from "wagmi/chains";
+import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/blockchain";
 
 const IS_SERVER = typeof window === "undefined";
 
@@ -59,7 +71,18 @@ export class PaperEmbeddedWalletWagmiConnector<
     this.#user = null;
     this.#paperOptions = config.options;
     this.#rpcEndpoint = config.options.rpcEndpoint;
-    this.chains = [getChain(this.#paperOptions.chain)];
+
+    if (config.chains?.length) {
+      this.chains = config.chains;
+
+      // if the chains array doesnt include the default chain, add it.
+      const wagmiChain: Chain = getChain(this.#paperOptions.chain);
+      if (!this.chains.includes(wagmiChain)) {
+        this.chains.push(wagmiChain);
+      }
+    } else {
+      this.chains = [getChain(this.#paperOptions.chain)];
+    }
 
     // Preload the SDK.
     if (typeof window !== "undefined") {
@@ -156,8 +179,16 @@ export class PaperEmbeddedWalletWagmiConnector<
     };
   }
 
-  getChainId(): Promise<number> {
-    return Promise.resolve(getChain(this.#paperOptions.chain).id);
+  async getChainId(): Promise<number> {
+    // getChaidId is called in the connect method. By default we will always connect to the
+    // mandatory chain provided in the paperOptions argument.
+    if (this.#paperOptions.chain) {
+      return Promise.resolve(getChain(this.#paperOptions.chain).id);
+    } else {
+      throw new Error(
+        "No default chain provided. Please provide at least one chain in the paperOptions argument. For example, paperOptions: {chain: 'Polygon'} ",
+      );
+    }
   }
 
   async isAuthorized() {
@@ -185,11 +216,31 @@ export class PaperEmbeddedWalletWagmiConnector<
     }
     return this.#user;
   }
+
+  override async switchChain(chainId: number): Promise<Chain> {
+    const user = await this.getUser();
+    if (!user) {
+      throw new Error(`User is not logged in. Try calling "connect()" first.`);
+    }
+
+    const chainName = ChainIdToChain[chainId];
+    if (chainName) {
+      await user.wallet.setChain({ chain: chainName });
+      this.onChainChanged(chainId);
+      if (!user.walletAddress.startsWith("0x")) {
+        throw "Invalid wallet address. Wallet address must start with 0x.";
+      }
+      this.onAccountsChanged([user.walletAddress as Address]);
+      return getChain(chainName);
+    } else {
+      throw new Error(
+        `Switching to the following chain with id: ${chainId} is not currently supported by Paper.`,
+      );
+    }
+  }
 }
 
-export const getChain = (
-  chain: PaperConstructorType<RecoveryShareManagement.USER_MANAGED>["chain"],
-): Chain => {
+export const getChain = (chain: InternalChain): Chain => {
   switch (chain) {
     case "Ethereum":
       return mainnet;
@@ -201,9 +252,29 @@ export const getChain = (
       return polygonMumbai;
     case "Avalanche":
       return avalanche;
+    case "Optimism":
+      return optimism;
+    case "OptimismGoerli":
+      return optimismGoerli;
+    case "BSC":
+      return bsc;
+    case "BSCTestnet":
+      return bscTestnet;
+    case "ArbitrumOne":
+      return arbitrum;
+    case "ArbitrumGoerli":
+      return arbitrumGoerli;
+    case "Fantom":
+      return fantom;
+    case "FantomTestnet":
+      return fantomTestnet;
+    case "Sepolia":
+      return sepolia;
+    case "AvalancheFuji":
+      return avalancheFuji;
     default:
       throw new Error(
-        "Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.",
+        `Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
       );
   }
 };
