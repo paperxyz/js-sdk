@@ -1,5 +1,13 @@
 # @paperxyz/react-client-sdk
 
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies [cec4455]
+- Updated dependencies [cec4455]
+  - @paperxyz/sdk-common-utilities@0.1.0
+
 ## 1.1.1
 
 ### Patch Changes

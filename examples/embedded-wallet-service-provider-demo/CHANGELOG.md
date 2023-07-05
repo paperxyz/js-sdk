@@ -1,5 +1,15 @@
 # embedded-wallet-service-provider-demo
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [cec4455]
+- Updated dependencies [cec4455]
+  - @paperxyz/embedded-wallet-service-rainbowkit@0.3.0
+  - @paperxyz/embedded-wallet-service-wagmi@3.1.0
+  - @paperxyz/embedded-wallet-service-sdk@1.1.2
+
 ## 0.2.0
 
 ### Minor Changes
