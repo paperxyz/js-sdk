@@ -1,14 +1,111 @@
 import { Transition } from "@headlessui/react";
 import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
+import {
+  arbitrum,
+  arbitrumGoerli,
+  arbitrumNova,
+  aurora,
+  auroraTestnet,
+  avalanche,
+  avalancheFuji,
+  baseGoerli,
+  boba,
+  bronos,
+  bronosTestnet,
+  bsc,
+  bscTestnet,
+  canto,
+  celo,
+  celoAlfajores,
+  celoCannoli,
+  confluxESpace,
+  cronos,
+  crossbell,
+  dfk,
+  dogechain,
+  evmos,
+  evmosTestnet,
+  fantom,
+  fantomTestnet,
+  filecoin,
+  filecoinCalibration,
+  filecoinHyperspace,
+  flare,
+  flareTestnet,
+  foundry,
+  fuse,
+  gnosis,
+  gnosisChiado,
+  goerli,
+  haqqMainnet,
+  haqqTestedge2,
+  hardhat,
+  harmonyOne,
+  iotex,
+  iotexTestnet,
+  klaytn,
+  lineaTestnet,
+  localhost,
+  mainnet,
+  metis,
+  metisGoerli,
+  moonbaseAlpha,
+  moonbeam,
+  moonriver,
+  neonDevnet,
+  nexi,
+  oasys,
+  okc,
+  optimism,
+  optimismGoerli,
+  polygon,
+  polygonMumbai,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  pulsechain,
+  pulsechainV4,
+  scrollTestnet,
+  sepolia,
+  shardeumSphinx,
+  skaleBlockBrawlers,
+  skaleCalypso,
+  skaleCalypsoTestnet,
+  skaleChaosTestnet,
+  skaleCryptoBlades,
+  skaleCryptoColosseum,
+  skaleEuropa,
+  skaleEuropaTestnet,
+  skaleExorde,
+  skaleHumanProtocol,
+  skaleNebula,
+  skaleNebulaTestnet,
+  skaleRazor,
+  skaleTitan,
+  skaleTitanTestnet,
+  songbird,
+  songbirdTestnet,
+  syscoin,
+  taraxa,
+  taraxaTestnet,
+  telos,
+  telosTestnet,
+  thunderTestnet,
+  wanchain,
+  wanchainTestnet,
+  xdc,
+  xdcTestnet,
+  zhejiang,
+  zkSync,
+  zkSyncTestnet,
+} from "@wagmi/chains";
 import { createClient as createClientCore } from "@wagmi/core";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   WagmiConfig,
-  chain,
   configureChains,
   createClient,
   useDisconnect,
-  useSigner,
+  useSigner
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
@@ -27,6 +124,8 @@ import { ViewPricingDetails } from "./ViewPricingDetails";
 
 const packageJson = require("../../../package.json");
 
+const WalletConnectProjectId = `3048db4129e5ca6eb7c628d87d233db4`;
+
 export enum CheckoutWithEthPage {
   ConnectWallet,
   PaymentDetails,
@@ -37,6 +136,105 @@ type CheckoutWithEthProps = {
   onPageChange?: (currentPage: CheckoutWithEthPage) => void;
   rpcUrls?: string[];
 } & Omit<ViewPricingDetailsProps, "setShowConnectWalletOptions">;
+
+export const WagmiChains = [
+  arbitrum,
+  arbitrumGoerli,
+  arbitrumNova,
+  aurora,
+  auroraTestnet,
+  avalanche,
+  avalancheFuji,
+  baseGoerli,
+  boba,
+  bronos,
+  bronosTestnet,
+  bsc,
+  bscTestnet,
+  canto,
+  celo,
+  celoAlfajores,
+  celoCannoli,
+  confluxESpace,
+  cronos,
+  crossbell,
+  dfk,
+  dogechain,
+  evmos,
+  evmosTestnet,
+  fantom,
+  fantomTestnet,
+  filecoin,
+  filecoinCalibration,
+  filecoinHyperspace,
+  flare,
+  flareTestnet,
+  foundry,
+  fuse,
+  iotex,
+  iotexTestnet,
+  goerli,
+  gnosis,
+  gnosisChiado,
+  hardhat,
+  harmonyOne,
+  haqqMainnet,
+  haqqTestedge2,
+  klaytn,
+  lineaTestnet,
+  localhost,
+  mainnet,
+  metis,
+  metisGoerli,
+  moonbaseAlpha,
+  moonbeam,
+  moonriver,
+  neonDevnet,
+  nexi,
+  oasys,
+  okc,
+  optimism,
+  optimismGoerli,
+  polygon,
+  polygonMumbai,
+  polygonZkEvmTestnet,
+  polygonZkEvm,
+  pulsechain,
+  pulsechainV4,
+  scrollTestnet,
+  sepolia,
+  skaleBlockBrawlers,
+  skaleCalypso,
+  skaleCalypsoTestnet,
+  skaleChaosTestnet,
+  skaleCryptoBlades,
+  skaleCryptoColosseum,
+  skaleEuropa,
+  skaleEuropaTestnet,
+  skaleExorde,
+  skaleHumanProtocol,
+  skaleNebula,
+  skaleNebulaTestnet,
+  skaleRazor,
+  skaleTitan,
+  skaleTitanTestnet,
+  songbird,
+  songbirdTestnet,
+  shardeumSphinx,
+  syscoin,
+  taraxa,
+  taraxaTestnet,
+  telos,
+  telosTestnet,
+  thunderTestnet,
+  wanchain,
+  wanchainTestnet,
+  xdc,
+  xdcTestnet,
+  zhejiang,
+  zkSync,
+  zkSyncTestnet,
+]
 
 export const CheckoutWithEthInternal = ({
   sdkClientSecret,
@@ -157,22 +355,23 @@ export const CheckoutWithEth = (
 ): React.ReactElement => {
   let providers = [
     publicProvider(),
-    ...Object.values(chain).map((_chain) =>
+     ...WagmiChains.map((_chain) =>
       jsonRpcProvider({
-        rpc: (_c) => ({ http: _chain.rpcUrls[0] ?? "" }),
+        rpc: () => ({ http: _chain.rpcUrls.public.http[0] ?? "" }),
       }),
     ),
   ];
+  
   if (props.rpcUrls) {
     // Use the RPC URLs provided by the developer instead of a public, rate-limited one.
     providers = props.rpcUrls.map((http) =>
       jsonRpcProvider({
-        rpc: (chain) => ({ http }),
+        rpc: () => ({ http }),
       }),
     );
   }
 
-  const { chains, provider } = configureChains(Object.values(chain), providers);
+   const { chains, provider } = configureChains(WagmiChains, providers);
   const client = useMemo(
     () =>
       createClient({
@@ -181,7 +380,6 @@ export const CheckoutWithEth = (
           new MetaMaskConnector({
             chains,
             options: {
-              shimChainChangedDisconnect: true,
               shimDisconnect: true,
               UNSTABLE_shimOnConnectSelectAccount: true,
             },
@@ -189,7 +387,8 @@ export const CheckoutWithEth = (
           new WalletConnectConnector({
             chains,
             options: {
-              qrcode: true,
+              projectId: WalletConnectProjectId,
+              showQrModal: true,
             },
           }),
           new CoinbaseWalletConnector({
@@ -209,7 +408,6 @@ export const CheckoutWithEth = (
       new MetaMaskConnector({
         chains,
         options: {
-          shimChainChangedDisconnect: true,
           shimDisconnect: true,
           UNSTABLE_shimOnConnectSelectAccount: true,
         },
@@ -217,7 +415,8 @@ export const CheckoutWithEth = (
       new WalletConnectConnector({
         chains,
         options: {
-          qrcode: true,
+          projectId: WalletConnectProjectId,
+          showQrModal: true,
         },
       }),
       new CoinbaseWalletConnector({
