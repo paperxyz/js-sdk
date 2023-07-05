@@ -5,8 +5,8 @@ import type {
   PriceSummary,
 } from "@paperxyz/js-client-sdk";
 import {
-  PayWithCryptoErrorCode,
   PAY_WITH_ETH_ERROR,
+  PayWithCryptoErrorCode,
 } from "@paperxyz/js-client-sdk";
 import { DEFAULT_BRAND_OPTIONS } from "@paperxyz/sdk-common-utilities";
 import type { ethers } from "ethers";
@@ -166,7 +166,6 @@ export const ViewPricingDetails = ({
               };
             }
           } catch (error) {
-            console.log("Error switching network.");
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
