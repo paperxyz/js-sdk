@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- e4d003f: chore(embedded-wallet-service-sdk): release new internal constant
+
 ## 1.1.0
 
 ### Minor Changes
