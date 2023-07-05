@@ -8,28 +8,28 @@ import {
   PaperEmbeddedWalletSdk,
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
+import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 import type { Signer, providers } from "ethers";
 import type { Address, Chain, ConnectorData } from "wagmi";
 import { Connector, UserRejectedRequestError } from "wagmi";
 import {
+  arbitrum,
+  arbitrumGoerli,
   avalanche,
+  avalancheFuji,
+  bsc,
+  bscTestnet,
+  fantom,
+  fantomTestnet,
   goerli,
   mainnet,
+  optimism,
   optimismGoerli,
   polygon,
   polygonMumbai,
   sepolia,
-  optimism,
-  bsc,
-  bscTestnet,
-  arbitrumGoerli,
-  fantom,
-  fantomTestnet,
-  avalancheFuji,
-  arbitrum,
 } from "wagmi/chains";
 import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/blockchain";
-import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 
 const IS_SERVER = typeof window === "undefined";
 
@@ -274,9 +274,7 @@ export const getChain = (chain: InternalChain): Chain => {
       return avalancheFuji;
     default:
       throw new Error(
-        `Unsupported chain${
-          chain ? `: ${chain}` : null
-        }. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
+        `Unsupported chain. See https://docs.withpaper.com/reference/embedded-wallet-service-faq for supported chains.`,
       );
   }
 };
