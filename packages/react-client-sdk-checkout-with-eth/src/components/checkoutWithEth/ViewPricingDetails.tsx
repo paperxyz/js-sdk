@@ -142,9 +142,6 @@ export const ViewPricingDetails = ({
                   }
                 },
               );
-              console.log(
-                `Either switched network or sent message telling user to change networks`,
-              );
               return;
             }
           }
@@ -154,6 +151,9 @@ export const ViewPricingDetails = ({
             if (chainId !== data.chainId && switchNetworkAsync) {
               console.log(`switching signer network to chainId: ${chainId}`);
               await switchNetworkAsync(data.chainId);
+              console.log(
+                `Either switched network or sent message telling user to change networks`,
+              );
 
               // There is a known issue with the underlying state of the provider
               // still referencing the old chain that will cause the sendTransaction call
