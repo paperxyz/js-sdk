@@ -166,6 +166,7 @@ export const ViewPricingDetails = ({
               };
             }
           } catch (error) {
+            console.log("Error switching network.", error);
             handlePayWithCryptoError(error as Error, onError, (errorObject) => {
               if (iframeRef.current) {
                 postMessageToIframe(iframeRef.current, PAY_WITH_ETH_ERROR, {
