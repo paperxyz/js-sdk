@@ -4,6 +4,7 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
+import type { RecoveryShareManagement } from "../Auth";
 
 // Class constructor types
 // types for class constructors still a little messy right now.
@@ -24,6 +25,7 @@ export type ClientIdWithQuerierAndChainType = ClientIdWithQuerierType & {
 export type AuthDetails = {
   email?: string;
   userWalletId: string;
+  recoveryShareManagement: RecoveryShareManagement;
   recoveryCode?: string;
 };
 
