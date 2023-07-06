@@ -11,7 +11,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PaperEmbeddedWalletSdk } from "@paperxyz/embedded-wallet-service-sdk";
+import {
+  PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
+  SendEmailOtpReturnType,
+} from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
 interface Props {
   paper: PaperEmbeddedWalletSdk | undefined;
@@ -34,12 +38,16 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   const [recoveryCode, setRecoveryCode] = useState<string | null>(null);
   const [otpCode, setOtpCode] = useState<string | null>(null);
   const [sendEmailOtpResult, setSendEmailOtpResult] = useState<
-    | {
-        isNewUser: boolean;
-        isNewDevice: boolean;
-      }
-    | undefined
+    SendEmailOtpReturnType | undefined
   >(undefined);
+
+  const displayRecoveryCodeInput =
+    (sendEmailOtpResult?.isNewDevice &&
+      !sendEmailOtpResult?.isNewUser &&
+      sendEmailOtpResult?.recoveryShareManagement ===
+        RecoveryShareManagement.USER_MANAGED) ??
+    false;
+
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -92,10 +100,7 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode:
-          !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice
-            ? recoveryCode || ""
-            : undefined,
+        recoveryCode: displayRecoveryCodeInput ? recoveryCode || "" : undefined,
       });
       console.log("verifyPaperEmailLoginOtp result", result);
 
@@ -168,15 +173,13 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
                         setOtpCode(e.target.value);
                       }}
                     />
-                    {!!verifyOtpErrorMessage &&
-                      !sendEmailOtpResult.isNewDevice && (
-                        <FormErrorMessage>
-                          {verifyOtpErrorMessage}
-                        </FormErrorMessage>
-                      )}
+                    {!!verifyOtpErrorMessage && !displayRecoveryCodeInput && (
+                      <FormErrorMessage>
+                        {verifyOtpErrorMessage}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
-                  {sendEmailOtpResult.isNewDevice &&
-                  !sendEmailOtpResult.isNewUser ? (
+                  {displayRecoveryCodeInput ? (
                     <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                       <Input
                         type="password"
