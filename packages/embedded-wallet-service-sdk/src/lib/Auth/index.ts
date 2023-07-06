@@ -10,7 +10,7 @@ import type {
 } from "../../interfaces/EmbeddedWallets/EmbeddedWallets";
 import { LocalStorage } from "../../utils/Storage/LocalStorage";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import { BaseLogin } from "./UserManagedLogin";
+import { BaseLogin } from "./BaseLogin";
 
 export type AuthQuerierTypes = {
   loginWithJwtAuthCallback: {
