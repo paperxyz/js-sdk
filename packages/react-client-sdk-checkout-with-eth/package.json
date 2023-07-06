@@ -1,6 +1,6 @@
 {
   "name": "@paperxyz/react-client-sdk-checkout-with-eth",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CheckoutwithEth React Client SDK",
   "license": "Apache-2.0",
   "main": "dist/index.js",

@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 1.0.3
+
+### Patch Changes
+
+- 7ae2200: Bumped all @paperxyz/_ packages to be the latest version (_) and updated the react-client-sdk-checkout-with-eth version label in the dom"
+
 ## 1.0.2
 
 ### Patch Changes
