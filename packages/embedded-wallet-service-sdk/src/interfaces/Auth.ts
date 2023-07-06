@@ -9,7 +9,6 @@ export enum RecoveryShareManagement {
   AWS_MANAGED = "AWS_MANAGED",
 }
 
-
 export enum AuthProvider {
   PAPER_EMAIL_OTP = "PaperEmailOTP",
   GOOGLE = "Google",
