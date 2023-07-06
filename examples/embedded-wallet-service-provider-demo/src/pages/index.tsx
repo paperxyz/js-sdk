@@ -17,6 +17,7 @@ const ProviderDemo = () => {
         iconBackground: "#fc03e3",
         rpcEndpoint: "https://polygon.rpc.thirdweb.com",
       }}
+      supportedChains={["Polygon", "Ethereum"]}
       modalOptions={{
         theme: darkTheme({
           accentColor: "#7b3fe4",

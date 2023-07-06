@@ -1,5 +1,36 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 1.0.2
+
+### Patch Changes
+
+- b324dfe: fix: display the proper error message when failing to switch chains
+- Updated dependencies [cec4455]
+- Updated dependencies [cec4455]
+  - @paperxyz/sdk-common-utilities@0.1.0
+
+## 1.0.1
+
+### Patch Changes
+
+- 159c283: fix: Stop execution after switching chains to avoid sendTransaction error.
+
+## 1.0.0
+
+### Major Changes
+
+- 94ae509: Converting @paperxyz/react-client-sdk-checkout-with-eth package into an esm-only module to support wagmi 0.12.x.
+
+  Notes:
+
+  - This package now supports wagmi 0.12.x
+  - If using an older version of wagmi, use a 0.x.x version of the react-client-sdk-checkout-with-eth package.
+  - This package does not support wagmi 1.x.x
+
+### Patch Changes
+
+- 94ae509: Upgraded wagmi in react-client-sdk-checkout-with-eth to match paper web (^0.12.9)
+
 ## 0.1.1
 
 ### Patch Changes
