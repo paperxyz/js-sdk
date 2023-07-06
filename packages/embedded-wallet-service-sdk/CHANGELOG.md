@@ -1,5 +1,13 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.1.3
+
+### Patch Changes
+
+- 7ae2200: Bumped all @paperxyz/_ packages to be the latest version (_) and updated the react-client-sdk-checkout-with-eth version label in the dom"
+- 7ae2200: chore: updated all paper packages to use latest versions of paper package dependencies"
+- 7ae2200: chore: bump sdk-common-utilities in embedded-wallet-service-sdk
+
 ## 1.1.2
 
 ### Patch Changes
