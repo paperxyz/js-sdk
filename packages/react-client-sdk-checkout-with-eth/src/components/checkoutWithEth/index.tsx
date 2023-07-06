@@ -105,7 +105,7 @@ import {
   configureChains,
   createClient,
   useDisconnect,
-  useSigner
+  useSigner,
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
@@ -234,7 +234,7 @@ export const WagmiChains = [
   zhejiang,
   zkSync,
   zkSyncTestnet,
-]
+];
 
 export const CheckoutWithEthInternal = ({
   sdkClientSecret,
@@ -282,7 +282,7 @@ export const CheckoutWithEthInternal = ({
   return (
     <div
       className={transitionContainer}
-      data-paper-sdk-version={`@paperxyz/react-client-sdk@${packageJson.version}`}
+      data-paper-sdk-version={`@paperxyz/react-client-sdk-checkout-with-eth@${packageJson.version}`}
     >
       {isClientSide &&
         (() => {
@@ -355,13 +355,13 @@ export const CheckoutWithEth = (
 ): React.ReactElement => {
   let providers = [
     publicProvider(),
-     ...WagmiChains.map((_chain) =>
+    ...WagmiChains.map((_chain) =>
       jsonRpcProvider({
         rpc: () => ({ http: _chain.rpcUrls.public.http[0] ?? "" }),
       }),
     ),
   ];
-  
+
   if (props.rpcUrls) {
     // Use the RPC URLs provided by the developer instead of a public, rate-limited one.
     providers = props.rpcUrls.map((http) =>
@@ -371,7 +371,7 @@ export const CheckoutWithEth = (
     );
   }
 
-   const { chains, provider } = configureChains(WagmiChains, providers);
+  const { chains, provider } = configureChains(WagmiChains, providers);
   const client = useMemo(
     () =>
       createClient({
