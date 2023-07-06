@@ -70,12 +70,11 @@ export abstract class AbstractLogin<
     email,
   }: LoginQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
     await this.preLogin();
-    const { isNewUser, isNewDevice } =
-      await this.LoginQuerier.call<SendEmailOtpReturnType>({
-        procedureName: "sendPaperEmailLoginOtp",
-        params: { email },
-      });
-    return { isNewUser, isNewDevice };
+    const result = await this.LoginQuerier.call<SendEmailOtpReturnType>({
+      procedureName: "sendPaperEmailLoginOtp",
+      params: { email },
+    });
+    return result;
   }
 
   abstract verifyPaperEmailLoginOtp(
