@@ -1,11 +1,18 @@
 {
   "name": "js-sdk-monorepo",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "examples/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "examples/*"
+    ],
+    "nohoist": [
+      "**/viem",
+      "**/@reservoir0x/ethers-wallet-adapter",
+      "**/@reservoir0x/reservoir-sdk"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "build-package-ews": "turbo run build-package-ews",
@@ -32,7 +39,7 @@
     "eslint-config-paperxyz": "*",
     "shelljs": "^0.8.5",
     "tsup": "^6.7.0",
-    "turbo": "1.8.3"
+    "turbo": "1.10.7"
   },
   "packageManager": "yarn@1.22.19"
 }
