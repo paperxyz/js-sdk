@@ -2,17 +2,11 @@ import type { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useAccount as useAccountWagmi } from "wagmi";
 
-type WagmiAccountProps = {
-  signer?: ethers.Signer;
-};
-
 export const useAccount = ({
   signer,
-}: WagmiAccountProps): {
-  address?: string;
-  chainId?: number;
-  connector: any;
-} => {
+}: {
+  signer?: ethers.Signer;
+}): { connector: any; address?: string; chainId?: number } => {
   const { address: _address, connector } = useAccountWagmi();
   const [chainId, setChainId] = useState<number | undefined>(undefined);
   const [address, setAddress] = useState<string | undefined>(undefined);

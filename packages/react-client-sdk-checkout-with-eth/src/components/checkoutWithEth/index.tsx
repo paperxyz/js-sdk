@@ -1,16 +1,9 @@
 import { Transition } from "@headlessui/react";
 import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  WagmiConfig,
-  configureChains,
-  createClient,
-  useDisconnect,
-  useSigner,
-} from "wagmi";
 import {
   arbitrum,
   arbitrumGoerli,
+  arbitrumNova,
   aurora,
   auroraTestnet,
   avalanche,
@@ -25,6 +18,7 @@ import {
   celo,
   celoAlfajores,
   celoCannoli,
+  confluxESpace,
   cronos,
   crossbell,
   dfk,
@@ -39,6 +33,7 @@ import {
   flare,
   flareTestnet,
   foundry,
+  fuse,
   gnosis,
   gnosisChiado,
   goerli,
@@ -57,7 +52,9 @@ import {
   moonbaseAlpha,
   moonbeam,
   moonriver,
+  neonDevnet,
   nexi,
+  oasys,
   okc,
   optimism,
   optimismGoerli,
@@ -100,7 +97,15 @@ import {
   zhejiang,
   zkSync,
   zkSyncTestnet,
-} from "wagmi/chains";
+} from "@wagmi/chains";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  WagmiConfig,
+  configureChains,
+  createClient,
+  useDisconnect,
+  useSigner,
+} from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -131,10 +136,10 @@ type CheckoutWithEthProps = {
   rpcUrls?: string[];
 } & Omit<ViewPricingDetailsProps, "setShowConnectWalletOptions">;
 
-export const ProviderChains = [
+export const WagmiChains = [
   arbitrum,
   arbitrumGoerli,
-  arbitrum,
+  arbitrumNova,
   aurora,
   auroraTestnet,
   avalanche,
@@ -149,6 +154,7 @@ export const ProviderChains = [
   celo,
   celoAlfajores,
   celoCannoli,
+  confluxESpace,
   cronos,
   crossbell,
   dfk,
@@ -163,6 +169,7 @@ export const ProviderChains = [
   flare,
   flareTestnet,
   foundry,
+  fuse,
   iotex,
   iotexTestnet,
   goerli,
@@ -181,7 +188,9 @@ export const ProviderChains = [
   moonbaseAlpha,
   moonbeam,
   moonriver,
+  neonDevnet,
   nexi,
+  oasys,
   okc,
   optimism,
   optimismGoerli,
@@ -345,7 +354,7 @@ export const CheckoutWithEth = (
 ): React.ReactElement => {
   let providers = [
     publicProvider(),
-    ...ProviderChains.map((_chain) =>
+    ...WagmiChains.map((_chain) =>
       jsonRpcProvider({
         rpc: () => ({ http: _chain.rpcUrls.public.http[0] ?? "" }),
       }),
@@ -361,7 +370,7 @@ export const CheckoutWithEth = (
     );
   }
 
-  const { chains, provider } = configureChains(ProviderChains, providers);
+  const { chains, provider } = configureChains(WagmiChains, providers);
   const client = useMemo(
     () =>
       createClient({
@@ -392,7 +401,6 @@ export const CheckoutWithEth = (
       }),
     [],
   );
-
   return (
     <WagmiConfig client={client}>
       <CheckoutWithEthInternal {...props} />

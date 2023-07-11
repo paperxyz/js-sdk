@@ -10,7 +10,8 @@
     "nohoist": [
       "**/viem",
       "**/@reservoir0x/ethers-wallet-adapter",
-      "**/@reservoir0x/reservoir-sdk"
+      "**/@reservoir0x/reservoir-sdk",
+      "**/@wagmi/core"
     ]
   },
   "scripts": {
@@ -25,7 +26,7 @@
     "dev-checkout": "turbo run dev-checkout --no-cache --continue --parallel",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
-    "clean": "turbo run clean && rm -rf node_modules",
+    "clean": "turbo run clean && find . -name \"node_modules\" -type d -exec rm -rf {} +",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
