@@ -10,8 +10,7 @@
     "nohoist": [
       "**/viem",
       "**/@reservoir0x/ethers-wallet-adapter",
-      "**/@reservoir0x/reservoir-sdk",
-      "**/@walletconnect"
+      "**/@reservoir0x/reservoir-sdk"
     ]
   },
   "scripts": {
