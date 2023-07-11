@@ -1,0 +1,5 @@
+This project uses the following libraries, which are subject to the BSD-2 license:
+
+@typescript-eslint/parser - https://github.com/typescript-eslint/typescript-eslint
+Copyright (c) JS Foundation and other contributors, https://js.foundation
+
