@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import type { Chain } from "wagmi";
 import { useSwitchNetwork as useSwitchNetworkWagmi } from "wagmi";
-import { WagmiChains } from "../../components/checkoutWithEth";
+import { ProviderChains } from "../../components/checkoutWithEth";
 
 export const useSwitchNetwork = ({
   signer: signer,
@@ -19,7 +19,7 @@ export const useSwitchNetwork = ({
       if (_switchNetworkAsync) {
         return await _switchNetworkAsync?.(chainId);
       } else if (signer) {
-        const chainToSwitchTo = WagmiChains.find((x) => x.id === chainId);
+        const chainToSwitchTo = ProviderChains.find((x) => x.id === chainId);
         if (!chainToSwitchTo) {
           const error = `Error switching chain. Please switch your network to chain with chainId: ${chainId}`;
           throw new Error(error);

@@ -1,9 +1,16 @@
 import { Transition } from "@headlessui/react";
 import { PayWithCryptoErrorCode } from "@paperxyz/js-client-sdk";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  WagmiConfig,
+  configureChains,
+  createClient,
+  useDisconnect,
+  useSigner,
+} from "wagmi";
 import {
   arbitrum,
   arbitrumGoerli,
-  arbitrumNova,
   aurora,
   auroraTestnet,
   avalanche,
@@ -18,7 +25,6 @@ import {
   celo,
   celoAlfajores,
   celoCannoli,
-  confluxESpace,
   cronos,
   crossbell,
   dfk,
@@ -33,7 +39,6 @@ import {
   flare,
   flareTestnet,
   foundry,
-  fuse,
   gnosis,
   gnosisChiado,
   goerli,
@@ -52,9 +57,7 @@ import {
   moonbaseAlpha,
   moonbeam,
   moonriver,
-  neonDevnet,
   nexi,
-  oasys,
   okc,
   optimism,
   optimismGoerli,
@@ -97,16 +100,7 @@ import {
   zhejiang,
   zkSync,
   zkSyncTestnet,
-} from "@wagmi/chains";
-import { createClient as createClientCore } from "@wagmi/core";
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  WagmiConfig,
-  configureChains,
-  createClient,
-  useDisconnect,
-  useSigner,
-} from "wagmi";
+} from "wagmi/chains";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -137,10 +131,10 @@ type CheckoutWithEthProps = {
   rpcUrls?: string[];
 } & Omit<ViewPricingDetailsProps, "setShowConnectWalletOptions">;
 
-export const WagmiChains = [
+export const ProviderChains = [
   arbitrum,
   arbitrumGoerli,
-  arbitrumNova,
+  arbitrum,
   aurora,
   auroraTestnet,
   avalanche,
@@ -155,7 +149,6 @@ export const WagmiChains = [
   celo,
   celoAlfajores,
   celoCannoli,
-  confluxESpace,
   cronos,
   crossbell,
   dfk,
@@ -170,7 +163,6 @@ export const WagmiChains = [
   flare,
   flareTestnet,
   foundry,
-  fuse,
   iotex,
   iotexTestnet,
   goerli,
@@ -189,9 +181,7 @@ export const WagmiChains = [
   moonbaseAlpha,
   moonbeam,
   moonriver,
-  neonDevnet,
   nexi,
-  oasys,
   okc,
   optimism,
   optimismGoerli,
@@ -355,7 +345,7 @@ export const CheckoutWithEth = (
 ): React.ReactElement => {
   let providers = [
     publicProvider(),
-    ...WagmiChains.map((_chain) =>
+    ...ProviderChains.map((_chain) =>
       jsonRpcProvider({
         rpc: () => ({ http: _chain.rpcUrls.public.http[0] ?? "" }),
       }),
@@ -371,7 +361,7 @@ export const CheckoutWithEth = (
     );
   }
 
-  const { chains, provider } = configureChains(WagmiChains, providers);
+  const { chains, provider } = configureChains(ProviderChains, providers);
   const client = useMemo(
     () =>
       createClient({
@@ -402,32 +392,6 @@ export const CheckoutWithEth = (
       }),
     [],
   );
-  createClientCore({
-    autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({
-        chains,
-        options: {
-          shimDisconnect: true,
-          UNSTABLE_shimOnConnectSelectAccount: true,
-        },
-      }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          projectId: WalletConnectProjectId,
-          showQrModal: true,
-        },
-      }),
-      new CoinbaseWalletConnector({
-        chains,
-        options: {
-          appName: "Paper.xyz",
-        },
-      }),
-    ],
-    provider,
-  });
 
   return (
     <WagmiConfig client={client}>
