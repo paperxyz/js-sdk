@@ -11,15 +11,18 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PaperEmbeddedWalletSdk, RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
+import {
+  PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
+  SendEmailOtpReturnType,
+} from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
 interface Props {
-  paper: PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED> | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED> | undefined;
-  isAwsManaged: boolean
+  paper: PaperEmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
 }
 
-export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) => {
+export const Login: React.FC<Props> = ({ paper, onLoginSuccess }) => {
   const loginWithPaperModal = async () => {
     setIsLoading(true);
     try {
@@ -35,12 +38,16 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
   const [recoveryCode, setRecoveryCode] = useState<string | null>(null);
   const [otpCode, setOtpCode] = useState<string | null>(null);
   const [sendEmailOtpResult, setSendEmailOtpResult] = useState<
-    | {
-        isNewUser: boolean;
-        isNewDevice: boolean;
-      }
-    | undefined
+    SendEmailOtpReturnType | undefined
   >(undefined);
+
+  const displayRecoveryCodeInput =
+    (sendEmailOtpResult?.isNewDevice &&
+      !sendEmailOtpResult?.isNewUser &&
+      sendEmailOtpResult?.recoveryShareManagement ===
+        RecoveryShareManagement.USER_MANAGED) ??
+    false;
+
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -93,15 +100,13 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode: !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice && !isAwsManaged
-          ? recoveryCode || ""
-          : undefined,
+        recoveryCode: displayRecoveryCodeInput ? recoveryCode || "" : undefined,
       });
       console.log("verifyPaperEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
-      console.error("ERROR verifying otp", e)
+      console.error("ERROR verifying otp", e);
       setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
     }
     setIsLoading(false);
@@ -168,14 +173,13 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
                         setOtpCode(e.target.value);
                       }}
                     />
-                    {!!verifyOtpErrorMessage &&
-                      !sendEmailOtpResult.isNewDevice && (
-                        <FormErrorMessage>
-                          {verifyOtpErrorMessage}
-                        </FormErrorMessage>
-                      )}
+                    {!!verifyOtpErrorMessage && !displayRecoveryCodeInput && (
+                      <FormErrorMessage>
+                        {verifyOtpErrorMessage}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
-                  {sendEmailOtpResult.isNewDevice && !sendEmailOtpResult.isNewUser && !isAwsManaged ? (
+                  {displayRecoveryCodeInput ? (
                     <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                       <Input
                         type="password"

@@ -2,35 +2,40 @@ import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
 } from "../../interfaces/Auth";
-import { RecoveryShareManagement } from "../../interfaces/Auth";
 import { AbstractLogin } from "./AbstractLogin";
-
-export class AwsManagedLogin extends AbstractLogin<
-  void,
-  { email: string },
-  { email: string; otp: string }
+export class BaseLogin extends AbstractLogin<
+  {
+    getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
+  },
+  { email: string; recoveryCode?: string },
+  { email: string; otp: string; recoveryCode?: string }
 > {
-  override async loginWithPaperModal(): Promise<AuthLoginReturnType> {
+  override async loginWithPaperModal(args?: {
+    getRecoveryCode: (userWalletId: string) => Promise<string | undefined>;
+  }): Promise<AuthLoginReturnType> {
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
+      params: undefined,
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
+        getRecoveryCode: args?.getRecoveryCode,
       },
     });
     return this.postLogin(result);
   }
   override async loginWithPaperEmailOtp({
     email,
+    recoveryCode,
   }: {
     email: string;
+    recoveryCode?: string | undefined;
   }): Promise<AuthLoginReturnType> {
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { email, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
+      params: { email, recoveryCode },
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -41,13 +46,15 @@ export class AwsManagedLogin extends AbstractLogin<
   override async verifyPaperEmailLoginOtp({
     email,
     otp,
+    recoveryCode,
   }: {
     email: string;
     otp: string;
+    recoveryCode?: string | undefined;
   }): Promise<AuthLoginReturnType> {
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "verifyPaperEmailLoginOtp",
-      params: { email, otp, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
+      params: { email, otp, recoveryCode },
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
       },

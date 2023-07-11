@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "dev-ews": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",

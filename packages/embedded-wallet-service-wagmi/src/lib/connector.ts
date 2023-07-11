@@ -2,7 +2,6 @@ import type { Networkish } from "@ethersproject/providers";
 import type {
   InitializedUser,
   PaperConstructorType,
-  RecoveryShareManagement,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import {
   PaperEmbeddedWalletSdk,
@@ -33,28 +32,27 @@ import { ChainIdToChain } from "../../../sdk-common-utilities/src/constants/bloc
 
 const IS_SERVER = typeof window === "undefined";
 
-export type PaperEmbeddedWalletWagmiConnectorProps<
-  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
-> = {
+export type PaperEmbeddedWalletWagmiConnectorProps = {
   chains?: Chain[];
   options: {
     rpcEndpoint?: Networkish;
-  } & PaperConstructorType<T>;
+  } & PaperConstructorType;
 };
 
 /**
  * @returns A Wagmi-compatible connector.
  */
-export class PaperEmbeddedWalletWagmiConnector<
-  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
-> extends Connector<providers.Provider, PaperConstructorType<T>> {
+export class PaperEmbeddedWalletWagmiConnector extends Connector<
+  providers.Provider,
+  PaperConstructorType
+> {
   readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
   readonly name = "Paper Embedded Wallet";
   override readonly chains: Chain[];
 
-  #sdk?: PaperEmbeddedWalletSdk<T>;
-  #paperOptions: PaperConstructorType<T>;
+  #sdk?: PaperEmbeddedWalletSdk;
+  #paperOptions: PaperConstructorType;
   #provider?: providers.Provider;
   #user: InitializedUser | null;
   #rpcEndpoint?: Networkish;
@@ -90,9 +88,9 @@ export class PaperEmbeddedWalletWagmiConnector<
     }
   }
 
-  protected getSdk(): PaperEmbeddedWalletSdk<T> {
+  protected getSdk(): PaperEmbeddedWalletSdk {
     if (!this.#sdk) {
-      this.#sdk = new PaperEmbeddedWalletSdk<T>(this.#paperOptions);
+      this.#sdk = new PaperEmbeddedWalletSdk(this.#paperOptions);
     }
     return this.#sdk;
   }
