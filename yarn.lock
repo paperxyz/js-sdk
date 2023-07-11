@@ -6887,7 +6887,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@coinbase/wallet-sdk@^3.0.4", "@coinbase/wallet-sdk@^3.5.3", "@coinbase/wallet-sdk@^3.6.3", "@coinbase/wallet-sdk@^3.6.6":
+"@coinbase/wallet-sdk@^3.5.3", "@coinbase/wallet-sdk@^3.6.3", "@coinbase/wallet-sdk@^3.6.6":
   version "3.6.6"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.6.6.tgz#4a0758fe0fe0ba3ed7e33b5bb6eb094ff8bd6c98"
   integrity sha512-vX+epj/Ttjo7XRwlr3TFUUfW5GTRMvORpERPwiu7z2jl3DSVL4rXLmHt5y6LDPlUVreas2gumdcFbu0fLRG9Jg==
@@ -10002,36 +10002,6 @@
   version "4.8.3"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.3.tgz#cbef3146bfc570849405f59cba18235da95a252a"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
-
-"@paperxyz/js-client-sdk@0.0.0-gerry-backendless-20230621193448":
-  version "0.0.0-gerry-backendless-20230621193448"
-  resolved "https://registry.yarnpkg.com/@paperxyz/js-client-sdk/-/js-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#06f31385ce757980b4bbfe6fc747dba9471915bc"
-  integrity sha512-9yCo0EyR67fmc1j4IoQaYtzc6XCj8PqpWVtfmTIOcX35zF9mTEdS9zduwaHrQvlvFx3ln9G2U5IRuGfMQZ2AOQ==
-  dependencies:
-    "@paperxyz/sdk-common-utilities" "*"
-    ethers "^5.7.2"
-
-"@paperxyz/react-client-sdk-checkout-with-eth@0.0.0-gerry-backendless-20230621193448":
-  version "0.0.0-gerry-backendless-20230621193448"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk-checkout-with-eth/-/react-client-sdk-checkout-with-eth-0.0.0-gerry-backendless-20230621193448.tgz#d1b9ea02d4938addb559cbbb22b4f8a4d70a7181"
-  integrity sha512-4pDLooClDZBq6HL3PqB/qyYJcAEWCBBRjJLafOWB3rn0sBNAJH34J57gLGy9ihx7+23aOZMMKaT4v5M5eYxDWw==
-  dependencies:
-    "@emotion/css" "11.10.5"
-    "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
-    "@paperxyz/sdk-common-utilities" "^0.0.5"
-    ethers "^5.7.2"
-    wagmi "0.7.15"
-
-"@paperxyz/react-client-sdk@0.0.0-gerry-backendless-20230621193448":
-  version "0.0.0-gerry-backendless-20230621193448"
-  resolved "https://registry.yarnpkg.com/@paperxyz/react-client-sdk/-/react-client-sdk-0.0.0-gerry-backendless-20230621193448.tgz#3b8b21f6c456ecdd039679710a8953202a039b58"
-  integrity sha512-+RMW891qZuyD6CHoNwzr3dY3j6Em1MrSL8KLS3ERqzc8I3eTf1Bhp++ReMdD5qWiavvgJtxj9cgP+nQo/wjCOg==
-  dependencies:
-    "@emotion/css" "11.10.5"
-    "@headlessui/react" "1.7.6"
-    "@paperxyz/js-client-sdk" "0.0.0-gerry-backendless-20230621193448"
-    "@paperxyz/sdk-common-utilities" "^0.0.5"
 
 "@pdf-lib/standard-fonts@^1.0.0":
   version "1.0.0"
@@ -13204,7 +13174,7 @@
     "@walletconnect/utils" "2.7.2"
     events "^3.3.0"
 
-"@walletconnect/ethereum-provider@^1.6.0", "@walletconnect/ethereum-provider@^1.8.0":
+"@walletconnect/ethereum-provider@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/ethereum-provider/-/ethereum-provider-1.8.0.tgz#ed1dbf9cecc3b818758a060d2f9017c50bde1d32"
   integrity sha512-Nq9m+oo5P0F+njsROHw9KMWdoc/8iGHYzQdkjJN/1C7DtsqFRg5k5a3hd9rzCLpbPsOC1q8Z5lRs6JQgDvPm6Q==
@@ -13660,37 +13630,6 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
-
-"@web3-react/abstract-connector@^6.0.7":
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/@web3-react/abstract-connector/-/abstract-connector-6.0.7.tgz#401b3c045f1e0fab04256311be49d5144e9badc6"
-  integrity sha512-RhQasA4Ox8CxUC0OENc1AJJm8UTybu/oOCM61Zjg6y0iF7Z0sqv1Ai1VdhC33hrQpA8qSBgoXN9PaP8jKmtdqg==
-  dependencies:
-    "@web3-react/types" "^6.0.7"
-
-"@web3-react/types@^6.0.7":
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/@web3-react/types/-/types-6.0.7.tgz#34a6204224467eedc6123abaf55fbb6baeb2809f"
-  integrity sha512-ofGmfDhxmNT1/P/MgVa8IKSkCStFiyvXe+U5tyZurKdrtTDFU+wJ/LxClPDtFerWpczNFPUSrKcuhfPX1sI6+A==
-
-"@web3-react/walletconnect-connector@6.2.8":
-  version "6.2.8"
-  resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-connector/-/walletconnect-connector-6.2.8.tgz#069d27df226464775de25248e71e8c407c374cc7"
-  integrity sha512-HENFuGw+inlYHPdZc1vKKVVYzJ/h/JJIXZVzXC2UPQ+c14cX1t0WSnQ7ywUYHkgRqYWMsngTDZTKRMU2+4O1Tg==
-  dependencies:
-    "@walletconnect/ethereum-provider" "^1.6.0"
-    "@web3-react/abstract-connector" "^6.0.7"
-    "@web3-react/types" "^6.0.7"
-    tiny-invariant "^1.0.6"
-
-"@web3-react/walletlink-connector@^6.2.8":
-  version "6.2.14"
-  resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.2.14.tgz#4adf7b94de5d7018a9fc9e3b6009e78cd33d6e15"
-  integrity sha512-F2v1Uu7Nhptt7AaUEJpz69+NVUJxyUfDEA5B/Vr1HkqAL1aJM5gv6B1m4M/VdXKLpmjZ9Kg6X0+VUEyAx1eQ4w==
-  dependencies:
-    "@coinbase/wallet-sdk" "^3.0.4"
-    "@web3-react/abstract-connector" "^6.0.7"
-    "@web3-react/types" "^6.0.7"
 
 "@web3modal/core@2.4.1":
   version "2.4.1"
