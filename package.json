@@ -11,6 +11,8 @@
       "**/viem",
       "**/@reservoir0x/ethers-wallet-adapter",
       "**/@reservoir0x/reservoir-sdk",
+      "**/@rainbow-me/rainbowkit",
+      "**/wagmi",
       "**/@wagmi/core"
     ]
   },
