@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk-checkout-with-eth
 
+## 1.0.4
+
+### Patch Changes
+
+- b8a4fc6: chore: fixed packages for wagmi and @wagmi/core
+
 ## 1.0.3
 
 ### Patch Changes
