@@ -98,7 +98,6 @@ import {
   zkSync,
   zkSyncTestnet,
 } from "@wagmi/chains";
-import { createClient as createClientCore } from "@wagmi/core";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   WagmiConfig,
@@ -402,33 +401,6 @@ export const CheckoutWithEth = (
       }),
     [],
   );
-  createClientCore({
-    autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({
-        chains,
-        options: {
-          shimDisconnect: true,
-          UNSTABLE_shimOnConnectSelectAccount: true,
-        },
-      }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          projectId: WalletConnectProjectId,
-          showQrModal: true,
-        },
-      }),
-      new CoinbaseWalletConnector({
-        chains,
-        options: {
-          appName: "Paper.xyz",
-        },
-      }),
-    ],
-    provider,
-  });
-
   return (
     <WagmiConfig client={client}>
       <CheckoutWithEthInternal {...props} />
