@@ -13,7 +13,8 @@
       "**/@reservoir0x/reservoir-sdk",
       "**/@rainbow-me/rainbowkit",
       "**/wagmi",
-      "**/@wagmi/core"
+      "**/@wagmi/core",
+      "**/@thirdweb-dev/sdk"
     ]
   },
   "scripts": {
