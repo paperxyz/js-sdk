@@ -6,13 +6,8 @@ import type {
 
 export enum RecoveryShareManagement {
   USER_MANAGED = "USER_MANAGED",
-  AWS_MANAGED = "AWS_MANAGED",
+  KMS_MANAGED = "KMS_MANAGED",
 }
-
-export type AdvancedOptions<T extends RecoveryShareManagement > = {
-  // This is a hack to allow us to assign default value to recoveryShareManagement
-  recoveryShareManagement: RecoveryShareManagement | T
-};
 
 export enum AuthProvider {
   PAPER_EMAIL_OTP = "PaperEmailOTP",

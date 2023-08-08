@@ -4,15 +4,14 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import type { AdvancedOptions, RecoveryShareManagement } from "../Auth";
+import type { RecoveryShareManagement } from "../Auth";
 
 // Class constructor types
 // types for class constructors still a little messy right now.
 // Open to PRs from whoever sees this and knows of a cleaner way to handle things
 export type ClientIdConstructorType = { clientId: string };
-export type PaperConstructorType<T extends RecoveryShareManagement> = ClientIdConstructorType & {
+export type PaperConstructorType = ClientIdConstructorType & {
   chain: Chain;
-  advancedOptions?: Partial<AdvancedOptions<T>>;
   styles?: CustomizationOptionsType;
 };
 export type ClientIdWithQuerierType = ClientIdConstructorType & {
@@ -26,6 +25,7 @@ export type ClientIdWithQuerierAndChainType = ClientIdWithQuerierType & {
 export type AuthDetails = {
   email?: string;
   userWalletId: string;
+  recoveryShareManagement: RecoveryShareManagement;
   recoveryCode?: string;
 };
 
@@ -57,10 +57,16 @@ export type SetUpWalletRpcReturnType = WalletAddressObjectType & {
   isIframeStorageEnabled: boolean;
 };
 
-export type SendEmailOtpReturnType = {
-  isNewUser: boolean;
-  isNewDevice: boolean;
-};
+export type SendEmailOtpReturnType =
+  | {
+      isNewUser: true;
+      isNewDevice: true;
+    }
+  | {
+      isNewUser: false;
+      isNewDevice: boolean;
+      recoveryShareManagement: RecoveryShareManagement;
+    };
 export type LogoutReturnType = { success: boolean };
 export type GetAuthDetailsReturnType = { authDetails?: AuthDetails };
 

@@ -1,4 +1,3 @@
-import { RecoveryShareManagement } from "../interfaces/Auth";
 import type {
   GetUser,
   PaperConstructorType,
@@ -12,7 +11,7 @@ import type { AuthQuerierTypes } from "./Auth";
 import { Auth } from "./Auth";
 import { EmbeddedWallet } from "./EmbeddedWallets/EmbeddedWallet";
 
-export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> {
+export class PaperEmbeddedWalletSdk {
   protected clientId: string;
   protected querier: EmbeddedWalletIframeCommunicator<AuthQuerierTypes>;
 
@@ -20,7 +19,7 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
   /**
    * Used to manage the Auth state of the user.
    */
-  auth: Auth<T>;
+  auth: Auth;
 
   /**
    * @example
@@ -29,7 +28,7 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
    * @param {Chain} initParams.chain sets the default chain that the EmbeddedWallet will live on.
    * @param {CustomizationOptionsType} initParams.styles sets the default style override for any modal that pops up asking for user's details when creating wallet or logging in.
    */
-  constructor({ clientId, chain, styles, advancedOptions }: PaperConstructorType<T>) {
+  constructor({ clientId, chain, styles }: PaperConstructorType) {
     this.clientId = clientId;
     this.querier = new EmbeddedWalletIframeCommunicator({
       clientId,
@@ -40,13 +39,9 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
       chain,
       querier: this.querier,
     });
-    
-    this.auth = new Auth<T>({
+
+    this.auth = new Auth({
       clientId,
-      advancedOptions: {
-        recoveryShareManagement: RecoveryShareManagement.USER_MANAGED,        
-        ...(advancedOptions ?? {}),
-      },
       querier: this.querier,
       onAuthSuccess: async (authResult) => {
         await this.wallet.postWalletSetUp({
