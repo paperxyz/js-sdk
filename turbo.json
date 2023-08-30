@@ -41,6 +41,11 @@
       "cache": false,
       "persistent": true
     },
+    "dev-tw": {
+      "dependsOn": ["^build-package-checkout", "^build-package-ews"],
+      "cache": false,
+      "persistent": true
+    },
     "dev-ews-connectors": {
       "dependsOn": ["^build-package-ews-connectors"],
       "cache": false,
