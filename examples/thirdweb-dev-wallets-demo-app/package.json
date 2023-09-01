@@ -29,6 +29,9 @@
       "last 1 safari version"
     ]
   },
+  "browser": {
+    "assert": false
+  },
   "dependencies": {
     "stream": "npm:stream-browserify@3.0.0",
     "@chakra-ui/react": "2.4.4",
