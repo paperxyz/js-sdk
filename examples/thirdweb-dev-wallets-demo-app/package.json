@@ -34,7 +34,7 @@
     "@chakra-ui/react": "2.4.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@thirdweb-dev/wallets": "0.0.0-dev-82ec6a8-20230830221912",
+    "@thirdweb-dev/wallets": "0.0.0-dev-06a7cb1-20230901190619",
     "ethers": "^5.7.2",
     "framer-motion": "8.0.1",
     "react": "^18.2.0",
