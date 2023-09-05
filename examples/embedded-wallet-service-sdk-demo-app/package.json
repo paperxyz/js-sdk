@@ -7,7 +7,7 @@
     "dev-ews": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
