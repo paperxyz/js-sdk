@@ -7,7 +7,7 @@
     "dev-ews": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",
-    "build": "react-scripts build",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -28,6 +28,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "babel-loader": "^8.1.0",
+    "babel-jest": "^26.6.0"
   },
   "dependencies": {
     "@chakra-ui/react": "2.4.4",
