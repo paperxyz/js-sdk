@@ -42,6 +42,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const loginWithPaperEmailOtp = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -55,6 +56,18 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
       onLoginSuccess();
     } catch (e) {
       // use closed login modal.
+    }
+    setIsLoading(false);
+  };
+
+  const loginWithGoogleHeadless = async () => {
+    setIsLoading(true);
+    try {
+      const result = await thirdwebWallet?.auth.loginWithGoogle();
+      console.log("loginWithGoogle result", result);
+      onLoginSuccess();
+    } catch (e) {
+      // TODO: How to close the login modal
     }
     setIsLoading(false);
   };
@@ -141,6 +154,19 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             Login with Email OTP
           </Button>
         </Stack>
+
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+        <Button
+          w={"full"}
+          onClick={loginWithGoogleHeadless}
+          isLoading={isLoading}
+        >
+          Login With Google Directly
+        </Button>
 
         {/* Adding code to allow internal full headless flow */}
         {(email?.endsWith("@thirdweb.com") ?? false) && (
