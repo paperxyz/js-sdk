@@ -112,20 +112,19 @@ function App() {
       </GridItem>
       <Box p={10} height="100vh">
         <Stack spacing={10}>
-          <Image src="/paper-logo-icon.svg" maxW={14} alt="logo" />
+          <Image src="/thirdweb-light.svg" maxW={14} minW={"70%"} alt="logo" />
           <Stack spacing={0}>
             <Heading>Wallets & Auth demo</Heading>
             <Text size="sm" fontStyle="italic" color="gray.500">
-              by Paper
+              by thirdweb
             </Text>
           </Stack>
           <Text maxW={400}>
-            Welcome to Paper's Embedded Wallet Service (EWS) Alpha Sample App.
+            Welcome to thirdweb's Embedded Wallet Service (EWS) Sample App.
             <br />
             <br />
-            With this alpha sample app, you can explore the various features of
-            our EWS platform and get a feel for how it can benefit your own
-            project
+            With this sample app, you can explore the various features of our
+            EWS platform and get a feel for how it can benefit your own project
           </Text>
 
           {!!userDetails && userDetails.status !== UserStatus.LOGGED_OUT && (
