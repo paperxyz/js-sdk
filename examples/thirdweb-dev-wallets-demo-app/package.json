@@ -1,15 +1,15 @@
 {
-  "name": "embedded-wallet-service-sdk-demo-app",
-  "version": "0.1.2",
+  "name": "thirdweb-dev-wallets-demo-app",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "dev-ews": "yarn start",
+    "start": "BROWSER=none react-app-rewired start",
+    "dev-tw": "yarn start",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf build node_modules",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -33,13 +33,16 @@
     "@chakra-ui/react": "2.4.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@paperxyz/embedded-wallet-service-sdk": "*",
+    "@thirdweb-dev/wallets": "0.0.0-dev-06a7cb1-20230901190619",
+    "assert": "^2.0.0",
     "ethers": "^5.7.2",
     "framer-motion": "8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^15.5.0",
+    "stream": "npm:stream-browserify@3.0.0",
+    "stream-browserify": "^3.0.0",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
@@ -55,7 +58,9 @@
     "@types/react": "18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/react-syntax-highlighter": "^15.5.6",
-    "eslint-config-react-app": "^7.0.1",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
     "typescript": "^4.7.4"
   }
 }
