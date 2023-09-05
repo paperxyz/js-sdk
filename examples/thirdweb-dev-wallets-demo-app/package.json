@@ -1,6 +1,6 @@
 {
   "name": "thirdweb-dev-wallets-demo-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "BROWSER=none react-scripts start",
