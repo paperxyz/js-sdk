@@ -29,13 +29,6 @@
       "last 1 safari version"
     ]
   },
-  "browser": {
-    "assert": false
-  },
-  "resolutions": {
-    "babel-loader": "^8.1.0",
-    "babel-jest": "^26.6.0"
-  },
   "dependencies": {
     "@chakra-ui/react": "2.4.4",
     "@emotion/react": "^11.10.5",
