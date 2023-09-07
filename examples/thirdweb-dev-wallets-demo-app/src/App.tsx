@@ -96,7 +96,7 @@ function App() {
 
   return (
     <SimpleGrid columns={2}>
-      <GridItem colSpan={2} bg="blue.500" h={12}>
+      <GridItem colSpan={2} bg="purple.500" h={12}>
         <Flex w="full" h="full" align="center" justify="center" color="white">
           <Text fontSize="xl">
             For more information,{" "}
@@ -131,7 +131,7 @@ function App() {
             <Button
               alignSelf="start"
               onClick={logout}
-              colorScheme="blue"
+              colorScheme="purple"
               variant="outline"
             >
               Logout
@@ -140,8 +140,8 @@ function App() {
         </Stack>
       </Box>
       <Box
-        bg="blue.200"
-        boxShadow="-2px 0px 2px #6294b4"
+        bg="purple.200"
+        boxShadow="-2px 0px 2px #9444b4"
         p={10}
         height="100vh"
         overflowY="auto"

@@ -121,12 +121,12 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         <Heading size="md">Log in</Heading>
         <Divider my={4} />
         <Button
-          colorScheme="blue"
+          colorScheme="purple"
           onClick={loginWithPaperModal}
           w="full"
           isLoading={isLoading}
         >
-          Login with Paper Modal
+          Login with thirdweb modal
         </Button>
 
         <Flex my={4} alignItems="center">
