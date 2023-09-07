@@ -15,7 +15,10 @@ type LoginQuerierTypes = {
     | { email: string; recoveryCode?: string }
     | { recoveryShareManagement: RecoveryShareManagement }
     | { email: string };
-  sendPaperEmailLoginOtp: { email: string; recoveryShareManagement?: RecoveryShareManagement };
+  sendPaperEmailLoginOtp: {
+    email: string;
+    recoveryShareManagement?: RecoveryShareManagement;
+  };
   verifyPaperEmailLoginOtp:
     | {
         email: string;
@@ -27,6 +30,7 @@ type LoginQuerierTypes = {
         otp: string;
         recoveryShareManagement: RecoveryShareManagement;
       };
+  loginWithGoogle: void;
 };
 
 export abstract class AbstractLogin<
@@ -42,7 +46,7 @@ export abstract class AbstractLogin<
   protected postLogin: (
     authResults: AuthAndWalletRpcReturnType,
   ) => Promise<AuthLoginReturnType>;
-
+  protected clientId: string;
   /**
    * Used to manage the user's auth states. This should not be instantiated directly.
    * Call {@link PaperEmbeddedWalletSdk.auth} instead.
@@ -53,7 +57,8 @@ export abstract class AbstractLogin<
     querier,
     preLogin,
     postLogin,
-  }: Omit<ClientIdWithQuerierType, "clientId"> & {
+    clientId,
+  }: ClientIdWithQuerierType & {
     preLogin: () => Promise<void>;
     postLogin: (
       authDetails: AuthAndWalletRpcReturnType,
@@ -62,12 +67,15 @@ export abstract class AbstractLogin<
     this.LoginQuerier = querier;
     this.preLogin = preLogin;
     this.postLogin = postLogin;
+    this.clientId = clientId;
   }
 
   abstract loginWithPaperModal(args?: MODAL): Promise<AuthLoginReturnType>;
   abstract loginWithPaperEmailOtp(
     args: EMAIL_MODAL,
   ): Promise<AuthLoginReturnType>;
+
+  abstract loginWithGoogle(): Promise<AuthLoginReturnType>;
 
   async sendPaperEmailLoginOtp({
     email,

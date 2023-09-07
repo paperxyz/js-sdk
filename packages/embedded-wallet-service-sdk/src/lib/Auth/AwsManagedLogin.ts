@@ -1,3 +1,5 @@
+import { getPaperOriginUrl } from "@paperxyz/sdk-common-utilities";
+import { HEADLESS_GOOGLE_OAUTH_ROUTE } from "../../constants/settings";
 import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
@@ -22,6 +24,63 @@ export class AwsManagedLogin extends AbstractLogin<
     });
     return this.postLogin(result);
   }
+
+  override async loginWithGoogle(): Promise<AuthLoginReturnType> {
+    await this.preLogin();
+    const googleOauthUrl = `${getPaperOriginUrl()}${HEADLESS_GOOGLE_OAUTH_ROUTE}?developerClientId=${
+      this.clientId
+    }`;
+    const win = window.open(googleOauthUrl, "Login", "width=350, height=500");
+
+    // listen to result from the login window
+    return new Promise<AuthLoginReturnType>((resolve, reject) => {
+      // detect when the user closes the login window
+      const pollTimer = window.setInterval(async () => {
+        if (!win) {
+          return;
+        }
+        if (win.closed) {
+          clearInterval(pollTimer);
+          reject(new Error("User closed login window"));
+        }
+      }, 1000);
+
+      const messageListener = async (
+        event: MessageEvent<{
+          eventType: string;
+          authResult?: AuthLoginReturnType;
+          error?: string;
+        }>,
+      ) => {
+        if (event.origin !== getPaperOriginUrl()) {
+          return;
+        }
+        if (typeof event.data !== "object") {
+          reject(new Error("Invalid event data"));
+          return;
+        }
+        window.removeEventListener("message", messageListener);
+        clearInterval(pollTimer);
+
+        switch (event.data.eventType) {
+          case "userLoginSuccess": {
+            win?.close();
+            if (event.data.authResult) {
+              resolve(event.data.authResult);
+            }
+            break;
+          }
+          case "userLoginFailure": {
+            win?.close();
+            reject(new Error(event.data.error));
+            break;
+          }
+        }
+      };
+      window.addEventListener("message", messageListener);
+    });
+  }
+
   override async loginWithPaperEmailOtp({
     email,
   }: {
@@ -30,7 +89,10 @@ export class AwsManagedLogin extends AbstractLogin<
     await this.preLogin();
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "loginWithPaperModal",
-      params: { email, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
+      params: {
+        email,
+        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
+      },
       showIframe: true,
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
@@ -47,7 +109,11 @@ export class AwsManagedLogin extends AbstractLogin<
   }): Promise<AuthLoginReturnType> {
     const result = await this.LoginQuerier.call<AuthAndWalletRpcReturnType>({
       procedureName: "verifyPaperEmailLoginOtp",
-      params: { email, otp, recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED },
+      params: {
+        email,
+        otp,
+        recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
+      },
       injectRecoveryCode: {
         isInjectRecoveryCode: true,
       },

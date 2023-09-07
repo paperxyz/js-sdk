@@ -25,6 +25,13 @@ export class UserManagedLogin extends AbstractLogin<
     });
     return this.postLogin(result);
   }
+
+  override async loginWithGoogle(): Promise<AuthLoginReturnType> {
+    throw new Error(
+      "loginWithGoogle is not yet supported in the RecoveryShareManagement.USER_MANAGED flow. Please use RecoveryShareManagement.AWS_MANAGED instead.",
+    );
+  }
+
   override async loginWithPaperEmailOtp({
     email,
     recoveryCode,

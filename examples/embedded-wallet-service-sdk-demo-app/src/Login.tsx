@@ -11,15 +11,25 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PaperEmbeddedWalletSdk, RecoveryShareManagement } from "@paperxyz/embedded-wallet-service-sdk";
+import {
+  PaperEmbeddedWalletSdk,
+  RecoveryShareManagement,
+} from "@paperxyz/embedded-wallet-service-sdk";
 import { useState } from "react";
 interface Props {
-  paper: PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED> | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED> | undefined;
-  isAwsManaged: boolean
+  paper:
+    | PaperEmbeddedWalletSdk<RecoveryShareManagement.USER_MANAGED>
+    | PaperEmbeddedWalletSdk<RecoveryShareManagement.AWS_MANAGED>
+    | undefined;
+  isAwsManaged: boolean;
   onLoginSuccess: () => void;
 }
 
-export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) => {
+export const Login: React.FC<Props> = ({
+  paper,
+  onLoginSuccess,
+  isAwsManaged,
+}) => {
   const loginWithPaperModal = async () => {
     setIsLoading(true);
     try {
@@ -61,6 +71,18 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
     setIsLoading(false);
   };
 
+  const loginWithGoogleHeadless = async () => {
+    setIsLoading(true);
+    try {
+      const result = await paper?.auth.loginWithGoogle();
+      console.log("loginWithGoogle result", result);
+      onLoginSuccess();
+    } catch (e) {
+      console.warn("Something went wrong logging in with google", e);
+    }
+    setIsLoading(false);
+  };
+
   const loginWithPaperEmailOtpHeadless = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -93,15 +115,18 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
       const result = await paper?.auth.verifyPaperEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
-        recoveryCode: !sendEmailOtpResult?.isNewUser && sendEmailOtpResult?.isNewDevice && !isAwsManaged
-          ? recoveryCode || ""
-          : undefined,
+        recoveryCode:
+          !sendEmailOtpResult?.isNewUser &&
+          sendEmailOtpResult?.isNewDevice &&
+          !isAwsManaged
+            ? recoveryCode || ""
+            : undefined,
       });
       console.log("verifyPaperEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
-      console.error("ERROR verifying otp", e)
+      console.error("ERROR verifying otp", e);
       setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
     }
     setIsLoading(false);
@@ -147,6 +172,23 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
           </Button>
         </Stack>
 
+        {isAwsManaged && (
+          <>
+            <Flex my={4} alignItems="center">
+              <Divider />
+              <Text mx={4}>or</Text>
+              <Divider />
+            </Flex>
+            <Button
+              w={"full"}
+              onClick={loginWithGoogleHeadless}
+              isLoading={isLoading}
+            >
+              Login With Google Directly
+            </Button>
+          </>
+        )}
+
         {/* Adding code to allow internal full headless flow */}
         {(email?.endsWith("@withpaper.com") ?? false) && (
           <>
@@ -175,7 +217,9 @@ export const Login: React.FC<Props> = ({ paper, onLoginSuccess, isAwsManaged }) 
                         </FormErrorMessage>
                       )}
                   </FormControl>
-                  {sendEmailOtpResult.isNewDevice && !sendEmailOtpResult.isNewUser && !isAwsManaged ? (
+                  {sendEmailOtpResult.isNewDevice &&
+                  !sendEmailOtpResult.isNewUser &&
+                  !isAwsManaged ? (
                     <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                       <Input
                         type="password"
