@@ -67,7 +67,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
       console.log("loginWithGoogle result", result);
       onLoginSuccess();
     } catch (e) {
-      // TODO: How to close the login modal
+      console.warn("Error logging in with Google", e);
     }
     setIsLoading(false);
   };
