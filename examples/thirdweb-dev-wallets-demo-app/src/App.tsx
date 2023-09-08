@@ -17,7 +17,7 @@ import {
 
 import {
   GetUser,
-  ThirdwebEmbeddedWalletSdk,
+  EmbeddedWalletSdk,
   UserStatus,
 } from "@thirdweb-dev/wallets";
 import { useCallback, useEffect, useState } from "react";
@@ -29,12 +29,12 @@ import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
   const [thirdwebWallet, setThirdwebWallet] =
-    useState<ThirdwebEmbeddedWalletSdk>();
+    useState<EmbeddedWalletSdk>();
 
   const [userDetails, setUserDetails] = useState<GetUser>();
 
   useEffect(() => {
-    const twWalletSdk = new ThirdwebEmbeddedWalletSdk({
+    const twWalletSdk = new EmbeddedWalletSdk({
       clientId: process.env.REACT_APP_THIRDWEB_CLIENT_ID!,
       chain: "Goerli",
     });

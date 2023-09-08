@@ -11,18 +11,18 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { ThirdwebEmbeddedWalletSdk } from "@thirdweb-dev/wallets";
+import { EmbeddedWalletSdk } from "@thirdweb-dev/wallets";
 import { useState } from "react";
 interface Props {
-  thirdwebWallet: ThirdwebEmbeddedWalletSdk | undefined;
+  thirdwebWallet: EmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
 }
 
 export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
-  const loginWithPaperModal = async () => {
+  const loginWithThirdwebModal = async () => {
     setIsLoading(true);
     try {
-      await thirdwebWallet?.auth.loginWithThirdwebModal();
+      await thirdwebWallet?.auth.loginWithModal();
       onLoginSuccess();
     } catch (e) {
       // use cancelled login flow
@@ -43,16 +43,16 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const loginWithPaperEmailOtp = async (
+  const loginWithThirdwebEmailOtp = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.loginWithThirdwebEmailOtp({
+      const result = await thirdwebWallet?.auth.loginWithEmailOtp({
         email: email || "",
       });
-      console.log("loginWithPaperEmailOtp result", result);
+      console.log("loginWithThirdwebEmailOtp result", result);
       onLoginSuccess();
     } catch (e) {
       // use closed login modal.
@@ -78,10 +78,10 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.sendThirdwebEmailLoginOtp({
+      const result = await thirdwebWallet?.auth.sendEmailLoginOtp({
         email: email || "",
       });
-      console.log("sendPaperEmailLoginOtp result", result);
+      console.log("sendThirdwebEmailLoginOtp result", result);
       setSendEmailOtpResult(result);
     } catch (e) {
       if (e instanceof Error) {
@@ -101,11 +101,11 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.verifyThirdwebEmailLoginOtp({
+      const result = await thirdwebWallet?.auth.verifyEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
       });
-      console.log("verifyPaperEmailLoginOtp result", result);
+      console.log("verifyThirdwebEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
@@ -122,7 +122,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         <Divider my={4} />
         <Button
           colorScheme="purple"
-          onClick={loginWithPaperModal}
+          onClick={loginWithThirdwebModal}
           w="full"
           isLoading={isLoading}
         >
@@ -147,7 +147,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
           </FormControl>
           <Button
             type="submit"
-            onClick={loginWithPaperEmailOtp}
+            onClick={loginWithThirdwebEmailOtp}
             disabled={!email}
             isLoading={isLoading}
           >
