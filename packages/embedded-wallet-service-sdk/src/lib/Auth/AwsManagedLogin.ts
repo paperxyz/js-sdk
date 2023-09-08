@@ -33,51 +33,57 @@ export class AwsManagedLogin extends AbstractLogin<
     const win = window.open(googleOauthUrl, "Login", "width=350, height=500");
 
     // listen to result from the login window
-    return new Promise<AuthLoginReturnType>((resolve, reject) => {
-      // detect when the user closes the login window
-      const pollTimer = window.setInterval(async () => {
-        if (!win) {
-          return;
-        }
-        if (win.closed) {
+    const result = await new Promise<AuthAndWalletRpcReturnType>(
+      (resolve, reject) => {
+        // detect when the user closes the login window
+        const pollTimer = window.setInterval(async () => {
+          if (!win) {
+            return;
+          }
+          if (win.closed) {
+            clearInterval(pollTimer);
+            reject(new Error("User closed login window"));
+          }
+        }, 1000);
+
+        const messageListener = async (
+          event: MessageEvent<{
+            eventType: string;
+            authResult?: AuthAndWalletRpcReturnType;
+            error?: string;
+          }>,
+        ) => {
+          if (event.origin !== getPaperOriginUrl()) {
+            return;
+          }
+          if (typeof event.data !== "object") {
+            reject(new Error("Invalid event data"));
+            return;
+          }
+          window.removeEventListener("message", messageListener);
           clearInterval(pollTimer);
-          reject(new Error("User closed login window"));
-        }
-      }, 1000);
 
-      const messageListener = async (
-        event: MessageEvent<{
-          eventType: string;
-          authResult?: AuthLoginReturnType;
-          error?: string;
-        }>,
-      ) => {
-        if (event.origin !== getPaperOriginUrl()) {
-          return;
-        }
-        if (typeof event.data !== "object") {
-          reject(new Error("Invalid event data"));
-          return;
-        }
-        window.removeEventListener("message", messageListener);
-        clearInterval(pollTimer);
-
-        switch (event.data.eventType) {
-          case "userLoginSuccess": {
-            win?.close();
-            if (event.data.authResult) {
-              resolve(event.data.authResult);
+          switch (event.data.eventType) {
+            case "userLoginSuccess": {
+              win?.close();
+              if (event.data.authResult) {
+                resolve(event.data.authResult);
+              }
+              break;
             }
-            break;
+            case "userLoginFailure": {
+              win?.close();
+              reject(new Error(event.data.error));
+              break;
+            }
           }
-          case "userLoginFailure": {
-            win?.close();
-            reject(new Error(event.data.error));
-            break;
-          }
-        }
-      };
-      window.addEventListener("message", messageListener);
+        };
+        window.addEventListener("message", messageListener);
+      },
+    );
+    return this.postLogin({
+      storedToken: { ...result.storedToken, shouldStoreCookieString: true },
+      walletDetails: { ...result.walletDetails, isIframeStorageEnabled: false },
     });
   }
 

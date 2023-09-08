@@ -12,7 +12,9 @@ import type { AuthQuerierTypes } from "./Auth";
 import { Auth } from "./Auth";
 import { EmbeddedWallet } from "./EmbeddedWallets/EmbeddedWallet";
 
-export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED> {
+export class PaperEmbeddedWalletSdk<
+  T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
+> {
   protected clientId: string;
   protected querier: EmbeddedWalletIframeCommunicator<AuthQuerierTypes>;
 
@@ -29,7 +31,12 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
    * @param {Chain} initParams.chain sets the default chain that the EmbeddedWallet will live on.
    * @param {CustomizationOptionsType} initParams.styles sets the default style override for any modal that pops up asking for user's details when creating wallet or logging in.
    */
-  constructor({ clientId, chain, styles, advancedOptions }: PaperConstructorType<T>) {
+  constructor({
+    clientId,
+    chain,
+    styles,
+    advancedOptions,
+  }: PaperConstructorType<T>) {
     this.clientId = clientId;
     this.querier = new EmbeddedWalletIframeCommunicator({
       clientId,
@@ -40,11 +47,11 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
       chain,
       querier: this.querier,
     });
-    
+
     this.auth = new Auth<T>({
       clientId,
       advancedOptions: {
-        recoveryShareManagement: RecoveryShareManagement.USER_MANAGED,        
+        recoveryShareManagement: RecoveryShareManagement.USER_MANAGED,
         ...(advancedOptions ?? {}),
       },
       querier: this.querier,
@@ -52,6 +59,15 @@ export class PaperEmbeddedWalletSdk<T extends RecoveryShareManagement = Recovery
         await this.wallet.postWalletSetUp({
           ...authResult.walletDetails,
           walletUserId: authResult.storedToken.authDetails.userWalletId,
+        });
+        await this.querier.call({
+          procedureName: "initIframe",
+          params: {
+            deviceShareStored: authResult.walletDetails.deviceShareStored,
+            clientId: this.clientId,
+            walletUserId: authResult.storedToken.authDetails.userWalletId,
+            authCookie: authResult.storedToken.cookieString,
+          },
         });
         return {
           user: {
