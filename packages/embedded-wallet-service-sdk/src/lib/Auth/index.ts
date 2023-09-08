@@ -16,6 +16,12 @@ import { AwsManagedLogin } from "./AwsManagedLogin";
 import { UserManagedLogin } from "./UserManagedLogin";
 
 export type AuthQuerierTypes = {
+  initIframe: {
+    clientId: string;
+    authCookie: string;
+    walletUserId: string;
+    deviceShareStored: string;
+  };
   loginWithJwtAuthCallback: {
     token: string;
     authProvider: AuthProvider;
