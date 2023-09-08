@@ -13672,29 +13672,6 @@
     react-qr-code "^2.0.11"
     tiny-invariant "^1.2.0"
 
-"@thirdweb-dev/sdk@0.0.0-dev-06a7cb1-20230901190619":
-  version "0.0.0-dev-06a7cb1-20230901190619"
-  resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-0.0.0-dev-06a7cb1-20230901190619.tgz#26638937b20433de10e537f79199aafec94c757b"
-  integrity sha512-tSoNzIuVr1pGKTpjfAHl12t7QWJjj8IIw21erqz+qB0cMcIuxjrV6Q/jguVa8N+cS+kV/t5D20qoOdBasovUdA==
-  dependencies:
-    "@thirdweb-dev/chains" "0.1.50"
-    "@thirdweb-dev/contracts-js" "1.3.12"
-    "@thirdweb-dev/generated-abis" "0.0.1"
-    "@thirdweb-dev/storage" "0.0.0-dev-06a7cb1-20230901190619"
-    abitype "^0.2.5"
-    bn.js "^5.2.1"
-    bs58 "^5.0.0"
-    buffer "^6.0.3"
-    cross-fetch "^3.1.8"
-    eventemitter3 "^5.0.1"
-    fast-deep-equal "^3.1.3"
-    merkletreejs "^0.2.24"
-    tiny-invariant "^1.2.0"
-    tweetnacl "^1.0.3"
-    uuid "^9.0.0"
-    yaml "^2.3.1"
-    zod "^3.20.2"
-
 "@thirdweb-dev/sdk@3.10.45", "@thirdweb-dev/sdk@^3.10.42":
   version "3.10.45"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-3.10.45.tgz#954b6a21d31f2b0233b4b07e56e399a8497fe0de"
@@ -13718,6 +13695,29 @@
     yaml "^2.3.1"
     zod "^3.20.2"
 
+"@thirdweb-dev/sdk@3.10.59":
+  version "3.10.59"
+  resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-3.10.59.tgz#9f820ee511a5bf20d865958961a125be05b7acb6"
+  integrity sha512-uDGc2yavYRiXP1+etUaDNLJdzaTSFRPQNoKNqzbR1HMHMHb/KHHPXHKO50AuKpc5pMw8/f+OmCphF0qTMTZu1Q==
+  dependencies:
+    "@thirdweb-dev/chains" "0.1.50"
+    "@thirdweb-dev/contracts-js" "1.3.12"
+    "@thirdweb-dev/generated-abis" "0.0.1"
+    "@thirdweb-dev/storage" "1.2.10"
+    abitype "^0.2.5"
+    bn.js "^5.2.1"
+    bs58 "^5.0.0"
+    buffer "^6.0.3"
+    cross-fetch "^3.1.8"
+    eventemitter3 "^5.0.1"
+    fast-deep-equal "^3.1.3"
+    merkletreejs "^0.2.24"
+    tiny-invariant "^1.2.0"
+    tweetnacl "^1.0.3"
+    uuid "^9.0.0"
+    yaml "^2.3.1"
+    zod "^3.20.2"
+
 "@thirdweb-dev/service-utils@^0.4.3":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/service-utils/-/service-utils-0.4.4.tgz#ab1becf3de8e53718b1a2936fc1369d4735e00cd"
@@ -13726,10 +13726,10 @@
     aws4fetch "^1.0.17"
     zod "^3.20.2"
 
-"@thirdweb-dev/storage@0.0.0-dev-06a7cb1-20230901190619":
-  version "0.0.0-dev-06a7cb1-20230901190619"
-  resolved "https://registry.yarnpkg.com/@thirdweb-dev/storage/-/storage-0.0.0-dev-06a7cb1-20230901190619.tgz#7c51a4862a4090770fb3fb6e783a94ad76aeef5f"
-  integrity sha512-G8OOJ8QHnswnSg22pd4hsukl2tL4uqCax8+nD4Z3TaAHoeo2fg0ejPa40BRwop3a4aZ5oigPhIYY8jSE/+xWFg==
+"@thirdweb-dev/storage@1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@thirdweb-dev/storage/-/storage-1.2.10.tgz#04f25211c8a2d23b9a2171aac798211fe49c9de7"
+  integrity sha512-tUqUfkCfrZfmYcNVxR7j9CLMrIx0C4w/2QkNNo27AlbKGq4x73UCKRBTPZI2ggTKGfq6pyayOfFuVLoN7W/AqA==
   dependencies:
     cid-tool "^3.0.0"
     cross-fetch "^3.1.8"
@@ -13756,10 +13756,10 @@
     form-data "^4.0.0"
     uuid "^9.0.0"
 
-"@thirdweb-dev/wallets@0.0.0-dev-06a7cb1-20230901190619":
-  version "0.0.0-dev-06a7cb1-20230901190619"
-  resolved "https://registry.yarnpkg.com/@thirdweb-dev/wallets/-/wallets-0.0.0-dev-06a7cb1-20230901190619.tgz#cee747e30906455a5d80be9013b1614f9a8b99f6"
-  integrity sha512-6V5/RH0QZbQBPDQZgpqiVE8pY6YjYfEk/yyH7bouAm3BapRbsGNWfSDUTXifLJhguVsEnIs9/rQt8oaAMpjOzw==
+"@thirdweb-dev/wallets@0.0.0-dev-4e0608e-20230908102617":
+  version "0.0.0-dev-4e0608e-20230908102617"
+  resolved "https://registry.yarnpkg.com/@thirdweb-dev/wallets/-/wallets-0.0.0-dev-4e0608e-20230908102617.tgz#235f32a8b0390a2b6402e046c9d6f8c05fee52d3"
+  integrity sha512-VBm9szJLeHPAzB7g/IGmS1/ZVhDulI+EPfBzlr5VvgS/Tg7I+EiGlvH9bMT/llhm3UX3SxznXCrjXo+U4/2AhA==
   dependencies:
     "@account-abstraction/contracts" "^0.5.0"
     "@account-abstraction/sdk" "^0.5.0"
@@ -13776,7 +13776,7 @@
     "@safe-global/safe-ethers-lib" "^1.9.4"
     "@thirdweb-dev/chains" "0.1.50"
     "@thirdweb-dev/contracts-js" "1.3.12"
-    "@thirdweb-dev/sdk" "0.0.0-dev-06a7cb1-20230901190619"
+    "@thirdweb-dev/sdk" "3.10.59"
     "@walletconnect/core" "^2.9.1"
     "@walletconnect/ethereum-provider" "^2.9.1"
     "@walletconnect/jsonrpc-utils" "^1.0.8"

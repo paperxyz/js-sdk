@@ -11,18 +11,18 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { ThirdwebEmbeddedWalletSdk } from "@thirdweb-dev/wallets";
+import { EmbeddedWalletSdk } from "@thirdweb-dev/wallets";
 import { useState } from "react";
 interface Props {
-  thirdwebWallet: ThirdwebEmbeddedWalletSdk | undefined;
+  thirdwebWallet: EmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
 }
 
 export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
-  const loginWithPaperModal = async () => {
+  const loginWithThirdwebModal = async () => {
     setIsLoading(true);
     try {
-      await thirdwebWallet?.auth.loginWithThirdwebModal();
+      await thirdwebWallet?.auth.loginWithModal();
       onLoginSuccess();
     } catch (e) {
       // use cancelled login flow
@@ -42,19 +42,32 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const loginWithPaperEmailOtp = async (
+
+  const loginWithThirdwebEmailOtp = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.loginWithThirdwebEmailOtp({
+      const result = await thirdwebWallet?.auth.loginWithEmailOtp({
         email: email || "",
       });
-      console.log("loginWithPaperEmailOtp result", result);
+      console.log("loginWithThirdwebEmailOtp result", result);
       onLoginSuccess();
     } catch (e) {
       // use closed login modal.
+    }
+    setIsLoading(false);
+  };
+
+  const loginWithGoogleHeadless = async () => {
+    setIsLoading(true);
+    try {
+      const result = await thirdwebWallet?.auth.loginWithGoogle();
+      console.log("loginWithGoogle result", result);
+      onLoginSuccess();
+    } catch (e) {
+      console.warn("Error logging in with Google", e);
     }
     setIsLoading(false);
   };
@@ -65,10 +78,10 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.sendThirdwebEmailLoginOtp({
+      const result = await thirdwebWallet?.auth.sendEmailLoginOtp({
         email: email || "",
       });
-      console.log("sendPaperEmailLoginOtp result", result);
+      console.log("sendThirdwebEmailLoginOtp result", result);
       setSendEmailOtpResult(result);
     } catch (e) {
       if (e instanceof Error) {
@@ -88,11 +101,11 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const result = await thirdwebWallet?.auth.verifyThirdwebEmailLoginOtp({
+      const result = await thirdwebWallet?.auth.verifyEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
       });
-      console.log("verifyPaperEmailLoginOtp result", result);
+      console.log("verifyThirdwebEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
@@ -108,12 +121,12 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         <Heading size="md">Log in</Heading>
         <Divider my={4} />
         <Button
-          colorScheme="blue"
-          onClick={loginWithPaperModal}
+          colorScheme="purple"
+          onClick={loginWithThirdwebModal}
           w="full"
           isLoading={isLoading}
         >
-          Login with Paper Modal
+          Login with thirdweb modal
         </Button>
 
         <Flex my={4} alignItems="center">
@@ -134,13 +147,26 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
           </FormControl>
           <Button
             type="submit"
-            onClick={loginWithPaperEmailOtp}
+            onClick={loginWithThirdwebEmailOtp}
             disabled={!email}
             isLoading={isLoading}
           >
             Login with Email OTP
           </Button>
         </Stack>
+
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+        <Button
+          w={"full"}
+          onClick={loginWithGoogleHeadless}
+          isLoading={isLoading}
+        >
+          Login With Google Directly
+        </Button>
 
         {/* Adding code to allow internal full headless flow */}
         {(email?.endsWith("@thirdweb.com") ?? false) && (

@@ -114,7 +114,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
           <Stack>
             <Button
               onClick={getAddress}
-              colorScheme="blue"
+              colorScheme="purple"
               isLoading={loading === Features.GET_WALLET}
             >
               Get Wallet Address
@@ -138,7 +138,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
           <Stack>
             <Button
               onClick={signMessage}
-              colorScheme="blue"
+              colorScheme="purple"
               isLoading={loading === Features.SIGN_MESSAGE}
             >
               Sign Message
@@ -154,7 +154,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
           <Stack>
             <Button
               onClick={signTypedDataV4}
-              colorScheme="blue"
+              colorScheme="purple"
               isLoading={loading === Features.SIGN_TYPED_DATA}
             >
               Sign Type Data (EIP712)
