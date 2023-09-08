@@ -33,6 +33,7 @@ export class AwsManagedLogin extends AbstractLogin<
     const win = window.open(googleOauthUrl, "Login", "width=350, height=500");
 
     // listen to result from the login window
+
     const result = await new Promise<AuthAndWalletRpcReturnType>(
       (resolve, reject) => {
         // detect when the user closes the login window
@@ -40,9 +41,13 @@ export class AwsManagedLogin extends AbstractLogin<
           if (!win) {
             return;
           }
-          if (win.closed) {
-            clearInterval(pollTimer);
-            reject(new Error("User closed login window"));
+          try {
+            if (win.closed) {
+              clearInterval(pollTimer);
+              reject(new Error("User closed login window"));
+            }
+          } catch (e) {
+            // silence the error since it'll throw when the user closes it on the google auth page
           }
         }, 1000);
 
@@ -71,7 +76,7 @@ export class AwsManagedLogin extends AbstractLogin<
               }
               break;
             }
-            case "userLoginFailure": {
+            case "userLoginFailed": {
               win?.close();
               reject(new Error(event.data.error));
               break;
