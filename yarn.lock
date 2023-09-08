@@ -13756,10 +13756,10 @@
     form-data "^4.0.0"
     uuid "^9.0.0"
 
-"@thirdweb-dev/wallets@0.0.0-dev-c95b7f6-20230908003326":
-  version "0.0.0-dev-c95b7f6-20230908003326"
-  resolved "https://registry.yarnpkg.com/@thirdweb-dev/wallets/-/wallets-0.0.0-dev-c95b7f6-20230908003326.tgz#6e71620ce53731e511e3264612d41428a0978558"
-  integrity sha512-emOnsmA0qLj+OC5iVVlrx/rC670aM1yX4KzsEW77RZyMIl4H6lWI+WciaVAgplAzNwxUzgRST1bGhwv0N1sPSw==
+"@thirdweb-dev/wallets@0.0.0-dev-fc5e5bd-20230908084954":
+  version "0.0.0-dev-fc5e5bd-20230908084954"
+  resolved "https://registry.yarnpkg.com/@thirdweb-dev/wallets/-/wallets-0.0.0-dev-fc5e5bd-20230908084954.tgz#c407172fc579a1756341e15dcaf8af80683b9890"
+  integrity sha512-jakSTuBG192h8kZzjKLoYH005GmV+V5E5QenEajKPb26cBrCJY4g8OldpTxmtGfU5d+FLkIzIoxbwKZVozQ+Ew==
   dependencies:
     "@account-abstraction/contracts" "^0.5.0"
     "@account-abstraction/sdk" "^0.5.0"
