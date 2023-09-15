@@ -74,7 +74,10 @@ export const Login: React.FC<Props> = ({
   const loginWithGoogleHeadless = async () => {
     setIsLoading(true);
     try {
-      const result = await paper?.auth.loginWithGoogle();
+      const win = window.open("", "Login", "width=500,height=600");
+      const result = await paper?.auth.loginWithGoogle({
+        windowOpened: win,
+      });
       console.log("loginWithGoogle result", result);
       onLoginSuccess();
     } catch (e) {

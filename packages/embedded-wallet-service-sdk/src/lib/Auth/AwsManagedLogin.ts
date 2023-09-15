@@ -35,8 +35,13 @@ export class AwsManagedLogin extends AbstractLogin<
     return result;
   }
 
-  override async loginWithGoogle(): Promise<AuthLoginReturnType> {
-    const win = window.open("", "Login", "width=350, height=500");
+  override async loginWithGoogle(args?: {
+    windowOpened?: Window | null;
+  }): Promise<AuthLoginReturnType> {
+    let win = args?.windowOpened;
+    if (!win) {
+      win = window.open("", "Login", "width=350, height=500");
+    }
     if (!win) {
       throw new Error("Something went wrong opening pop-up");
     }
@@ -67,6 +72,9 @@ export class AwsManagedLogin extends AbstractLogin<
             error?: string;
           }>,
         ) => {
+          console.log("event", event);
+          console.log("event.origin", event.origin);
+          console.log("getPaperOriginUrl()", getPaperOriginUrl());
           if (event.origin !== getPaperOriginUrl()) {
             return;
           }
@@ -75,6 +83,7 @@ export class AwsManagedLogin extends AbstractLogin<
             return;
           }
 
+          console.log("event.data", event.data);
           switch (event.data.eventType) {
             case "userLoginSuccess": {
               window.removeEventListener("message", messageListener);
@@ -85,14 +94,15 @@ export class AwsManagedLogin extends AbstractLogin<
               }
               return;
             }
-            case "userLoginFailure": {
+            case "userLoginFailed": {
               window.removeEventListener("message", messageListener);
               clearInterval(pollTimer);
-              win?.close();
+              // win?.close();
               reject(new Error(event.data.error));
               break;
             }
             case "injectDeveloperClientId": {
+              console.log("this.clientId", this.clientId);
               win?.postMessage(
                 {
                   eventType: "injectDeveloperClientIdResult",
