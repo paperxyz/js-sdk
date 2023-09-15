@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.1
+
+### Patch Changes
+
+- c33c406: feat(ews): spped up headless google auth
+
 ## 1.2.0
 
 ### Minor Changes
