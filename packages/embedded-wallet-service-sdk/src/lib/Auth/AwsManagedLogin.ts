@@ -89,12 +89,12 @@ export class AwsManagedLogin extends AbstractLogin<
               if (event.data.authResult) {
                 resolve(event.data.authResult);
               }
-              return;
+              break;
             }
             case "userLoginFailed": {
               window.removeEventListener("message", messageListener);
               clearInterval(pollTimer);
-              // win?.close();
+              win?.close();
               reject(new Error(event.data.error));
               break;
             }
@@ -106,6 +106,7 @@ export class AwsManagedLogin extends AbstractLogin<
                 },
                 getPaperOriginUrl(),
               );
+              break;
             }
           }
         };
