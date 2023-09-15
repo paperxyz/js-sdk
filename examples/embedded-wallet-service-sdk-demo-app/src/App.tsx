@@ -38,12 +38,12 @@ function App() {
   useEffect(() => {
     const paper = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
-      chain: "Goerli",
+      chain: "Mumbai",
     });
     setPaper(paper);
     const paperManaged = new PaperEmbeddedWalletSdk({
       clientId: process.env.REACT_APP_PAPER_EMBEDDED_WALLET_CLIENT_ID!,
-      chain: "Goerli",
+      chain: "Mumbai",
       advancedOptions   : {
         recoveryShareManagement: RecoveryShareManagement.AWS_MANAGED,
       },
@@ -111,7 +111,7 @@ function App() {
   return (
     <SimpleGrid columns={2}>
       <GridItem colSpan={2} bg="blue.500" h={12}>
-        <Flex w="full" h="full" align="center" justify="center" color="white">
+        <Flex w="full" h="full" align="center" justify="center" color="black">
           <Text fontSize="xl">
             For more information,{" "}
             <Link
