@@ -160,5 +160,3 @@ export class AwsManagedLogin extends AbstractLogin<
     return this.postLogin(result);
   }
 }
-
-// https://auth.withpaper.com/oauth/authorize?response_type=code&identity_provider=Google&redirect_uri=https%3A%2F%2Fwithpaper.com%2Fsdk%2F2022-08-12%2Fembedded-wallet%2Fauth%2Fheadless-google-login-managed&client_id=2e02ha2ce6du13ldk8pai4h3d0
