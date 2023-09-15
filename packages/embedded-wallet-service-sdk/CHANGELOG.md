@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.0
+
+### Minor Changes
+
+- 6393832: feat(embedded-wallet-service-sdk): add headless google oauth flow for AWS_MANAGED auth flow
+
 ## 1.1.3
 
 ### Patch Changes

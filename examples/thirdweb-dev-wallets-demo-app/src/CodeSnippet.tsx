@@ -7,39 +7,30 @@ export const CodeSnippet = ({ userDetails }: { userDetails: GetUser }) => {
   let codeSnippet: string = "";
   if (userDetails.status === UserStatus.LOGGED_OUT) {
     codeSnippet = `
-const Paper = new PaperEmbeddedWalletSdk({
+const embeddedWallet = new EmbeddedWalletSdk({
     clientId: "YOUR_CLIENT_ID",
     chain: "Mumbai"
 })
 
 // logging in via the Paper modal
-const result = await Paper.auth.loginWithPaperModal()
+const result = await embeddedWallet.auth.loginWithThirdwebModal()
 
 // logging in via email OTP only
-const result = await Paper.auth.loginWithPaperEmailOtp({
+const result = await embeddedWallet.auth.loginWithThirdwebEmailOtp({
   email: "you@example.com"
 })`;
   } else {
     codeSnippet = `
-const Paper = new PaperEmbeddedWalletSdk({
+const embeddedWallet = new EmbeddedWalletSdk({
     clientId: "YOUR_CLIENT_ID",
     chain: "Goerli"
 })
-const user = await Paper.getUser();
+const user = await embeddedWallet.getUser();
 if (user.status !== UserStatus.LOGGED_OUT) {
-    const userPaperWallet = user.wallet;
+    const userThirdwebWallet = user.wallet;
     
-    // send gasless transactions to claim an NFT on Goerli
-    // Note: You need to top up Sponsored fees on the developer dashboard first
-    const { transactionHash } = await userPaperWallet.gasless.callContract({
-        contractAddress: "0xb2369209b4eb1e76a43fAd914B1d29f6508c8aae",
-        methodArgs: [user.walletAddress, 1, 0],
-        methodInterface:
-          "function claimTo(address _to, uint256 _quantity, uint256 _tokenId) external",
-      });
-
     // do native web3 ethers.js stuff
-    const ethersJsSigner = await userPaperWallet.getEthersJsSigner()
+    const ethersJsSigner = await userThirdwebWallet.getEthersJsSigner()
     ethersJsSigner.sendTransaction({ ... })
 }`;
   }
@@ -47,7 +38,7 @@ if (user.status !== UserStatus.LOGGED_OUT) {
   return (
     <>
       <Text fontWeight="bold" my={2}>
-        Paper related code snippet:
+        thirrdweb EmbeddedWallet related code snippet:
       </Text>
       <SyntaxHighlighter language="typescript" style={tomorrow}>
         {codeSnippet}
