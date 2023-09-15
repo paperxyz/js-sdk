@@ -9,9 +9,9 @@ export enum RecoveryShareManagement {
   AWS_MANAGED = "AWS_MANAGED",
 }
 
-export type AdvancedOptions<T extends RecoveryShareManagement > = {
+export type AdvancedOptions<T extends RecoveryShareManagement> = {
   // This is a hack to allow us to assign default value to recoveryShareManagement
-  recoveryShareManagement: RecoveryShareManagement | T
+  recoveryShareManagement: RecoveryShareManagement | T;
 };
 
 export enum AuthProvider {
@@ -25,6 +25,10 @@ export enum AuthProvider {
 
 export type GetSocialLoginClientIdReturnType = {
   clientId: string;
+};
+
+export type GetHeadlessLoginLinkReturnType = {
+  loginLink: string;
 };
 
 // TODO: Clean up tech debt of random type Objects

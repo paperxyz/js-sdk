@@ -1,8 +1,8 @@
 import { getPaperOriginUrl } from "@paperxyz/sdk-common-utilities";
-import { HEADLESS_GOOGLE_OAUTH_ROUTE } from "../../constants/settings";
 import type {
   AuthAndWalletRpcReturnType,
   AuthLoginReturnType,
+  GetHeadlessLoginLinkReturnType,
 } from "../../interfaces/Auth";
 import { RecoveryShareManagement } from "../../interfaces/Auth";
 import { AbstractLogin } from "./AbstractLogin";
@@ -25,12 +25,26 @@ export class AwsManagedLogin extends AbstractLogin<
     return this.postLogin(result);
   }
 
+  private async getGoogleLoginUrl(): Promise<GetHeadlessLoginLinkReturnType> {
+    const result = await this.LoginQuerier.call<GetHeadlessLoginLinkReturnType>(
+      {
+        procedureName: "getHeadlessGoogleLoginLink",
+        params: undefined,
+      },
+    );
+    return result;
+  }
+
   override async loginWithGoogle(): Promise<AuthLoginReturnType> {
+    const win = window.open("", "Login", "width=350, height=500");
+    if (!win) {
+      throw new Error("Something went wrong opening pop-up");
+    }
     await this.preLogin();
-    const googleOauthUrl = `${getPaperOriginUrl()}${HEADLESS_GOOGLE_OAUTH_ROUTE}?developerClientId=${
-      this.clientId
-    }`;
-    const win = window.open(googleOauthUrl, "Login", "width=350, height=500");
+    // fetch the url to open the login window from iframe
+    const { loginLink } = await this.getGoogleLoginUrl();
+
+    win.location.href = loginLink;
 
     // listen to result from the login window
     return new Promise<AuthLoginReturnType>((resolve, reject) => {
@@ -59,11 +73,11 @@ export class AwsManagedLogin extends AbstractLogin<
           reject(new Error("Invalid event data"));
           return;
         }
-        window.removeEventListener("message", messageListener);
-        clearInterval(pollTimer);
 
         switch (event.data.eventType) {
           case "userLoginSuccess": {
+            window.removeEventListener("message", messageListener);
+            clearInterval(pollTimer);
             win?.close();
             if (event.data.authResult) {
               resolve(event.data.authResult);
@@ -71,9 +85,20 @@ export class AwsManagedLogin extends AbstractLogin<
             break;
           }
           case "userLoginFailure": {
+            window.removeEventListener("message", messageListener);
+            clearInterval(pollTimer);
             win?.close();
             reject(new Error(event.data.error));
             break;
+          }
+          case "injectDeveloperClientId": {
+            win?.postMessage(
+              {
+                eventType: "injectDeveloperClientIdResult",
+                developerClientId: this.clientId,
+              },
+              getPaperOriginUrl(),
+            );
           }
         }
       };
@@ -121,3 +146,5 @@ export class AwsManagedLogin extends AbstractLogin<
     return this.postLogin(result);
   }
 }
+
+// https://auth.withpaper.com/oauth/authorize?response_type=code&identity_provider=Google&redirect_uri=https%3A%2F%2Fwithpaper.com%2Fsdk%2F2022-08-12%2Fembedded-wallet%2Fauth%2Fheadless-google-login-managed&client_id=2e02ha2ce6du13ldk8pai4h3d0

@@ -30,6 +30,8 @@ type LoginQuerierTypes = {
         otp: string;
         recoveryShareManagement: RecoveryShareManagement;
       };
+  injectDeveloperClientId: void;
+  getHeadlessGoogleLoginLink: void;
   loginWithGoogle: void;
 };
 
