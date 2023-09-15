@@ -61,6 +61,7 @@ export class AwsManagedLogin extends AbstractLogin<
           }
           if (win.closed) {
             clearInterval(pollTimer);
+            window.removeEventListener("message", messageListener);
             reject(new Error("User closed login window"));
           }
         }, 1000);
@@ -72,9 +73,6 @@ export class AwsManagedLogin extends AbstractLogin<
             error?: string;
           }>,
         ) => {
-          console.log("event", event);
-          console.log("event.origin", event.origin);
-          console.log("getPaperOriginUrl()", getPaperOriginUrl());
           if (event.origin !== getPaperOriginUrl()) {
             return;
           }
@@ -83,7 +81,6 @@ export class AwsManagedLogin extends AbstractLogin<
             return;
           }
 
-          console.log("event.data", event.data);
           switch (event.data.eventType) {
             case "userLoginSuccess": {
               window.removeEventListener("message", messageListener);
@@ -102,7 +99,6 @@ export class AwsManagedLogin extends AbstractLogin<
               break;
             }
             case "injectDeveloperClientId": {
-              console.log("this.clientId", this.clientId);
               win?.postMessage(
                 {
                   eventType: "injectDeveloperClientIdResult",
