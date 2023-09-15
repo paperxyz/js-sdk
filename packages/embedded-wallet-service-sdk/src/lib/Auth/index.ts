@@ -233,12 +233,16 @@ export class Auth<
     return this.userManagedLogin.loginWithPaperEmailOtp(args);
   }
 
-  async loginWithGoogle(): Promise<AuthLoginReturnType> {
+  async loginWithGoogle(
+    args?: T extends RecoveryShareManagement.AWS_MANAGED
+      ? Parameters<AwsManagedLogin["loginWithGoogle"]>[0]
+      : Parameters<UserManagedLogin["loginWithGoogle"]>[0],
+  ): Promise<AuthLoginReturnType> {
     if (
       this.advancedOptions.recoveryShareManagement ===
       RecoveryShareManagement.AWS_MANAGED
     ) {
-      return this.awsManagedLogin.loginWithGoogle();
+      return this.awsManagedLogin.loginWithGoogle(args);
     }
     return this.userManagedLogin.loginWithGoogle();
   }

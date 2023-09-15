@@ -30,6 +30,8 @@ type LoginQuerierTypes = {
         otp: string;
         recoveryShareManagement: RecoveryShareManagement;
       };
+  injectDeveloperClientId: void;
+  getHeadlessGoogleLoginLink: void;
   loginWithGoogle: void;
 };
 
@@ -75,7 +77,9 @@ export abstract class AbstractLogin<
     args: EMAIL_MODAL,
   ): Promise<AuthLoginReturnType>;
 
-  abstract loginWithGoogle(): Promise<AuthLoginReturnType>;
+  abstract loginWithGoogle(args?: {
+    windowOpened?: Window | null;
+  }): Promise<AuthLoginReturnType>;
 
   async sendPaperEmailLoginOtp({
     email,
