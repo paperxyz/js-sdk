@@ -23,7 +23,7 @@ const result = await embeddedWallet.auth.loginWithThirdwebEmailOtp({
     codeSnippet = `
 const embeddedWallet = new EmbeddedWalletSdk({
     clientId: "YOUR_CLIENT_ID",
-    chain: "Goerli"
+    chain: "Mumbai"
 })
 const user = await embeddedWallet.getUser();
 if (user.status !== UserStatus.LOGGED_OUT) {

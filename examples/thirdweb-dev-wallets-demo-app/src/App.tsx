@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 
 import {
-  GetUser,
   EmbeddedWalletSdk,
+  GetUser,
   UserStatus,
 } from "@thirdweb-dev/wallets";
 import { useCallback, useEffect, useState } from "react";
@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     const twWalletSdk = new EmbeddedWalletSdk({
       clientId: process.env.REACT_APP_THIRDWEB_CLIENT_ID!,
-      chain: "Goerli",
+      chain: "Mumbai",
     });
     setThirdwebWallet(twWalletSdk);
   }, []);
