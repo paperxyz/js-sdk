@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/embedded-wallet-service-sdk",
   "description": "Embedded Wallets SDK by Paper",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
