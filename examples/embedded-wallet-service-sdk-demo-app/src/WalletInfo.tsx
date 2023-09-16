@@ -34,7 +34,7 @@ export const WalletInfo: React.FC<Props> = ({ email, walletAddress }) => {
             <CardBody>
               <strong>Wallet address: </strong>
               <Link
-              color="black"
+                color="black"
                 isExternal
                 textDecoration="underline"
                 href={`https://mumbai.polygonscan.com/address/${walletAddress}`}
