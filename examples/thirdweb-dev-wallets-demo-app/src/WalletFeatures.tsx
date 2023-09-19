@@ -407,30 +407,3 @@ const Section: React.FC<SectionProps> = ({ title, children }) => (
     {children}
   </Stack>
 );
-
-interface CodeDisplayProps {
-  value?: string;
-}
-
-const CodeDisplay: React.FC<CodeDisplayProps> = ({ value }) => (
-  <Code borderRadius={8} p={4} width="full">
-    {value || "No data available"}
-  </Code>
-);
-
-interface LinkDisplayProps {
-  value?: string;
-  urlBase: string;
-}
-
-const LinkDisplay: React.FC<LinkDisplayProps> = ({ value, urlBase }) => (
-  <Code borderRadius={8} p={4} width="full">
-    {value ? (
-      <Link isExternal textDecoration="underline" href={`${urlBase}${value}`}>
-        {value}
-      </Link>
-    ) : (
-      "No data available"
-    )}
-  </Code>
-);
