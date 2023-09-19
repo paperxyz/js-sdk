@@ -17,10 +17,10 @@ export const WalletInfo: React.FC<Props> = ({ email, walletAddress }) => {
   return (
     <Card bg="white" borderRadius={8}>
       <CardBody>
-        <Heading size="md">Authenticated and Wallet ready!</Heading>
+        <Heading size="md" color="black">Authenticated and Wallet ready!</Heading>
         <Divider my={4} />
         <Stack spacing={4}>
-          <Text>
+          <Text maxW={400} color="black">
             You have successfully authenticated and your wallet is ready to use
             on this device.
           </Text>
@@ -34,6 +34,7 @@ export const WalletInfo: React.FC<Props> = ({ email, walletAddress }) => {
             <CardBody>
               <strong>Wallet address: </strong>
               <Link
+                color="black"
                 isExternal
                 textDecoration="underline"
                 href={`https://mumbai.polygonscan.com/address/${walletAddress}`}
