@@ -5,21 +5,21 @@ import {
   Code,
   Divider,
   Heading,
+  Input,
   Link,
-  Stack,
-  Text,
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
+  ModalOverlay,
+  Stack,
+  Text,
   useDisclosure,
-  Input
 } from "@chakra-ui/react";
 import { InitializedUser } from "@thirdweb-dev/wallets";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   user: InitializedUser | undefined;
@@ -41,11 +41,10 @@ const PLACEHOLDER = "The result will appear here";
 export const WalletFeatures: React.FC<Props> = ({ user }) => {
   const [loading, setLoading] = useState<Features | null>(null);
   const [result, setResult] = useState<any>(null);
-  const [recipient, setRecipient] = useState('');
-  const [amount, setAmount] = useState('');
-  const [txStatus, setTxStatus] = useState('');
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
+  const [txStatus, setTxStatus] = useState("");
   const [balance, setBalance] = useState<string | null>(null);
-  const [typedDataDisplay, setTypedDataDisplay] = useState<any>(null);
   const wallet = user?.wallet;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onResult = (result: any) => {
@@ -65,7 +64,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
     console.log("address", address);
   };
 
-  const fetchBalance = async () => {
+  const fetchBalance = useCallback(async () => {
     setLoading(Features.FETCH_BALANCE);
     try {
       const signer = await wallet?.getEthersJsSigner();
@@ -77,10 +76,10 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
       const balanceWei = await signer.getBalance();
 
       // Let's add some debugging here:
-      console.log('Fetched balance in Wei:', balanceWei.toString());
+      console.log("Fetched balance in Wei:", balanceWei.toString());
 
       const balanceEth = ethers.utils.formatEther(balanceWei);
-      console.log('Converted balance in ETH:', balanceEth);
+      console.log("Converted balance in ETH:", balanceEth);
 
       setBalance(balanceEth);
     } catch (error) {
@@ -92,14 +91,13 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
     } finally {
       setLoading(null);
     }
-  };
-
+  }, [wallet]);
 
   useEffect(() => {
     if (user?.wallet) {
       fetchBalance();
     }
-  }, [user?.wallet]);
+  }, [fetchBalance, user?.wallet]);
 
   const signMessage = async () => {
     setLoading(Features.SIGN_MESSAGE);
@@ -149,21 +147,47 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
   const renderTypedDataDisplay = (data: typeof dataToSign) => {
     return (
       <Stack spacing={3}>
-        <Text mt={2} fontSize="lg" color="black"><strong>Domain:</strong></Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Version:</strong> {data.domain.version}</Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Name:</strong> {data.domain.name}</Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Chain Id:</strong> {data.domain.chainId}</Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Domain:</strong>
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Version:</strong> {data.domain.version}
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Name:</strong> {data.domain.name}
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Chain Id:</strong> {data.domain.chainId}
+        </Text>
         <Divider />
-        <Text mt={2} fontSize="lg" color="black"><strong>Types:</strong></Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Person:</strong> Name (String), Wallet (Address)</Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Mail:</strong> From (Person), To (Person), Contents (String)</Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Types:</strong>
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Person:</strong> Name (String), Wallet (Address)
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Mail:</strong> From (Person), To (Person), Contents (String)
+        </Text>
         <Divider />
-        <Text mt={2} fontSize="lg" color="black"><strong>Message:</strong></Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>From:</strong> {data.message.from.name}</Text>
-        <Text mt={2} fontSize="sm" color="black">{data.message.from.wallet}</Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>To:</strong> {data.message.to.name}</Text>
-        <Text mt={2} fontSize="sm" color="black">{data.message.to.wallet}</Text>
-        <Text mt={2} fontSize="lg" color="black"><strong>Contents:</strong> {data.message.contents}</Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Message:</strong>
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>From:</strong> {data.message.from.name}
+        </Text>
+        <Text mt={2} fontSize="sm" color="black">
+          {data.message.from.wallet}
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>To:</strong> {data.message.to.name}
+        </Text>
+        <Text mt={2} fontSize="sm" color="black">
+          {data.message.to.wallet}
+        </Text>
+        <Text mt={2} fontSize="lg" color="black">
+          <strong>Contents:</strong> {data.message.contents}
+        </Text>
       </Stack>
     );
   };
@@ -171,19 +195,20 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
   const signTypedDataV4 = async () => {
     setLoading(Features.SIGN_TYPED_DATA);
 
-    setTypedDataDisplay(JSON.stringify(dataToSign, null, 2));
-
     const signer = await wallet?.getEthersJsSigner({
       rpcEndpoint: "https://mumbai.rpc.thirdweb.com",
     });
 
-    const signedTypedData = await signer?._signTypedData(dataToSign.domain, dataToSign.types, dataToSign.message);
+    const signedTypedData = await signer?._signTypedData(
+      dataToSign.domain,
+      dataToSign.types,
+      dataToSign.message,
+    );
     setLoading(null);
     onResult({
       signedTypedData,
     });
   };
-
 
   const sendNativeToken = async () => {
     setLoading(Features.SEND_NATIVE_TOKEN);
@@ -195,14 +220,14 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
 
       const tx = await signer.sendTransaction({
         to: recipient,
-        value: ethers.utils.parseEther(amount)
+        value: ethers.utils.parseEther(amount),
       });
 
       setTxStatus(`Transaction hash: ${tx.hash}`);
       await tx.wait();
       setTxStatus(`Transaction ${tx.hash} has been confirmed`);
     } catch (error) {
-      if (typeof error === 'string') {
+      if (typeof error === "string") {
         console.error("Error sending native token:", error);
         setTxStatus(`Error: ${error}`);
       } else if (error instanceof Error) {
@@ -216,7 +241,6 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
       setLoading(null);
     }
   };
-
 
   return (
     <Card bg="white" borderRadius={8}>
@@ -232,7 +256,9 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
             >
               Fetch Balance
             </Button>
-            <Text fontSize="xl" color="black">{balance ? `${balance} MATIC` : "Balance not fetched"}</Text>
+            <Text fontSize="xl" color="black">
+              {balance ? `${balance} MATIC` : "Balance not fetched"}
+            </Text>
           </Section>
 
           <Section title="Wallet Address">
@@ -285,7 +311,9 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
               >
                 Send
               </Button>
-              <Text mt={2} fontSize="md" color="black">{txStatus}</Text>
+              <Text mt={2} fontSize="md" color="black">
+                {txStatus}
+              </Text>
             </Stack>
           </Section>
 
@@ -318,14 +346,9 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
               >
                 Sign Type Data (EIP712)
               </Button>
-              {/* <Code borderRadius={8} p={4} width="full" overflow="auto" maxHeight="300px">
-                {typedDataDisplay || (
-                  <Text color="black" fontStyle="italic" size="sm">
-                    {PLACEHOLDER}
-                  </Text>
-                )}
-              </Code> */}
-              <Text mt={2} fontSize="md" color="black">Signed Result:</Text>
+              <Text mt={2} fontSize="md" color="black">
+                Signed Result:
+              </Text>
               <Code borderRadius={8} p={4} width="full">
                 {result?.signedTypedData || (
                   <Text color="black" fontStyle="italic" size="sm">
@@ -336,20 +359,8 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
             </Stack>
           </Section>
 
-          {/* <Stack title="Call Gasless Contract Method">
-            <Button
-              onClick={callContractGasless}
-              colorScheme="blue"
-              isLoading={loading === Features.CALL_GASLESS_CONTRACT}
-            >
-              Call Gasless Contract
-            </Button>
-            <LinkDisplay value={result?.gaslessTransactionHash} urlBase="https://mumbai.polygonscan.com/tx/" />
-          </Stack> */}
-
           <Section title="Export Private Key">
             <Stack>
-
               <Button onClick={onOpen} colorScheme="purple" mt={4}>
                 Export Account
               </Button>
@@ -360,7 +371,8 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
                   <ModalCloseButton />
                   <ModalBody>
                     <iframe
-                      src='https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=8e0e99fe-933e-4ff8-a2f7-5c7439196c15'
+                      title="export private key"
+                      src="https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=8e0e99fe-933e-4ff8-a2f7-5c7439196c15"
                       width="525px"
                       height="475px"
                     />
@@ -381,8 +393,16 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <Stack spacing={4} borderWidth="1px" borderRadius="8px" p={4} borderColor="gray.300">
-    <Heading size="md" color="black">{title}</Heading>
+  <Stack
+    spacing={4}
+    borderWidth="1px"
+    borderRadius="8px"
+    p={4}
+    borderColor="gray.300"
+  >
+    <Heading size="md" color="black">
+      {title}
+    </Heading>
     <Divider borderColor="gray.300" />
     {children}
   </Stack>
@@ -406,11 +426,7 @@ interface LinkDisplayProps {
 const LinkDisplay: React.FC<LinkDisplayProps> = ({ value, urlBase }) => (
   <Code borderRadius={8} p={4} width="full">
     {value ? (
-      <Link
-        isExternal
-        textDecoration="underline"
-        href={`${urlBase}${value}`}
-      >
+      <Link isExternal textDecoration="underline" href={`${urlBase}${value}`}>
         {value}
       </Link>
     ) : (
