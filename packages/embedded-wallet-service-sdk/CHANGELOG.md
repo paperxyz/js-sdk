@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.2
+
+### Patch Changes
+
+- f0cbbe1: chore(embedded-wallet-service-sdk): update `loginWithGoogle` on for AWS login to be on feature parity with EmbeddedWalletSdk
+
 ## 1.2.1
 
 ### Patch Changes
