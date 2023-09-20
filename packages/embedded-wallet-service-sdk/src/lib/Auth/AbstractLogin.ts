@@ -78,7 +78,8 @@ export abstract class AbstractLogin<
   ): Promise<AuthLoginReturnType>;
 
   abstract loginWithGoogle(args?: {
-    windowOpened?: Window | null;
+    openedWindow?: Window | null;
+    closeOpenedWindow?: (openedWindow: Window) => void;
   }): Promise<AuthLoginReturnType>;
 
   async sendPaperEmailLoginOtp({
