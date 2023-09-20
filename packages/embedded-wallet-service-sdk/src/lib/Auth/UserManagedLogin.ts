@@ -27,7 +27,8 @@ export class UserManagedLogin extends AbstractLogin<
   }
 
   override async loginWithGoogle(args?: {
-    windowOpened?: Window | null;
+    openedWindow?: Window | null;
+    closeOpenedWindow?: (openedWindow: Window) => void;
   }): Promise<AuthLoginReturnType> {
     throw new Error(
       "loginWithGoogle is not yet supported in the RecoveryShareManagement.USER_MANAGED flow. Please use RecoveryShareManagement.AWS_MANAGED instead.",

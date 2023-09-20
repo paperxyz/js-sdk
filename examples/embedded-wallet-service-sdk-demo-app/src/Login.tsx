@@ -76,7 +76,8 @@ export const Login: React.FC<Props> = ({
     try {
       const win = window.open("", "Login", "width=500,height=600");
       const result = await paper?.auth.loginWithGoogle({
-        windowOpened: win,
+        openedWindow: win,
+        closeOpenedWindow: (openedWindow) => openedWindow.close(),
       });
       console.log("loginWithGoogle result", result);
       onLoginSuccess();
