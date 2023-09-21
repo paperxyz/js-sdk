@@ -11383,17 +11383,6 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.3.tgz#ff6ee919fc2a1abaf72b22814bfb72ed129ec137"
   integrity sha512-tDBopO1c98Yk7Cv/PZlHqrvtVjlgK5R4J6jxLwoO7qxK4xqOiZG+zSkIvGFpPZ0ikc3QOED3plgdqjgNTnBc7g==
 
-"@paperxyz/embedded-wallet-service-sdk@0.0.0-winston-speed-up-google-auth-login-20230915180232":
-  version "0.0.0-winston-speed-up-google-auth-login-20230915180232"
-  resolved "https://registry.yarnpkg.com/@paperxyz/embedded-wallet-service-sdk/-/embedded-wallet-service-sdk-0.0.0-winston-speed-up-google-auth-login-20230915180232.tgz#1914c1e2fb4b809a4a2b4e36e41ede53250b9418"
-  integrity sha512-ARwRHkQdefrNnyRbG6hejjLeKX+583BU/j7srX7dmd7x8iqc+KUNs6dTLVzdm57h/ZAYAuCo30RgYA2DxSLlyA==
-  dependencies:
-    "@ethersproject/abstract-signer" "^5.7.0"
-    "@ethersproject/bytes" "^5.7.0"
-    "@ethersproject/properties" "^5.7.0"
-    "@ethersproject/providers" "^5.7.2"
-    "@paperxyz/sdk-common-utilities" "*"
-
 "@paperxyz/sdk-common-utilities@0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.5.tgz#c94688fc82e7b78c64925d0c3f0622df62cbce06"
@@ -34236,7 +34225,7 @@ stream-browserify@^2.0.1:
     inherits "~2.0.1"
     readable-stream "^2.0.2"
 
-stream-browserify@^3.0.0, "stream@npm:stream-browserify@3.0.0":
+stream-browserify@^3.0.0:
   name stream
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-3.0.0.tgz#22b0a2850cdf6503e73085da1fc7b7d0c2122f2f"
