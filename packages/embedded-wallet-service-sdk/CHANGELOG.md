@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.3
+
+### Patch Changes
+
+- 1f79975: chore(embedded-wallet-service-sdk): update loginWithGoogle to route through preLogin
+
 ## 1.2.2
 
 ### Patch Changes
