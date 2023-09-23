@@ -87,12 +87,19 @@ export abstract class AbstractLogin<
     recoveryShareManagement,
   }: LoginQuerierTypes["sendPaperEmailLoginOtp"]): Promise<SendEmailOtpReturnType> {
     await this.preLogin();
-    const { isNewUser, isNewDevice } =
-      await this.LoginQuerier.call<SendEmailOtpReturnType>({
-        procedureName: "sendPaperEmailLoginOtp",
-        params: { email, recoveryShareManagement },
-      });
-    return { isNewUser, isNewDevice };
+    const {
+      isNewUser,
+      isNewDevice,
+      recoveryShareManagement: userRecoveryShareManagement,
+    } = await this.LoginQuerier.call<SendEmailOtpReturnType>({
+      procedureName: "sendPaperEmailLoginOtp",
+      params: { email, recoveryShareManagement },
+    });
+    return {
+      isNewUser,
+      isNewDevice,
+      recoveryShareManagement: userRecoveryShareManagement,
+    };
   }
 
   abstract verifyPaperEmailLoginOtp(
