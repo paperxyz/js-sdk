@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.4
+
+### Patch Changes
+
+- c46e6d7: fix(embedded-wallet-service-sdk): update headless email flow to return information about user's login type to enable migration from USER_MANAGED to AWS_MANAGED
+
 ## 1.2.3
 
 ### Patch Changes
