@@ -5,22 +5,22 @@ import {
   lightTheme,
 } from "@rainbow-me/rainbowkit";
 
+import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
 import {
   coinbaseWallet,
   metaMaskWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import React from "react";
-import { WagmiConfig, configureChains, createClient } from "wagmi";
+import type { Chain } from 'wagmi';
+import { WagmiConfig, configureChains, createConfig, mainnet } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import type { PaperEmbeddedWalletProviderProps } from "../interfaces/provider";
 import { PaperEmbeddedWalletRainbowKitWallet } from "./wallet";
-import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
-import type { Chain } from 'wagmi';
 
 export const PaperEmbeddedWalletProvider = ({
   appName,
-  providers = [publicProvider()],
+  projectId,
   otherWallets,
   modalOptions,
   walletOptions,
@@ -34,9 +34,13 @@ export const PaperEmbeddedWalletProvider = ({
     selectedChains = supportedChains.map((chain: InternalChain) => getChain(chain));
   }
 
-  const { chains, provider, webSocketProvider } = configureChains(
-    selectedChains,
-    providers,
+  const {
+    chains,
+    publicClient,
+    webSocketPublicClient
+  } = configureChains(
+    [mainnet],
+    [publicProvider()],
   );
 
   // Apply default options.
@@ -56,22 +60,22 @@ export const PaperEmbeddedWalletProvider = ({
     {
       groupName: "Log In With Wallet",
       wallets: otherWallets ?? [
-        metaMaskWallet({ chains }),
-        walletConnectWallet({ chains }),
+        metaMaskWallet({ chains, projectId }),
+        walletConnectWallet({ chains, projectId }),
         coinbaseWallet({ appName, chains }),
       ],
     },
   ]);
 
-  const wagmiClient = createClient({
+  const config = createConfig({
     autoConnect: true,
+    publicClient,
+    webSocketPublicClient,
     connectors,
-    provider,
-    webSocketProvider,
   });
 
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={config}>
       <RainbowKitProvider chains={chains} {...providerOptions}>
         {/* Lower the z-index of RainbowKit's modal in favor of Paper's modal. */}
         <style>{`

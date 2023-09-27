@@ -9,9 +9,9 @@ import {
   UserStatus,
 } from "@paperxyz/embedded-wallet-service-sdk";
 import type { Chain as InternalChain } from "@paperxyz/sdk-common-utilities";
-import type { Signer, providers } from "ethers";
-import type { Address, Chain, ConnectorData } from "wagmi";
-import { Connector, UserRejectedRequestError } from "wagmi";
+import { UserRejectedRequestError, createWalletClient, custom, hexToString } from "viem";
+import type { Address, Chain, ConnectorData, WalletClient } from "wagmi";
+import { Connector } from "wagmi";
 import {
   arbitrum,
   arbitrumGoerli,
@@ -47,7 +47,7 @@ export type PaperEmbeddedWalletWagmiConnectorProps<
  */
 export class PaperEmbeddedWalletWagmiConnector<
   T extends RecoveryShareManagement = RecoveryShareManagement.USER_MANAGED,
-> extends Connector<providers.Provider, PaperConstructorType<T>> {
+> extends Connector</* TODO: [Liarco] Replace with specific type */any, PaperConstructorType<T>> {
   readonly ready = !IS_SERVER;
   readonly id = "paper-embedded-wallet";
   readonly name = "Paper Embedded Wallet";
@@ -55,7 +55,7 @@ export class PaperEmbeddedWalletWagmiConnector<
 
   #sdk?: PaperEmbeddedWalletSdk<T>;
   #paperOptions: PaperConstructorType<T>;
-  #provider?: providers.Provider;
+  #provider?: /* TODO: [Liarco] Replace with specific type */any;
   #user: InitializedUser | null;
   #rpcEndpoint?: Networkish;
 
@@ -108,7 +108,7 @@ export class PaperEmbeddedWalletWagmiConnector<
 
   async getProvider(_config?: {
     chainId?: number;
-  }): Promise<providers.Provider> {
+  }): Promise</* TODO: [Liarco] Replace with specific type */any> {
     if (!this.#provider) {
       const signer = await this.getSigner();
       if (!signer.provider) {
@@ -119,7 +119,49 @@ export class PaperEmbeddedWalletWagmiConnector<
     return this.#provider;
   }
 
-  async getSigner(): Promise<Signer> {
+  async getWalletClient({
+    chainId,
+  }: { chainId: number }): Promise<WalletClient> {
+    const [provider, account, signer] = await Promise.all([
+      this.getProvider(),
+      this.getAccount(),
+      this.getSigner(),
+    ]);
+
+    const chain = this.chains.find((x) => x.id === chainId);
+
+    if (!provider) {
+      throw new Error('provider is required.');
+    }
+
+    if (!chain) {
+      throw new Error('chain is required.');
+    }
+
+    // Fix for missing "request" method
+    provider.request = async (args: any) => {
+      // TODO: [Liarco] this is a bit hacky but seems to work as a temporary fix...
+      if (args.method === 'personal_sign') {
+        try {
+          const signature = await signer.signMessage(hexToString(args.params[0]));
+
+          return signature;
+        } catch (e) {
+          throw new Error("Message could not be signed.");
+        }
+      }
+      
+      return await provider.send(args.method, args.params)
+    };
+
+    return createWalletClient({
+      account,
+      chain,
+      transport: custom(provider),
+    });
+  }
+
+  async getSigner(): Promise</* TODO: [Liarco] Replace with specific type */any> {
     const user = await this.getUser();
     if (!user) {
       throw new Error(`User is not logged in. Try calling "connect()" first.`);
@@ -158,7 +200,7 @@ export class PaperEmbeddedWalletWagmiConnector<
           );
         }
       } catch (e) {
-        throw new UserRejectedRequestError(e);
+        throw new UserRejectedRequestError(e as /* TODO: [Liarco] Replace with specific type */any);
       }
     }
 
@@ -170,7 +212,6 @@ export class PaperEmbeddedWalletWagmiConnector<
     const id = await this.getChainId();
     const account = await this.getAccount();
     return {
-      provider,
       chain: {
         id,
         unsupported: false,

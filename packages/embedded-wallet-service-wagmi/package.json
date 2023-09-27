@@ -45,12 +45,14 @@
     "@paperxyz/embedded-wallet-service-sdk": "*",
     "eslint-config-paperxyz": "*",
     "typescript": "^4.7.4",
-    "wagmi": "^0.12.9"
+    "viem": "^1.13.0",
+    "wagmi": "^1.4.2"
   },
   "dependencies": {},
   "peerDependencies": {
     "@paperxyz/embedded-wallet-service-sdk": "*",
-    "wagmi": "^0.12"
+    "viem": "^1.13.0",
+    "wagmi": "^1.4.2"
   },
   "publishConfig": {
     "access": "public"
