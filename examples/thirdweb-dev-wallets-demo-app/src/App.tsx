@@ -15,11 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import {
-  EmbeddedWalletSdk,
-  GetUser,
-  UserStatus,
-} from "@thirdweb-dev/wallets";
+import { EmbeddedWalletSdk, GetUser, UserStatus } from "@thirdweb-dev/wallets";
 import { useCallback, useEffect, useState } from "react";
 import { CodeSnippet } from "./CodeSnippet";
 import { Login } from "./Login";
@@ -28,12 +24,12 @@ import { WalletInfo } from "./WalletInfo";
 import { UserDetails } from "./snippets/UserDetails";
 
 function App() {
-  const [thirdwebWallet, setThirdwebWallet] =
-    useState<EmbeddedWalletSdk>();
+  const [thirdwebWallet, setThirdwebWallet] = useState<EmbeddedWalletSdk>();
 
   const [userDetails, setUserDetails] = useState<GetUser>();
 
   useEffect(() => {
+    console.log("Buffer.from(input.otp)", Buffer.from("123455"));
     const twWalletSdk = new EmbeddedWalletSdk({
       clientId: process.env.REACT_APP_THIRDWEB_CLIENT_ID!,
       chain: "Mumbai",
@@ -95,8 +91,8 @@ function App() {
   }
 
   return (
-    <SimpleGrid columns={2}>
-      <GridItem colSpan={2} bg="purple.500" h={12}>
+    <SimpleGrid columns={{ base: 1, md: 2 }}>
+      <GridItem colSpan={{ base: 1, md: 2 }} bg="purple.500" h={12}>
         <Flex w="full" h="full" align="center" justify="center" color="white">
           <Text fontSize="xl">
             For more information,{" "}

@@ -11,7 +11,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { EmbeddedWalletSdk } from "@thirdweb-dev/wallets";
+import {
+  EmbeddedWalletSdk,
+  RecoveryShareManagement,
+  SendEmailOtpReturnType,
+} from "@thirdweb-dev/wallets";
 import { useState } from "react";
 interface Props {
   thirdwebWallet: EmbeddedWalletSdk | undefined;
@@ -32,12 +36,10 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
 
   const [email, setEmail] = useState<string | null>(null);
   const [otpCode, setOtpCode] = useState<string | null>(null);
+  const [promptForRecoveryCode, setPromptForRecoveryCode] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState<string | null>(null);
   const [sendEmailOtpResult, setSendEmailOtpResult] = useState<
-    | {
-        isNewUser: boolean;
-        isNewDevice: boolean;
-      }
-    | undefined
+    SendEmailOtpReturnType | undefined
   >(undefined);
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
@@ -104,13 +106,27 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
       const result = await thirdwebWallet?.auth.verifyEmailLoginOtp({
         email: email || "",
         otp: otpCode || "",
+        recoveryCode: recoveryCode || undefined,
       });
       console.log("verifyThirdwebEmailLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
-      console.error("ERROR verifying otp", e);
-      setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
+      console.log("error while logging in headless", e);
+      if (e instanceof Error) {
+        if (e.message.includes("Your OTP code is invalid")) {
+          console.error("ERROR verifying otp", e);
+          setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
+        } else if (e.message.includes("Missing recovery code for user")) {
+          if (
+            sendEmailOtpResult?.recoveryShareManagement ===
+            RecoveryShareManagement.USER_MANAGED
+          ) {
+            setVerifyOtpErrorMessage("");
+            setPromptForRecoveryCode(true);
+          }
+        }
+      }
     }
     setIsLoading(false);
   };
@@ -169,15 +185,38 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         </Button>
 
         {/* Adding code to allow internal full headless flow */}
-        {(email?.endsWith("@thirdweb.com") ?? false) && (
-          <>
-            <Flex my={4} alignItems="center">
-              <Divider />
-              <Text mx={4}>or</Text>
-              <Divider />
-            </Flex>
-            <Stack as="form">
-              {sendEmailOtpResult ? (
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+        <Stack as="form">
+          {sendEmailOtpResult ? (
+            <>
+              {promptForRecoveryCode ? (
+                <>
+                  {" "}
+                  <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Password for your account"
+                      value={recoveryCode || ""}
+                      onChange={(e) => {
+                        setRecoveryCode(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    onClick={finishHeadlessOtpLogin}
+                    disabled={!recoveryCode}
+                    isLoading={isLoading}
+                  >
+                    Set password and create account
+                  </Button>
+                </>
+              ) : (
                 <>
                   <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
                     <Input
@@ -203,7 +242,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
                     disabled={!email || !otpCode}
                     isLoading={isLoading}
                   >
-                    verify and finish headless login
+                    verify headless login OTP
                   </Button>
                   <Button
                     onClick={loginWithThirdwebEmailOtpHeadless}
@@ -212,45 +251,45 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
                   >
                     Request New Code
                   </Button>
-                  <Button
-                    variant={"ghost"}
-                    w="fit-content"
-                    onClick={() => {
-                      setOtpCode("");
-                      setSendEmailOtpResult(undefined);
-                    }}
-                  >
-                    Back
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <FormControl as={Stack} isInvalid={!!sendOtpErrorMessage}>
-                    <Input
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email || ""}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                    />
-                    {!!sendOtpErrorMessage && (
-                      <FormErrorMessage>{sendOtpErrorMessage}</FormErrorMessage>
-                    )}
-                  </FormControl>
-                  <Button
-                    type="submit"
-                    onClick={loginWithThirdwebEmailOtpHeadless}
-                    disabled={!email}
-                    isLoading={isLoading}
-                  >
-                    send headless Email OTP
-                  </Button>
                 </>
               )}
-            </Stack>
-          </>
-        )}
+              <Button
+                variant={"ghost"}
+                w="fit-content"
+                onClick={() => {
+                  setOtpCode("");
+                  setSendEmailOtpResult(undefined);
+                }}
+              >
+                Back
+              </Button>
+            </>
+          ) : (
+            <>
+              <FormControl as={Stack} isInvalid={!!sendOtpErrorMessage}>
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email || ""}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+                {!!sendOtpErrorMessage && (
+                  <FormErrorMessage>{sendOtpErrorMessage}</FormErrorMessage>
+                )}
+              </FormControl>
+              <Button
+                type="submit"
+                onClick={loginWithThirdwebEmailOtpHeadless}
+                disabled={!email}
+                isLoading={isLoading}
+              >
+                send headless Email OTP
+              </Button>
+            </>
+          )}
+        </Stack>
       </CardBody>
     </Card>
   );
