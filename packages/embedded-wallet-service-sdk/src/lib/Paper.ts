@@ -36,6 +36,7 @@ export class PaperEmbeddedWalletSdk<
     chain,
     styles,
     advancedOptions,
+    onAuthSuccess,
   }: PaperConstructorType<T>) {
     this.clientId = clientId;
     this.querier = new EmbeddedWalletIframeCommunicator({
@@ -69,6 +70,7 @@ export class PaperEmbeddedWalletSdk<
             authCookie: authResult.storedToken.cookieString,
           },
         });
+        onAuthSuccess?.(authResult);
         return {
           user: {
             status: UserStatus.LOGGED_IN_WALLET_INITIALIZED,
