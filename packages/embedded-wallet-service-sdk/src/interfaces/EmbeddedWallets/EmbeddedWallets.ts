@@ -4,7 +4,11 @@ import type {
 } from "@paperxyz/sdk-common-utilities";
 import type { EmbeddedWallet } from "../../lib/EmbeddedWallets/EmbeddedWallet";
 import type { EmbeddedWalletIframeCommunicator } from "../../utils/iFrameCommunication/EmbeddedWalletIframeCommunicator";
-import type { AdvancedOptions, RecoveryShareManagement } from "../Auth";
+import type {
+  AdvancedOptions,
+  AuthAndWalletRpcReturnType,
+  RecoveryShareManagement,
+} from "../Auth";
 
 // Class constructor types
 // types for class constructors still a little messy right now.
@@ -13,6 +17,7 @@ export type ClientIdConstructorType = { clientId: string };
 export type PaperConstructorType<T extends RecoveryShareManagement> =
   ClientIdConstructorType & {
     chain: Chain;
+    onAuthSuccess?: (authResult: AuthAndWalletRpcReturnType) => void;
     advancedOptions?: Partial<AdvancedOptions<T>>;
     styles?: CustomizationOptionsType;
   };
