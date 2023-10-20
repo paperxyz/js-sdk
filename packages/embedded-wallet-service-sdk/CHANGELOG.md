@@ -1,5 +1,11 @@
 # @paperxyz/embedded-wallet-service-sdk
 
+## 1.2.5
+
+### Patch Changes
+
+- 71b3fb4: add auth Success callback
+
 ## 1.2.4
 
 ### Patch Changes
