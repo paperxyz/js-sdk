@@ -372,7 +372,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
                   <ModalBody>
                     <iframe
                       title="export private key"
-                      src="https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=8e0e99fe-933e-4ff8-a2f7-5c7439196c15"
+                      src={`https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=${process.env.REACT_APP_THIRDWEB_CLIENT_ID}`}
                       width="525px"
                       height="475px"
                     />
