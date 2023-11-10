@@ -12,6 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
+  AuthProvider,
   EmbeddedWalletSdk,
   RecoveryShareManagement,
   SendEmailOtpReturnType,
@@ -21,6 +22,18 @@ interface Props {
   thirdwebWallet: EmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
 }
+
+const loginOptions = [
+  {
+    authProvider: AuthProvider.GOOGLE,
+  },
+  {
+    authProvider: AuthProvider.FACEBOOK,
+  },
+  {
+    authProvider: AuthProvider.APPLE,
+  },
+];
 
 export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const loginWithThirdwebModal = async () => {
@@ -62,14 +75,16 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(false);
   };
 
-  const loginWithGoogleHeadless = async () => {
+  const loginWithOauthHeadless = async (authOption: AuthProvider) => {
     setIsLoading(true);
     try {
-      const result = await thirdwebWallet?.auth.loginWithGoogle();
-      console.log("loginWithGoogle result", result);
+      const result = await thirdwebWallet?.auth.loginWithOauth({
+        oauthProvider: authOption,
+      });
+      console.log("loginWithOauth result", result);
       onLoginSuccess();
     } catch (e) {
-      console.warn("Error logging in with Google", e);
+      console.warn(`Error logging in with Oauth ${authOption}`, e);
     }
     setIsLoading(false);
   };
@@ -176,13 +191,18 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
           <Text mx={4}>or</Text>
           <Divider />
         </Flex>
-        <Button
-          w={"full"}
-          onClick={loginWithGoogleHeadless}
-          isLoading={isLoading}
-        >
-          Login With Google Directly
-        </Button>
+        <Stack gap={5}>
+          {loginOptions.map((loginOption) => (
+            <Button
+              key={loginOption.authProvider}
+              w={"full"}
+              onClick={() => loginWithOauthHeadless(loginOption.authProvider)}
+              isLoading={isLoading}
+            >
+              Login With {loginOption.authProvider} Directly
+            </Button>
+          ))}
+        </Stack>
 
         {/* Adding code to allow internal full headless flow */}
         <Flex my={4} alignItems="center">

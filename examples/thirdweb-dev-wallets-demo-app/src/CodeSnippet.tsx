@@ -1,11 +1,11 @@
 import { Text } from "@chakra-ui/react";
-import { GetUser, UserStatus } from "@thirdweb-dev/wallets";
+import { GetUser, UserWalletStatus } from "@thirdweb-dev/wallets";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const CodeSnippet = ({ userDetails }: { userDetails: GetUser }) => {
   let codeSnippet: string = "";
-  if (userDetails.status === UserStatus.LOGGED_OUT) {
+  if (userDetails.status === UserWalletStatus.LOGGED_OUT) {
     codeSnippet = `
 const embeddedWallet = new EmbeddedWalletSdk({
     clientId: "YOUR_CLIENT_ID",
