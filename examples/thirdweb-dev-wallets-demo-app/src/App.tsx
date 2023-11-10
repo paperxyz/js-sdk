@@ -39,7 +39,7 @@ function App() {
         window.localStorage.setItem("IS_PAPER_DEV", "true");
         window.localStorage.setItem(
           "PAPER_DEV_URL",
-          "https://embedded-wallet-staging.thirdweb.com",
+          "https://embedded-wallet.thirdweb-dev.com",
         );
       }
     }
