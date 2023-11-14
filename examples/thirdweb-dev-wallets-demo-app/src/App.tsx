@@ -36,11 +36,14 @@ function App() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!window.location.origin.includes("thirdweb.com")) {
-        window.localStorage.setItem("IS_PAPER_DEV", "true");
-        window.localStorage.setItem(
-          "PAPER_DEV_URL",
-          "https://embedded-wallet.thirdweb-dev.com",
-        );
+        const devUrl = window.localStorage.getItem("PAPER_DEV_URL");
+        if (!devUrl) {
+          window.localStorage.setItem("IS_PAPER_DEV", "true");
+          window.localStorage.setItem(
+            "PAPER_DEV_URL",
+            "https://embedded-wallet.thirdweb-dev.com",
+          );
+        }
       }
     }
   });
