@@ -123,9 +123,9 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         encryptionKey: "some-encryption-key",
         // this will be any string data you want to send to your custom auth endpoint
         payload: JSON.stringify({
-          sub: username,
-          email,
-          exp: parseInt(expirationTimeUnix),
+          userId: username,
+          ...(email ? { email } : {}),
+          ...(expirationTimeUnix ? { exp: parseInt(expirationTimeUnix) } : {}),
         }),
       });
       console.log("loginWithCustomAuthEndpoint result", result);
