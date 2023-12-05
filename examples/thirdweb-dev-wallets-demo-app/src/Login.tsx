@@ -17,7 +17,7 @@ import {
   RecoveryShareManagement,
   SendEmailOtpReturnType,
 } from "@thirdweb-dev/wallets";
-import { useState } from "react";
+import React, { useState } from "react";
 interface Props {
   thirdwebWallet: EmbeddedWalletSdk | undefined;
   onLoginSuccess: () => void;
@@ -56,6 +56,9 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   >(undefined);
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [expirationTimeUnix, setExpirationTimeUnix] = useState("");
+  const [customAuthErrorMessage, setCustomAuthErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const loginWithThirdwebEmailOtp = async (
@@ -108,6 +111,30 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         "Something went wrong sending otp email in headless flow",
         e,
       );
+    }
+    setIsLoading(false);
+  };
+
+  const loginWithCustomAuthEndpoint = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const result = await thirdwebWallet?.auth.loginWithCustomAuthEndpoint({
+        encryptionKey: "some-encryption-key",
+        // this will be any string data you want to send to your custom auth endpoint
+        payload: JSON.stringify({
+          sub: username,
+          email,
+          exp: parseInt(expirationTimeUnix),
+        }),
+      });
+      console.log("loginWithCustomAuthEndpoint result", result);
+      onLoginSuccess();
+    } catch (e) {
+      console.error("Something went wrong logging in with custom auth", e);
+      if (e instanceof Error) {
+        setCustomAuthErrorMessage(`${e.message}. Please try again later.`);
+      }
     }
     setIsLoading(false);
   };
@@ -204,12 +231,65 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
           ))}
         </Stack>
 
-        {/* Adding code to allow internal full headless flow */}
         <Flex my={4} alignItems="center">
           <Divider />
           <Text mx={4}>or</Text>
           <Divider />
         </Flex>
+
+        <Stack as="form">
+          <FormControl as={Stack} isInvalid={!!customAuthErrorMessage}>
+            <Input
+              type="text"
+              inputMode="text"
+              placeholder="c00l-us3rn4m3"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+            <FormErrorMessage>{customAuthErrorMessage}</FormErrorMessage>
+          </FormControl>
+          <FormControl as={Stack} isInvalid={!!customAuthErrorMessage}>
+            <Input
+              type="text"
+              inputMode="text"
+              placeholder="optional you@example.com"
+              value={email ?? ""}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+            <FormErrorMessage>{customAuthErrorMessage}</FormErrorMessage>
+          </FormControl>
+          <FormControl as={Stack} isInvalid={!!customAuthErrorMessage}>
+            <Input
+              type="text"
+              inputMode="text"
+              placeholder="expiration time in UNIX timestamp"
+              value={expirationTimeUnix}
+              onChange={(e) => {
+                setExpirationTimeUnix(e.target.value);
+              }}
+            />
+            <FormErrorMessage>{customAuthErrorMessage}</FormErrorMessage>
+          </FormControl>
+          <Button
+            type="submit"
+            onClick={loginWithCustomAuthEndpoint}
+            disabled={!username}
+            isLoading={isLoading}
+          >
+            Login with custom auth endpoint
+          </Button>
+        </Stack>
+
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+
         <Stack as="form">
           {sendEmailOtpResult ? (
             <>
