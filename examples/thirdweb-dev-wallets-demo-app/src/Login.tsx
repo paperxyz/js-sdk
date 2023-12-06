@@ -122,7 +122,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // in real life you would do your custom auth here and get a JWT from it
+      // In production you would do your custom auth here and get a JWT from it
       const jwtResp = await fetch(
         "https://embedded-wallet.thirdweb-dev.com/api/2023-11-30/embedded-wallet/auth/test-sign-jwt",
         {
@@ -160,7 +160,8 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     try {
       const result = await thirdwebWallet?.auth.loginWithCustomAuthEndpoint({
         encryptionKey: PUBLIC_CLIENT_ENC_KEY,
-        // this will be any string data you want to send to your custom auth endpoint
+        // In production you would perform your custom auth here and
+        // attach a payload that you can use to verify that the user is who they say they are here
         payload: JSON.stringify({
           userId: username,
           ...(email ? { email } : {}),
