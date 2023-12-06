@@ -6,6 +6,7 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   Heading,
   Input,
   Stack,
@@ -35,6 +36,7 @@ const loginOptions = [
   },
 ];
 
+const PUBLIC_CLIENT_ENC_KEY = "some-encryption-key";
 export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const loginWithThirdwebModal = async () => {
     setIsLoading(true);
@@ -59,6 +61,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
   const [username, setUsername] = useState("");
   const [expirationTimeUnix, setExpirationTimeUnix] = useState("");
   const [customAuthErrorMessage, setCustomAuthErrorMessage] = useState("");
+  const [customJwtErrorMessage, setCustomJwtErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const loginWithThirdwebEmailOtp = async (
@@ -115,12 +118,47 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(false);
   };
 
+  const loginWithCustomJwt = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const jwtResp = await fetch(
+        "https://embedded-wallet.thirdweb-dev.com/api/2023-11-30/embedded-wallet/auth/test-sign-jwt",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: username,
+            email,
+          }),
+        },
+      );
+      const jwtJson = await jwtResp.json();
+      const jwt: string = jwtJson.jwt;
+
+      const result = await thirdwebWallet?.auth.loginWithCustomJwt({
+        encryptionKey: PUBLIC_CLIENT_ENC_KEY,
+        jwt,
+      });
+      console.log("loginWithCustomJwt result", result);
+      onLoginSuccess();
+    } catch (e) {
+      console.error("Something went wrong logging in with custom JWT", e);
+      if (e instanceof Error) {
+        setCustomJwtErrorMessage(`${e.message}. Please try again later.`);
+      }
+    }
+    setIsLoading(false);
+  };
+
   const loginWithCustomAuthEndpoint = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const result = await thirdwebWallet?.auth.loginWithCustomAuthEndpoint({
-        encryptionKey: "some-encryption-key",
+        encryptionKey: PUBLIC_CLIENT_ENC_KEY,
         // this will be any string data you want to send to your custom auth endpoint
         payload: JSON.stringify({
           userId: username,
@@ -273,6 +311,9 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               }}
             />
             <FormErrorMessage>{customAuthErrorMessage}</FormErrorMessage>
+            <FormHelperText>
+              Logging in with the same email in social or email auth will error
+            </FormHelperText>
           </FormControl>
           <Button
             type="submit"
@@ -281,6 +322,49 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             isLoading={isLoading}
           >
             Login with custom auth endpoint
+          </Button>
+        </Stack>
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+
+        <Stack as="form">
+          <FormControl as={Stack} isInvalid={!!customJwtErrorMessage}>
+            <Input
+              type="text"
+              inputMode="text"
+              placeholder="Your name - Satoshi Nakamoto"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+            <FormErrorMessage>{customJwtErrorMessage}</FormErrorMessage>
+          </FormControl>
+          <FormControl as={Stack} isInvalid={!!customJwtErrorMessage}>
+            <Input
+              type="text"
+              inputMode="text"
+              placeholder="you@example.com"
+              value={email ?? ""}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+            <FormErrorMessage>{customJwtErrorMessage}</FormErrorMessage>
+            <FormHelperText>
+              Logging in with the same email in social or email auth will error
+            </FormHelperText>
+          </FormControl>
+          <Button
+            type="submit"
+            onClick={loginWithCustomJwt}
+            disabled={!username || !email}
+            isLoading={isLoading}
+          >
+            Login with custom JWT
           </Button>
         </Stack>
 
