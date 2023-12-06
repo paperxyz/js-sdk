@@ -122,6 +122,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     e.preventDefault();
     setIsLoading(true);
     try {
+      // in real life you would do your custom auth here and get a JWT from it
       const jwtResp = await fetch(
         "https://embedded-wallet.thirdweb-dev.com/api/2023-11-30/embedded-wallet/auth/test-sign-jwt",
         {
