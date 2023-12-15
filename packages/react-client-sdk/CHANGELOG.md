@@ -1,5 +1,11 @@
 # @paperxyz/react-client-sdk
 
+## 1.1.4
+
+### Patch Changes
+
+- 482abb2: update js-client-sdk dependency
+
 ## 1.1.3
 
 ### Patch Changes
