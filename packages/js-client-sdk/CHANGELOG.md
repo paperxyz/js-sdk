@@ -1,5 +1,11 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.6
+
+### Patch Changes
+
+- f7c4e6d: added pointer-events to modal
+
 ## 0.2.5
 
 ### Patch Changes
