@@ -1,5 +1,13 @@
 # @paperxyz/js-client-sdk
 
+## 0.2.7
+
+### Patch Changes
+
+- b3222a1: Add payments.thirdweb as native domain to checkouts
+- Updated dependencies [b3222a1]
+  - @paperxyz/sdk-common-utilities@0.1.1
+
 ## 0.2.6
 
 ### Patch Changes

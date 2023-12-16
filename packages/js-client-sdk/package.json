@@ -1,7 +1,7 @@
 {
   "name": "@paperxyz/js-client-sdk",
   "description": "Paper JS SDK for Checkout Elements",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

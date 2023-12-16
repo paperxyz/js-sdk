@@ -1,5 +1,11 @@
 # @paperxyz/sdk-common-utilities
 
+## 0.1.1
+
+### Patch Changes
+
+- b3222a1: Add payments.thirdweb as native domain to checkouts
+
 ## 0.1.0
 
 ### Minor Changes
