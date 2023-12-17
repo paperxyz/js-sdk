@@ -237,6 +237,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             <Input
               type="email"
               placeholder="you@example.com"
+              id="email-otp-modal"
               value={email || ""}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -283,6 +284,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="c00l-us3rn4m3"
+              id="username-custom-auth-endpoint"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -295,6 +297,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="optional you@example.com"
+              id="email-custom-auth-endpoint"
               value={email ?? ""}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -307,6 +310,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="expiration time in UNIX timestamp"
+              id="expiration-custom-auth-endpoint"
               value={expirationTimeUnix}
               onChange={(e) => {
                 setExpirationTimeUnix(e.target.value);
@@ -338,6 +342,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="Your name - Satoshi Nakamoto"
+              id="username-jwt"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -349,7 +354,8 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             <Input
               type="text"
               inputMode="text"
-              placeholder="you@example.com"
+              id="email-jwt"
+              placeholder="you+jwt@example.com"
               value={email ?? ""}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -455,7 +461,8 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               <FormControl as={Stack} isInvalid={!!sendOtpErrorMessage}>
                 <Input
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="you+headless@example.com"
+                  id="headless-email"
                   value={email || ""}
                   onChange={(e) => {
                     setEmail(e.target.value);
