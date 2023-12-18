@@ -237,7 +237,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             <Input
               type="email"
               placeholder="you@example.com"
-              id="email-otp-modal"
+              data-testid="email-otp-modal-input"
               value={email || ""}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -284,7 +284,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="c00l-us3rn4m3"
-              id="username-custom-auth-endpoint"
+              data-testid="username-custom-auth-endpoint-input"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -297,7 +297,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="optional you@example.com"
-              id="email-custom-auth-endpoint"
+              data-testid="email-custom-auth-endpoint-input"
               value={email ?? ""}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -310,7 +310,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="expiration time in UNIX timestamp"
-              id="expiration-custom-auth-endpoint"
+              data-testid="expiration-custom-auth-endpoint-input"
               value={expirationTimeUnix}
               onChange={(e) => {
                 setExpirationTimeUnix(e.target.value);
@@ -342,7 +342,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
               type="text"
               inputMode="text"
               placeholder="Your name - Satoshi Nakamoto"
-              id="username-jwt"
+              data-testid="username-jwt-input"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -354,7 +354,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
             <Input
               type="text"
               inputMode="text"
-              id="email-jwt"
+              data-testid="email-jwt-input"
               placeholder="you+jwt@example.com"
               value={email ?? ""}
               onChange={(e) => {
@@ -462,7 +462,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
                 <Input
                   type="email"
                   placeholder="you+headless@example.com"
-                  id="headless-email"
+                  data-testid="headless-email-input"
                   value={email || ""}
                   onChange={(e) => {
                     setEmail(e.target.value);

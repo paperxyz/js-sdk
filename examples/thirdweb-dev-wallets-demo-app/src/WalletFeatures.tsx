@@ -326,7 +326,12 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
               >
                 Sign Message
               </Button>
-              <Code borderRadius={8} p={4} width="full">
+              <Code
+                borderRadius={8}
+                p={4}
+                width="full"
+                data-testid="signed-message"
+              >
                 {result?.signedMessage || (
                   <Text color="black" fontStyle="italic" size="sm">
                     {PLACEHOLDER}
@@ -349,7 +354,12 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
               <Text mt={2} fontSize="md" color="black">
                 Signed Result:
               </Text>
-              <Code borderRadius={8} p={4} width="full">
+              <Code
+                borderRadius={8}
+                p={4}
+                width="full"
+                data-testid="signed-typed-data"
+              >
                 {result?.signedTypedData || (
                   <Text color="black" fontStyle="italic" size="sm">
                     {PLACEHOLDER}
@@ -361,7 +371,12 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
 
           <Section title="Export Private Key">
             <Stack>
-              <Button onClick={onOpen} colorScheme="purple" mt={4}>
+              <Button
+                data-testid="export-private-key-button"
+                onClick={onOpen}
+                colorScheme="purple"
+                mt={4}
+              >
                 Export Account
               </Button>
               <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -372,7 +387,7 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
                   <ModalBody>
                     <iframe
                       title="export private key"
-                      src={`https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=${process.env.REACT_APP_THIRDWEB_CLIENT_ID}`}
+                      src={`https://embedded-wallet.thirdweb.com/sdk/2022-08-12/embedded-wallet/export?clientId=${process.env.REACT_APP_THIRDWEB_CLIENT_ID}`}
                       width="525px"
                       height="475px"
                     />
