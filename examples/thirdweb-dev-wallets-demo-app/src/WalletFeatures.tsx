@@ -387,7 +387,13 @@ export const WalletFeatures: React.FC<Props> = ({ user }) => {
                   <ModalBody>
                     <iframe
                       title="export private key"
-                      src={`https://embedded-wallet.thirdweb.com/sdk/2022-08-12/embedded-wallet/export?clientId=${process.env.REACT_APP_THIRDWEB_CLIENT_ID}`}
+                      src={`${
+                        window.localStorage.getItem("THIRDWEB_DEV_URL") ??
+                        "https://embedded-wallet.thirdweb.com"
+                      }
+                    }/sdk/2022-08-12/embedded-wallet/export?clientId=${
+                      process.env.REACT_APP_THIRDWEB_CLIENT_ID
+                    }`}
                       width="525px"
                       height="475px"
                     />
