@@ -140,7 +140,6 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
       const jwt: string = jwtJson.jwt;
 
       const result = await thirdwebWallet?.auth.loginWithCustomJwt({
-        encryptionKey: PUBLIC_CLIENT_ENC_KEY,
         jwt,
       });
       console.log("loginWithCustomJwt result", result);
