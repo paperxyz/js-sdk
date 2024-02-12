@@ -1,5 +1,11 @@
 # @paperxyz/js-client-sdk
 
+## 0.3.0
+
+### Minor Changes
+
+- 681c27f: fixed the event name on drawer checkout
+
 ## 0.2.7
 
 ### Patch Changes
