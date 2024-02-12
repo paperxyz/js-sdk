@@ -21,5 +21,5 @@ export const getPaperOriginUrl = (): string => {
   if (isOldPaperDomain()) return window.location.origin;
   if (isThirdwebDomain()) return window.location.origin;
 
-  return "https://withpaper.com";
+  return "https://payments.thirdweb.com";
 };
