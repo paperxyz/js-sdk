@@ -51,7 +51,7 @@ export function renderPaperCheckoutLink({
         onPaymentSucceeded?.({ transactionId });
         break;
       }
-      case "claimSuccessful": {
+      case "transferSuccess": {
         const { id: transactionId, claimedTokens } = e.data;
         onTransferSucceeded?.({ transactionId, claimedTokens });
         await sleepForSeconds(3.5);
