@@ -57,6 +57,12 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     SendEmailOtpReturnType | undefined
   >(undefined);
   const [sendOtpErrorMessage, setSendOtpErrorMessage] = useState("");
+
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+  const [sendSmsOtpResult, setSendSmsOtpResult] = useState<
+    SendEmailOtpReturnType | undefined
+  >(undefined);
+
   const [verifyOtpErrorMessage, setVerifyOtpErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [expirationTimeUnix, setExpirationTimeUnix] = useState("");
@@ -114,6 +120,25 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         "Something went wrong sending otp email in headless flow",
         e,
       );
+    }
+    setIsLoading(false);
+  };
+  const loginWithThirdwebSmsOtpHeadless = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const result = await thirdwebWallet?.auth.sendSmsLoginOtp({
+        phoneNumber: phoneNumber ?? "",
+      });
+      console.log("sendThirdwebSmsLoginOtp result", result);
+      setSendSmsOtpResult(result);
+    } catch (e) {
+      if (e instanceof Error) {
+        setSendOtpErrorMessage(`${e.message}. Please try again later.`);
+      }
+      console.error("Something went wrong sending otp sms in headless flow", e);
     }
     setIsLoading(false);
   };
@@ -179,7 +204,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
     setIsLoading(false);
   };
 
-  const finishHeadlessOtpLogin = async (
+  const finishHeadlessEmailOtpLogin = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsLoading(true);
@@ -191,6 +216,39 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
         recoveryCode: recoveryCode || undefined,
       });
       console.log("verifyThirdwebEmailLoginOtp result", result);
+
+      onLoginSuccess();
+    } catch (e) {
+      console.log("error while logging in headless", e);
+      if (e instanceof Error) {
+        if (e.message.includes("Your OTP code is invalid")) {
+          console.error("ERROR verifying otp", e);
+          setVerifyOtpErrorMessage(`${(e as any).message}. Please try again`);
+        } else if (e.message.includes("Missing recovery code for user")) {
+          if (
+            sendEmailOtpResult?.recoveryShareManagement ===
+            RecoveryShareManagement.USER_MANAGED
+          ) {
+            setVerifyOtpErrorMessage("");
+            setPromptForRecoveryCode(true);
+          }
+        }
+      }
+    }
+    setIsLoading(false);
+  };
+  const finishHeadlessSmsOtpLogin = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const result = await thirdwebWallet?.auth.verifySmsLoginOtp({
+        phoneNumber: phoneNumber || "",
+        otp: otpCode || "",
+        recoveryCode: recoveryCode || undefined,
+      });
+      console.log("verifyThirdwebSmsLoginOtp result", result);
 
       onLoginSuccess();
     } catch (e) {
@@ -401,7 +459,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
                   </FormControl>
                   <Button
                     type="submit"
-                    onClick={finishHeadlessOtpLogin}
+                    onClick={finishHeadlessEmailOtpLogin}
                     disabled={!recoveryCode}
                     isLoading={isLoading}
                   >
@@ -430,7 +488,7 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
 
                   <Button
                     type="submit"
-                    onClick={finishHeadlessOtpLogin}
+                    onClick={finishHeadlessEmailOtpLogin}
                     disabled={!email || !otpCode}
                     isLoading={isLoading}
                   >
@@ -479,6 +537,114 @@ export const Login: React.FC<Props> = ({ thirdwebWallet, onLoginSuccess }) => {
                 isLoading={isLoading}
               >
                 send headless Email OTP
+              </Button>
+            </>
+          )}
+        </Stack>
+        <Flex my={4} alignItems="center">
+          <Divider />
+          <Text mx={4}>or</Text>
+          <Divider />
+        </Flex>
+
+        <Stack as="form">
+          {sendSmsOtpResult ? (
+            <>
+              {promptForRecoveryCode ? (
+                <>
+                  {" "}
+                  <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Password for your account"
+                      value={recoveryCode || ""}
+                      onChange={(e) => {
+                        setRecoveryCode(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    onClick={finishHeadlessEmailOtpLogin}
+                    disabled={!recoveryCode}
+                    isLoading={isLoading}
+                  >
+                    Set password and create account
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FormControl as={Stack} isInvalid={!!verifyOtpErrorMessage}>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Otp Code"
+                      value={otpCode || ""}
+                      onChange={(e) => {
+                        setOtpCode(e.target.value);
+                      }}
+                    />
+                    {!!verifyOtpErrorMessage &&
+                      !sendSmsOtpResult.isNewDevice && (
+                        <FormErrorMessage>
+                          {verifyOtpErrorMessage}
+                        </FormErrorMessage>
+                      )}
+                  </FormControl>
+
+                  <Button
+                    type="submit"
+                    onClick={finishHeadlessSmsOtpLogin}
+                    disabled={!phoneNumber || !otpCode}
+                    isLoading={isLoading}
+                  >
+                    verify headless login OTP
+                  </Button>
+                  <Button
+                    onClick={loginWithThirdwebEmailOtpHeadless}
+                    variant="ghost"
+                    size="sm"
+                  >
+                    Request New Code
+                  </Button>
+                </>
+              )}
+              <Button
+                variant={"ghost"}
+                w="fit-content"
+                onClick={() => {
+                  setOtpCode("");
+                  setSendSmsOtpResult(undefined);
+                }}
+              >
+                Back
+              </Button>
+            </>
+          ) : (
+            <>
+              <FormControl as={Stack} isInvalid={!!sendOtpErrorMessage}>
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="+11234567890"
+                  data-testid="headless-sms-input"
+                  value={phoneNumber ?? ""}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                  }}
+                />
+                {!!sendOtpErrorMessage && (
+                  <FormErrorMessage>{sendOtpErrorMessage}</FormErrorMessage>
+                )}
+              </FormControl>
+              <Button
+                type="submit"
+                onClick={loginWithThirdwebSmsOtpHeadless}
+                disabled={!phoneNumber}
+                isLoading={isLoading}
+              >
+                send headless SMS OTP
               </Button>
             </>
           )}
